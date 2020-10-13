@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:show, :create, :update, :destroy], constraints: { id: /.*/ }
       resources :contacts, only: [:create]
+      resources :courses, only: [:create, :update, :show, :destroy]
     end
   end
 
