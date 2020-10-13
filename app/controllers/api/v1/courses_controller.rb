@@ -21,11 +21,14 @@ class Api::V1::CoursesController < ApplicationController
   end
 
   def destroy
-    if @course.destroy
-      render status: :ok, json: @course
-    else
-      render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
+    unless @course.published
+      if @course.destroy
+        render status: :ok, json: @course
+      else
+        render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
+      end
     end
+    render status: :unprocessable_entity, json: { notice: "You cannot delete a published course" }
   end
 
   def update
@@ -38,7 +41,7 @@ class Api::V1::CoursesController < ApplicationController
 
   private
     def course_params
-      params.require(:course).permit(:name, :description)
+      params.require(:course).permit(:name, :description, :published)
     end
 
     def find_course
