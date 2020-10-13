@@ -20,13 +20,13 @@ bundle exec rails server
 
 Visit http://localhost:3000 and login with email `oliver@example.com` and password `welcome`.
 
-## Replace Wheel with your project name
+## Replace NitroAcademy with your project name
 
 Let's say that the project name is `Pump`. Execute the command below to
-replace all occurrences of `Wheel` with `Pump`.
+replace all occurrences of `NitroAcademy` with `Pump`.
 
 ```
-perl -pi -w -e 's/Wheel/Pump/g;' $(git ls-files)
+perl -pi -w -e 's/NitroAcademy/Pump/g;' $(git ls-files)
 ```
 
 ## Features
