@@ -12,6 +12,14 @@ class Api::V1::CoursesController < ApplicationController
     end
   end
 
+  def update
+    if @course.update(course_params)
+      render status: :ok, json: { notice: "Course updated successfully", course: @course }
+    else
+      render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
+    end
+  end
+
   def show
     if @course
       render status: :ok, json: @course
@@ -29,14 +37,6 @@ class Api::V1::CoursesController < ApplicationController
       end
     end
     render status: :unprocessable_entity, json: { notice: "You cannot delete a published course" }
-  end
-
-  def update
-    if @course.update(course_params)
-      render status: :ok, json: { notice: "Course updated successfully", course: @course }
-    else
-      render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
-    end
   end
 
   private
