@@ -3,6 +3,7 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
+  
   # Setting path_prefix makes sure that devise routes do not conflict
   # with users resources routes.
   #
