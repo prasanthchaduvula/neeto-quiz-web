@@ -11,4 +11,9 @@ class CourseTest < ActiveSupport::TestCase
     @course.name = "   "
     assert_not @course.valid?
   end
+
+  test "course validation with empty description" do
+    @course.description = "   "
+    assert_not @course.valid?
+  end
 end
