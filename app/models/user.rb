@@ -8,6 +8,8 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: :update
   validates :phone_number, presence: true, numericality: true, length: { is: 13 }, uniqueness: true
 
+  before_save :ensure_authentication_token_is_present
+
   def email_required?
     false
   end
@@ -23,4 +25,19 @@ class User < ApplicationRecord
   def will_save_change_to_id?
     false
   end
+
+  private
+
+    def ensure_authentication_token_is_present
+      if authentication_token.blank?
+        self.authentication_token = generate_authentication_token
+      end
+    end
+
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless User.where(authentication_token: token).first
+      end
+    end
 end
