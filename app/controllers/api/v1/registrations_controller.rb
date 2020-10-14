@@ -21,11 +21,13 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
       if @user.nil?
         @user = User.new(user_params)
         if @user.save
+          sign_in(@user)
           render json: { notice: "Registration successful", user: @user }
         else
           render json: { notice: "Registration failed", user: @user.errors.full_messages }
         end
       else
+        sign_in(@user)
         render json: { notice: "user exists we should log in", user: @user }
       end
     else
