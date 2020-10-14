@@ -24,7 +24,7 @@ class Api::V1::CoursesController < ApplicationController
     if @course
       render status: :ok, json: @course
     else
-      render status: :not_found, json: { errors: "Course with id #{params[:id]} not found" }
+      render status: :not_found, json: { errors: ["Course with id #{params[:id]} not found"] }
     end
   end
 
@@ -36,12 +36,12 @@ class Api::V1::CoursesController < ApplicationController
         render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
       end
     end
-    render status: :unprocessable_entity, json: { notice: "You cannot delete a published course" }
+    render status: :unprocessable_entity, json: { errors: ["You cannot delete a published course"] }
   end
 
   private
     def course_params
-      params.require(:course).permit(:name, :description, :published)
+      params.require(:course).permit(:name, :description, :published, :price)
     end
 
     def find_course

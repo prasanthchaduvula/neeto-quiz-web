@@ -4,7 +4,7 @@ require 'test_helper'
 
 class CourseTest < ActiveSupport::TestCase
   def setup
-    @course = Course.create(name: "Learn RRuby on Rails", description: "A comprehensive guide to Rails with indepth understanding of interview problems")
+    @course = Course.create!(name: "Learn RRuby on Rails", description: "A comprehensive guide to Rails with indepth understanding of interview problems")
   end
 
   test "course is valid" do
