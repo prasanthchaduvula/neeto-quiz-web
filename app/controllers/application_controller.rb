@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   protect_from_forgery with: :null_session
   before_action :set_layout_carrier
-  # before_action :set_honeybadger_context
+  before_action :set_honeybadger_context
 
   private
 
@@ -14,9 +14,9 @@ class ApplicationController < ActionController::Base
       @layout_carrier = LayoutCarrier.new
     end
 
-  # def set_honeybadger_context
-  #   hash = { uuid: request.uuid }
-  #   hash.merge!(user_id: current_user.id, user_email: current_user.email) if current_user
-  #   Honeybadger.context hash
-  # end
+    def set_honeybadger_context
+      hash = { uuid: request.uuid }
+      hash.merge!(user_id: current_user.id, user_phone_number: current_user.phone_number) if current_user
+      Honeybadger.context hash
+    end
 end
