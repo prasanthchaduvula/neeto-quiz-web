@@ -67,6 +67,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Background jobs
 gem "sidekiq"
 
+# Send otp
+gem "sendotp"
+
 # Preview email in browser
 gem "letter_opener", group: :development
 

@@ -269,6 +269,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sendotp (0.1.0)
     sidekiq (6.1.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
@@ -355,6 +356,7 @@ DEPENDENCIES
   rubocop-rails
   ruby_audit
   sass-rails (>= 6)
+  sendotp
   sidekiq
   simple_form (~> 5.0)
   simplecov
