@@ -6,8 +6,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :users, only: [:show, :create, :update, :destroy], constraints: { id: /.*/ } 
-      post "/register", to: "users#send_otp"
+      resource :registrations, only: [:new, :create] 
+      resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
     end
   end
 
