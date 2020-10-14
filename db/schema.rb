@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_10_14_122404) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.string "encrypted_password", default: "", null: false
   end
 
 end

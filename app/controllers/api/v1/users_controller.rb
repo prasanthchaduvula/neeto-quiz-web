@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class Api::V1::UsersController < Api::V1::BaseController
-  before_action :load_user, only: [:update]
+  before_action :load_user, only: [:show, :update]
+
+  def show
+    if @user
+      render json: @user
+    else
+      respond_with_error "User with id #{params[:id]} not found.", :not_found
+    end
+  end
 
   def update
     if @user.blank?
