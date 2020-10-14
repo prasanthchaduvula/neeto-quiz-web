@@ -3,51 +3,11 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  
-  # Setting path_prefix makes sure that devise routes do not conflict
-  # with users resources routes.
-  #
-  # More details available here:
-  # https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface
-
-  devise_for :users, path_prefix: "devise", controllers: { registrations: "registrations" }
-  # Authentication
-  get "/logout" => "sessions#destroy", :as => :logout
-  devise_scope :user do
-    scope "my" do
-      get "profile", to: "registrations#edit"
-      put "profile/update", to: "registrations#update"
-      get "password/edit", to: "registrations#edit_password"
-      put "password/update", to: "registrations#update_password"
-    end
-  end
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with 'rake routes'.
-
-  authenticate :user, ->(u) { u.super_admin? } do
-    mount Sidekiq::Web, at: "/sidekiq"
-
-    ActiveAdmin.routes(self)
-    namespace :superadmin do
-      root to: "users#index"
-      resources :users
-    end
-  end
-
-  authenticate :user, ->(u) { !u.super_admin? } do
-    get "/active_admin" => redirect("/")
-  end
-
+  devise_for :users, only: []
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      devise_scope :user do
-        post "login" => "sessions#create", as: "login"
-        delete "logout" => "sessions#destroy", as: "logout"
-      end
-
-      resources :users, only: [:show, :create, :update, :destroy], constraints: { id: /.*/ }
-      resources :contacts, only: [:create]
+      resource :registrations, only: [:new, :create] 
+      resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy]
     end
   end

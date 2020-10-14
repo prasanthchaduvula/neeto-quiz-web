@@ -3,27 +3,42 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  def test_admin_is_indeed_super_admin
-    user = users :admin
-    assert user.super_admin?
+  def setup
+    @user = User.create!(phone_number: "+917680918423", first_name: "Eve", last_name: "Smith")
   end
 
-  def test_first_name_is_blank
-    user = users :admin
-    user.first_name = nil
-    assert_equal "Smith", user.name
+  test "user should be valid" do
+    assert @user.valid?
   end
 
-  def test_last_name_is_blank
-    user = users :admin
-    user.last_name = nil
-    assert_equal "Adam", user.name
+  test "first name should be present" do
+    @user.first_name = ""
+    assert_not @user.valid?
   end
 
-  def test_as_json
-    user = users :admin
+  test "last name should be present" do
+    @user.last_name = ""
+    assert_not @user.valid?
+  end
 
-    expected = { "email" => "admin@example.com", "current_sign_in_at" => nil, "last_name" => "Smith", "first_name" => "Adam" }
-    assert_equal expected, user.as_json
+  test "phone number should be present" do
+    @user.phone_number = ""
+    assert_not @user.valid?
+  end
+
+  test "phone number should be of valid length" do
+    @user.phone_number = "+91" * 15
+    assert_not @user.valid?
+  end
+
+  test "phone number should be unique" do
+    new_user = User.new(first_name: "sample", last_name: "user", phone_number: @user.phone_number)
+    new_user.save
+    assert_not new_user.valid?
+  end
+
+  test "phone number should be numerical" do
+    @user.phone_number = "+qw76809184"
+    assert_not @user.valid?
   end
 end
