@@ -15,23 +15,9 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   end
 
   def create
-    puts @response["type"]
     if @response["type"] == "success"
-      puts "enter success"
-      if @user.nil?
-        @user = User.new(user_params)
-        if @user.save
-          sign_in(@user)
-          render json: { notice: "Registration successful", user: @user }
-        else
-          render json: { notice: "Registration failed", user: @user.errors.full_messages }
-        end
-      else
-        sign_in(@user)
-        render json: { notice: "user exists we should log in", user: @user }
-      end
+      register_user
     else
-      puts "enter error"
       render json: { notice: @response }
     end
   end
@@ -58,6 +44,19 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
       request = Net::HTTP::Post.new(url)
       reqres = http.request(request)
       @response = JSON.parse(reqres.body)
+    end
+
+    def register_user
+      if @user.nil?
+        @user = User.new(user_params)
+        if @user.save
+          render json: { notice: "Registration successful", user: @user }
+        else
+          render json: { notice: "Registration failed", user: @user.errors.full_messages }
+        end
+      else
+        render json: { notice: "User exists, use user token and phone number for login", user: @user }
+      end
     end
 
     def user_params
