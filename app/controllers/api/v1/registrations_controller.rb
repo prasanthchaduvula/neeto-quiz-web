@@ -64,6 +64,6 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
     end
 
     def load_user
-      @user = User.find_by(phone_number: params[:user][:phone_number])
+      @user = User.find_by!(phone_number: params[:user][:phone_number])
     end
 end
