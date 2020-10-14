@@ -7,11 +7,9 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   before_action :verify_otp, only: [:create]
   before_action :load_user, only: [:create]
 
-  require 'uri'
-  require 'net/http'
-
   def new
-    send_otp
+    send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
+    render json: { notice: send_otp }
   end
 
   def create
@@ -24,26 +22,8 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
 
   private
 
-    def send_otp
-      url = URI("https://api.msg91.com/api/v5/otp?authkey=344320ADzUdaWyKVf5f8684dbP1&template_id=5f868692317bbf40b878216c&mobile=#{params[:user][:phone_number]}")
-
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      request = Net::HTTP::Get.new(url)
-      response = http.request(request)
-      render json: { notice: JSON.parse(response.body) }
-    end
-
     def verify_otp
-      url = URI("https://api.msg91.com/api/v5/otp/verify?mobile=#{params[:user][:phone_number]}&otp=#{params[:user][:otp]}&authkey=344320ADzUdaWyKVf5f8684dbP1")
-
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      request = Net::HTTP::Post.new(url)
-      reqres = http.request(request)
-      @response = JSON.parse(reqres.body)
+      @response = Msg91MessageService.new.verify_otp(params[:user][:phone_number], params[:user][:otp])
     end
 
     def register_user
@@ -64,6 +44,6 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
     end
 
     def load_user
-      @user = User.find_by!(phone_number: params[:user][:phone_number])
+      @user = User.find_by(phone_number: params[:user][:phone_number])
     end
 end
