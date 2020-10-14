@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class Api::V1::RegistrationsController < Api::V1::BaseController
-  require 'uri'
-  require 'net/http'
+  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_user_using_x_auth_token, only: [:new, :create]
 
   before_action :verify_otp, only: [:create]
   before_action :load_user, only: [:create]
+
+  require 'uri'
+  require 'net/http'
 
   def new
     send_otp
