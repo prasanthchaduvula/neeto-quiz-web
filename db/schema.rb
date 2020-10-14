@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2020_10_14_122404) do
     t.string "first_name"
     t.string "last_name"
     t.string "phone_number", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "authentication_token"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
