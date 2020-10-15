@@ -23,7 +23,8 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def show
     if @course
-      render status: :ok, json: @course
+      chapters = @course.chapters
+      render status: :ok, json: { course: @course, chapters: chapters }
     else
       render status: :not_found, json: { errors: ["Course with id #{params[:id]} not found"] }
     end
