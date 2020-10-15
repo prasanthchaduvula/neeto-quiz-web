@@ -14,7 +14,6 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def update
-    puts "checking"
     if @course.update(course_params)
       render status: :ok, json: { notice: "Course updated successfully", course: @course }
     else
