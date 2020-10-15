@@ -2,9 +2,10 @@
 
 class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
+  before_action :check_published_course, only: :destroy
 
   def create
-    course = Course.new(course_params)
+    course = current_user.courses.new(course_params)
     if course.save
       render status: :ok, json: { notice: "Course created succesfully", course: course }
     else
@@ -29,14 +30,11 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def destroy
-    unless @course.published
-      if @course.destroy
-        render status: :ok, json: @course
-      else
-        render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
-      end
+    if @course.destroy
+      render status: :ok, json: @course
+    else
+      render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
     end
-    render status: :unprocessable_entity, json: { errors: ["You cannot delete a published course"] }
   end
 
   private
@@ -46,5 +44,11 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
     def find_course
       @course = Course.find_by_id(params[:id])
+    end
+
+    def check_published_course
+      if @course.published
+        render status: :unprocessable_entity, json: { errors: ["You cannot delete a published course"] }
+      end
     end
 end
