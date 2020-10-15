@@ -38,4 +38,13 @@ class Api::V1::BaseController < ApplicationController
         respond_with_error("Could not authenticate with the provided credentials", 401)
       end
     end
+    # def find_quiz
+    #   @quiz = Quiz.find(params[:quiz_id] || params[:id])
+    # rescue ActiveRecord::RecordNotFound
+    #   render status: :not_found, json:{errors: ["Quiz not found"]}
+    # end
+
+    def find_course
+      @course = Course.find_by_id(params[:course_id] || params[:id])
+    end
 end

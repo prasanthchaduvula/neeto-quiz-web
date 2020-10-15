@@ -4,7 +4,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
 
   def create
-    course = Course.new(course_params)
+    course = current_user.courses.new(course_params)
     if course.save
       render status: :ok, json: { notice: "Course created succesfully", course: course }
     else
@@ -42,9 +42,5 @@ class Api::V1::CoursesController < Api::V1::BaseController
   private
     def course_params
       params.require(:course).permit(:name, :description, :published, :price)
-    end
-
-    def find_course
-      @course = Course.find_by_id(params[:id])
     end
 end

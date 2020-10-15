@@ -23,7 +23,7 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test "course has an author" do
-    @course.user_id=""
+    @course.user_id = "   "
     assert_not @course.valid?
   end
 end

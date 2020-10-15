@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_15_021533) do
+ActiveRecord::Schema.define(version: 2020_10_15_042743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "chapters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "course_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_chapters_on_course_id"
+  end
 
   create_table "courses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -24,6 +32,7 @@ ActiveRecord::Schema.define(version: 2020_10_15_021533) do
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price", precision: 7, scale: 2
     t.uuid "user_id"
+    t.index ["name"], name: "index_courses_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -41,5 +50,6 @@ ActiveRecord::Schema.define(version: 2020_10_15_021533) do
     t.string "encrypted_password", default: "", null: false
   end
 
+  add_foreign_key "chapters", "courses"
   add_foreign_key "courses", "users", on_delete: :cascade
 end
