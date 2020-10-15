@@ -43,6 +43,6 @@ class Api::V1::ChaptersController < Api::V1::BaseController
     end
 
     def find_chapter
-      @chapter = Chapter.find_by_id(params[:id])
+      @chapter = Chapter.find(params[:id])
     end
 end
