@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 2020_10_15_042743) do
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price", precision: 7, scale: 2
     t.uuid "user_id"
-    t.index ["name"], name: "index_courses_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

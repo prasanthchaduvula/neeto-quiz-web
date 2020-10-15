@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ChaptersController < Api::V1::BaseController
-  before_action :find_course, only: [:show, :destroy, :update]
+  before_action :find_course, only: [:show, :destroy, :update, :create]
 
   def create
     chapter = @course.chapters.new(chapter_params)
