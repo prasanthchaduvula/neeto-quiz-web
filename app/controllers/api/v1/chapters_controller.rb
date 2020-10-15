@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::ChaptersController < Api::V1::BaseController
-  before_action :load_course, only: :create
-  before_action :load_chapter, only: [:show, :destroy, :update]
+  before_action :find_course, only: :create
+  before_action :find_chapter, only: [:show, :destroy, :update]
 
   def create
     chapter = @course.chapters.new(chapter_params)
@@ -42,7 +42,7 @@ class Api::V1::ChaptersController < Api::V1::BaseController
       params.require(:chapter).permit(:name)
     end
 
-    def load_chapter
+    def find_chapter
       @chapter = Chapter.find_by_id(params[:id])
     end
 end

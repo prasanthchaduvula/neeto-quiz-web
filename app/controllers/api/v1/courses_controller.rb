@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::CoursesController < Api::V1::BaseController
-  before_action :load_course, only: [:show, :destroy, :update]
+  before_action :find_course, only: [:show, :destroy, :update]
   before_action :check_published_course, only: :destroy
 
   def create
