@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::CoursesController < Api::V1::BaseController
-  before_action :find_course, only: [:show, :destroy, :update]
+  before_action :load_course, only: [:show, :destroy, :update]
   before_action :check_published_course, only: :destroy
 
   def create
@@ -14,6 +14,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def update
+    puts "checking"
     if @course.update(course_params)
       render status: :ok, json: { notice: "Course updated successfully", course: @course }
     else

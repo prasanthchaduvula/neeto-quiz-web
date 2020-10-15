@@ -39,9 +39,7 @@ class Api::V1::BaseController < ApplicationController
       end
     end
 
-    def find_course
-      @course = Course.find(params[:course_id] || params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render status: :not_found, json: { errors: ["Course not found"] }
+    def load_course
+      @course = Course.find_by!(id: params[:course_id] || params[:id])
     end
 end
