@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :courses
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable, :rememberable
   devise :database_authenticatable, authentication_keys: [:phone_number]

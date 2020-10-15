@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_14_174639) do
+ActiveRecord::Schema.define(version: 2020_10_15_021533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,8 +23,7 @@ ActiveRecord::Schema.define(version: 2020_10_14_174639) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "price", precision: 7, scale: 2
-    t.bigint "author_id", null: false
-    t.index ["author_id"], name: "index_courses_on_author_id"
+    t.uuid "user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -42,4 +41,5 @@ ActiveRecord::Schema.define(version: 2020_10_14_174639) do
     t.string "encrypted_password", default: "", null: false
   end
 
+  add_foreign_key "courses", "users", on_delete: :cascade
 end
