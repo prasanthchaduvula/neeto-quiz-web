@@ -38,4 +38,8 @@ class Api::V1::BaseController < ApplicationController
         respond_with_error("Could not authenticate with the provided credentials", 401)
       end
     end
+
+    def find_course
+      @course = Course.find(params[:course_id] || params[:id])
+    end
 end

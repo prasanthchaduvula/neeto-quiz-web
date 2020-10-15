@@ -2,10 +2,8 @@
 
 one:
   name: MyString
-  description: MyText
-  published: false
+  course: one
 
 two:
-  name: MyString second
-  description: MyText
-  published: false
+  name: MyString
+  course: two

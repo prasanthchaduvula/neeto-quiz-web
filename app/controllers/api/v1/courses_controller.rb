@@ -23,7 +23,8 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def show
     if @course
-      render status: :ok, json: @course
+      chapters = @course.chapters
+      render status: :ok, json: { course: @course, chapters: chapters }
     else
       render status: :not_found, json: { errors: ["Course with id #{params[:id]} not found"] }
     end
@@ -40,10 +41,6 @@ class Api::V1::CoursesController < Api::V1::BaseController
   private
     def course_params
       params.require(:course).permit(:name, :description, :published, :price)
-    end
-
-    def find_course
-      @course = Course.find_by_id(params[:id])
     end
 
     def check_published_course
