@@ -8,4 +8,5 @@ class Lesson < ApplicationRecord
   has_one_attached :file
 
   validates :name, :lesson_type, presence: true
+  validates :content, presence: true, if: -> { lesson_type == "youtube" }
 end
