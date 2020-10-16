@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::LessonsController < Api::V1::BaseController
+  before_action :load_chapter
+
   def create
     lesson = @chapter.lessons.new(lesson_params)
     if lesson.save
