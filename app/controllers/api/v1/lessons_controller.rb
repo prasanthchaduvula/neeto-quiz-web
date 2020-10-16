@@ -9,6 +9,14 @@ class Api::V1::LessonsController < Api::V1::BaseController
     render json: { lessons: @lessons }, status: :ok
   end
 
+  def show
+    if @lesson
+      render json: { lesson: @lesson }
+    else
+      respond_with_error "Lesson with id #{params[:id]} not found.", status: :not_found
+    end
+  end
+
   def create
     @lesson = @chapter.lessons.new(lesson_params)
     if @lesson.save
