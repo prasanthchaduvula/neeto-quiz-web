@@ -18,7 +18,9 @@ class Api::V1::LessonsController < Api::V1::BaseController
   end
 
   def create
+    puts "content #{params[:lesson]}"
     @lesson = @chapter.lessons.new(lesson_params)
+    @lesson
     if @lesson.save
       render json: { lesson: @lesson }, status: :ok
     else
