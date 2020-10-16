@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  enum lesson_type: { youtube: 0, pdf: 1 }
+  enum lesson_type: { youtube: 0, pdf: 1, image: 2 }
 
   belongs_to :chapter
 
-  validates :name, :content, :lesson_type, presence: true
+  has_one_attached :image
+
+  validates :name, :lesson_type, presence: true
 end

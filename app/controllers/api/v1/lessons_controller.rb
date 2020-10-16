@@ -11,16 +11,14 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
   def show
     if @lesson
-      render json: { lesson: @lesson }, status: :ok
+      render json: { lesson: @lesson, image: url_for(@lesson.image) }, status: :ok
     else
       respond_with_error "Lesson with id #{params[:id]} not found.", status: :not_found
     end
   end
 
   def create
-    puts "content #{params[:lesson]}"
     @lesson = @chapter.lessons.new(lesson_params)
-    @lesson
     if @lesson.save
       render json: { lesson: @lesson }, status: :ok
     else
@@ -47,7 +45,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
   private
 
     def lesson_params
-      params.require(:lesson).permit(:name, :description, :content, :lesson_type)
+      params.require(:lesson).permit(:name, :description, :content, :image, :lesson_type)
     end
 
     def load_lesson
