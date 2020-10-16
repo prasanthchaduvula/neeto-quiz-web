@@ -11,7 +11,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
   def show
     if @lesson
-      render json: { lesson: @lesson }
+      render json: { lesson: @lesson }, status: :ok
     else
       respond_with_error "Lesson with id #{params[:id]} not found.", status: :not_found
     end
@@ -22,7 +22,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
     if @lesson.save
       render json: { lesson: @lesson }, status: :ok
     else
-      render status: :unprocessable_entity, json: { errors: @lesson.errors.full_messages }
+      render json: { errors: @lesson.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
