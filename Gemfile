@@ -70,9 +70,6 @@ gem "sidekiq"
 # Tyhoeus
 gem "typhoeus"
 
-# Cors
-gem 'rack-cors'
-
 # Preview email in browser
 gem "letter_opener", group: :development
 
