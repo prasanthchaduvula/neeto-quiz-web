@@ -45,7 +45,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
   private
 
     def lesson_params
-      params.require(:lesson).permit(:name, :description, :content, :image, :lesson_type)
+      params.require(:lesson).permit(:name, :description, :content, :file, :lesson_type, :is_published)
     end
 
     def load_lesson

@@ -5,7 +5,7 @@ class Lesson < ApplicationRecord
 
   belongs_to :chapter
 
-  has_one_attached :image
+  has_one_attached :file
 
   validates :name, :lesson_type, presence: true
 end
