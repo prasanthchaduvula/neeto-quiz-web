@@ -2,7 +2,12 @@
 
 class Api::V1::LessonsController < Api::V1::BaseController
   before_action :load_chapter
-  before_action :load_lesson, except: [:create]
+  before_action :load_lesson, except: [:index, :create]
+
+  def index
+    @lessons = @chapter.lessons
+    render json: { lessons: @lessons }, status: :ok
+  end
 
   def create
     @lesson = @chapter.lessons.new(lesson_params)
