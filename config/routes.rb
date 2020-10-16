@@ -11,6 +11,10 @@ Rails.application.routes.draw do
       resources :courses, only: [:create, :update, :show, :destroy] do
         resources :chapters, only: [:create, :update, :show, :destroy]
       end
+
+      resources :chapters, except: [:new, :edit] do
+        resources :lessons, except: [:new, :edit]
+      end
     end
   end
 
