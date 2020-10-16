@@ -70,6 +70,9 @@ gem "sidekiq"
 # Tyhoeus
 gem "typhoeus"
 
+# Active storage validations
+gem 'active_storage_validations'
+
 # Preview email in browser
 gem "letter_opener", group: :development
 
