@@ -34,6 +34,14 @@ class Api::V1::LessonsController < Api::V1::BaseController
     end
   end
 
+  def destroy
+    if @lesson.destroy
+      render json: { lesson: @lesson }, status: :ok
+    else
+      render json: { errors: @lesson.errors.full_messages }, status: :bad_request
+    end
+  end
+
   private
 
     def lesson_params
