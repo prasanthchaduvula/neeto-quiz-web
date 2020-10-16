@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2020_10_16_040612) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "chapter_id"
-    t.integer "content_type"
+    t.integer "lesson_type"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
