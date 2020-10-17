@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 class Api::V1::RegistrationsController < Api::V1::BaseController
-  skip_before_action :authenticate_user!, only: [:new, :create]
-  skip_before_action :authenticate_user_using_x_auth_token, only: [:new, :create]
+  skip_before_action :authenticate_user!, only: [:create, :update]
+  skip_before_action :authenticate_user_using_x_auth_token, only: [:create, :update]
 
-  before_action :verify_otp, only: [:create]
-  before_action :load_user, only: [:create]
-
-  def new
-    send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
-    render json: { notice: send_otp }
-  end
+  before_action :verify_otp, only: [:update]
+  before_action :load_user, only: [:update]
 
   def create
+    send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
+    render json: { notice: send_otp["type"] }
+  end
+
+  def update
     if @response["type"] == "success"
       register_user
     else
@@ -23,6 +23,7 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   private
 
     def verify_otp
+      puts params, "otp params"
       @response = Msg91MessageService.new.verify_otp(params[:user][:phone_number], params[:user][:otp])
     end
 
