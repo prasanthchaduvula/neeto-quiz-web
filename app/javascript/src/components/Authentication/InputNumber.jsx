@@ -4,7 +4,6 @@ import { createOtp, verifyOtp } from "apis/authentication";
 function InputNumber(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
-  const [name, setName] = useState({ first_name: "", last_name: "" });
 
   const newRegistration = phonePayload => {
     createOtp(phonePayload).then(() => {
@@ -49,62 +48,62 @@ function InputNumber(props) {
     }
   };
   return (
-    <form
-      className="w-full px-10 py-8 bg-white border rounded-lg shadow-sm simple_form"
-      onSubmit={handleSubmit}
-    >
-      {props.inputType.phoneNumber ? (
-        <div className="form-control">
-          <label htmlFor="phoneNumber">Phone Number</label>
-          <input
-            className="mb-4 form-group email required user_email"
-            type="number"
-            name="phoneNumber"
-            onChange={e => setPhoneNumber(e.target.value)}
-            value={phoneNumber}
-            placeholder="Enter your phone number"
-          />
+    <div className="flex flex-grow wrapper ">
+      <div className="container flex-col px-4 mx-auto">
+        <div className="flex flex-col items-center justify-center flex-grow w-full h-full py-20 mx-auto lg:w-5/12">
+          <form
+            className="w-full px-10 py-8 bg-white border rounded-lg shadow-sm simple_form"
+            onSubmit={handleSubmit}
+          >
+            {props.inputType.phoneNumber ? (
+              <div className="form-control text-lg">
+                <label className="mr-2" htmlFor="phoneNumber">
+                  Phone Number
+                </label>
+                <input
+                  className="mb-4 form-group  required user_"
+                  type="number"
+                  name="phoneNumber"
+                  onChange={e => setPhoneNumber(e.target.value)}
+                  value={phoneNumber}
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            ) : (
+              <>
+                <div className="form-control text-lg">
+                  <label className="mr-2" htmlFor="otp">
+                    Enter OTP
+                  </label>
+                  <input
+                    className="mb-4 form-group  required user_"
+                    type="text"
+                    name="otp"
+                    onChange={e => setOtp(e.target.value)}
+                    value={otp}
+                    placeholder="Enter your otp"
+                  />
+                </div>
+                <a
+                  href="/signup"
+                  className="bg-blue-500 text-white rounded mb-4 p-2"
+                >
+                  Edit phone number
+                </a>
+              </>
+            )}
+            <div className="flex items-center justify-between">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-      ) : props.inputType.otp ? (
-        <div className="form-control">
-          <label htmlFor="otp">Enter OTP</label>
-          <input
-            className="mb-4 form-group email required user_email"
-            type="text"
-            name="otp"
-            onChange={e => setOtp(e.target.value)}
-            value={otp}
-            placeholder="Enter your otp"
-          />
-        </div>
-      ) : (
-        <>
-          <div className="form-control">
-            <label htmlFor="phoneNumber">Enter First name</label>
-            <input
-              className="mb-4 form-group  required "
-              type="text"
-              name="first_name"
-              onChange={e => setName({ ...name, first_name: e.target.value })}
-              value={name.first_name}
-              placeholder="First Name"
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="phoneNumber">Enter Last name</label>
-            <input
-              className="mb-4 form-group  required "
-              type="text"
-              name="last_name"
-              onChange={e => setName({ ...name, last_name: e.target.value })}
-              value={name.last_name}
-              placeholder="Last Name"
-            />
-          </div>
-        </>
-      )}
-      <button type="submit">Submit</button>
-    </form>
+      </div>
+    </div>
   );
 }
 
