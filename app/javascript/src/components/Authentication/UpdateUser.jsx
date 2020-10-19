@@ -11,10 +11,8 @@ function UpdateUser(props) {
         first_name,
         last_name,
       },
-    }).then(response => {
-      if (response.success) {
-        window.location.href = "/dashboard";
-      }
+    }).then(() => {
+      window.location.href = "/dashboard";
     });
   };
   return (
@@ -52,7 +50,7 @@ function UpdateUser(props) {
               />
             </div>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
               Submit
