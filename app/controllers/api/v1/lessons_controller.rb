@@ -19,7 +19,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
   def create
     @lesson = @chapter.lessons.new(lesson_params)
-    if @lesson.save
+    if @lesson.save!
       render json: { lesson: @lesson }, status: :ok
     else
       render json: { errors: @lesson.errors.full_messages }, status: :unprocessable_entity
