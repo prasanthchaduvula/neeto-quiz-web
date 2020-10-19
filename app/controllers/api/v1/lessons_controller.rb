@@ -18,20 +18,13 @@ class Api::V1::LessonsController < Api::V1::BaseController
   end
 
   def create
-    @lesson = @chapter.lessons.new(lesson_params)
-    if @lesson.save!
-      render json: { lesson: @lesson }, status: :ok
-    else
-      render json: { errors: @lesson.errors.full_messages }, status: :unprocessable_entity
-    end
+    @lesson = @chapter.lessons.create!(lesson_params)
+    render json: { lesson: @lesson }, status: :ok
   end
 
   def update
-    if @lesson.update!(lesson_params)
-      render json: { lesson: @lesson }, status: :ok
-    else
-      render json: { errors: @lesson.errors.full_messages }, status: :unprocessable_entity
-    end
+    @lesson.update!(lesson_params)
+    render json: { lesson: @lesson }, status: :ok
   end
 
   def destroy
