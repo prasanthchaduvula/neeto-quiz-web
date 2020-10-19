@@ -1,11 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+rails_migration:
+  name: Rails Migration
+  description: Description on rails migration
+  lesson_type: youtube
+  is_published: false
+  content: https://youtu.be/G-B_KUFNkQQ
+  chapter: getting_started
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+react_component:
+  name: Jsx in detail
+  lesson_type: youtube
+  is_published: false
+  content: https://youtu.be/Y2hgEGPzTZY
+  chapter: main_concepts

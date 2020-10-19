@@ -1,9 +1,7 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+getting_started:
+  name: Getting Started
+  course: ruby_on_rails
 
-one:
-  name: MyString
-  course: one
-
-two:
-  name: MyString
-  course: two
+main_concepts:
+  name: Main Concepts
+  course: react_js
