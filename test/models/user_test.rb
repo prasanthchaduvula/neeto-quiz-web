@@ -4,7 +4,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(phone_number: "+917680918423", first_name: "Eve", last_name: "Smith")
+    @user = users(:oliver)
   end
 
   test "user should be valid" do

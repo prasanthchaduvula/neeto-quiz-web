@@ -70,6 +70,9 @@ gem "sidekiq"
 # Tyhoeus
 gem "typhoeus"
 
+# Active storage validations
+gem 'active_storage_validations'
+
 # Preview email in browser
 gem "letter_opener", group: :development
 
@@ -110,4 +113,8 @@ group :test do
 
   # Minitest reporter plugin for CircleCI.
   gem "minitest-ci"
+end
+
+group :production do
+  gem 'aws-sdk-s3', require: false
 end

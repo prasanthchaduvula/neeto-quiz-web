@@ -1,0 +1,14 @@
+rails_migration:
+  name: Rails Migration
+  description: Description on rails migration
+  lesson_type: youtube
+  is_published: false
+  content: https://youtu.be/G-B_KUFNkQQ
+  chapter: getting_started
+
+react_component:
+  name: Jsx in detail
+  lesson_type: youtube
+  is_published: false
+  content: https://youtu.be/Y2hgEGPzTZY
+  chapter: main_concepts

@@ -11,6 +11,10 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+
 # Ignore database.yml file
 /config/database.yml
 
