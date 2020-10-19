@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_16_122118) do
+ActiveRecord::Schema.define(version: 2020_10_19_095921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,15 @@ ActiveRecord::Schema.define(version: 2020_10_16_122118) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_chapters_on_course_id"
+  end
+
+  create_table "course_students", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "course_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_course_students_on_course_id"
+    t.index ["user_id"], name: "index_course_students_on_user_id"
   end
 
   create_table "courses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -83,6 +92,8 @@ ActiveRecord::Schema.define(version: 2020_10_16_122118) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chapters", "courses"
+  add_foreign_key "course_students", "courses"
+  add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
 end
