@@ -12,10 +12,8 @@ class Api::V1::LessonsController < Api::V1::BaseController
   def show
     if @lesson.file.attached?
       render json: { lesson: @lesson, link: polymorphic_url(@lesson.file) }, status: :ok
-    elsif @lesson
-      render json: { lesson: @lesson }, status: :ok
     else
-      respond_with_error "Lesson with id #{params[:id]} not found.", status: :not_found
+      render json: { lesson: @lesson }, status: :ok
     end
   end
 
