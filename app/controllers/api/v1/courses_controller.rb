@@ -22,12 +22,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def show
-    if @course
-      chapters = @course.chapters
-      render status: :ok, json: { course: @course, chapters: chapters }
-    else
-      render status: :not_found, json: { errors: ["Course with id #{params[:id]} not found"] }
-    end
+    render status: :ok, json: { course: @course, chapters: @course.chapters, joined_students: @course.joined_students }
   end
 
   def destroy
