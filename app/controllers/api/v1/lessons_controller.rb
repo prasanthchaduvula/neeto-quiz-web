@@ -27,7 +27,7 @@ class Api::V1::LessonsController < Api::V1::BaseController
   end
 
   def update
-    if @lesson.update(lesson_params)
+    if @lesson.update!(lesson_params)
       render json: { lesson: @lesson }, status: :ok
     else
       render json: { errors: @lesson.errors.full_messages }, status: :unprocessable_entity
