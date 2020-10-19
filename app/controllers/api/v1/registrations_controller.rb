@@ -9,21 +9,20 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
 
   def create
     send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
-    render json: { notice: send_otp["type"] }
+    render json: { notice: send_otp["type"] }, status: :ok
   end
 
   def update
     if @response["type"] == "success"
       register_user
     else
-      render json: { notice: @response }
+      render json: { notice: @response["message"] }, status: :unprocessable_entity
     end
   end
 
   private
 
     def verify_otp
-      puts params, "otp params"
       @response = Msg91MessageService.new.verify_otp(params[:user][:phone_number], params[:user][:otp])
     end
 
