@@ -1,11 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  description: MyText
+ruby_on_rails:
+  name: Ruby On Rails
+  description: Description on ruby-on-rails
   published: false
 
-two:
-  name: MyString second
-  description: MyText
+react_js:
+  name: Learn ReactJS
+  description: Description on react js
   published: false

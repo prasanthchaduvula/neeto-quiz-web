@@ -5,9 +5,9 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     if @user
-      render json: @user
+      render json: { user: @user }, status: :ok
     else
-      respond_with_error "User with id #{params[:id]} not found.", :not_found
+      respond_with_error "User with id #{params[:id]} not found.", status: :not_found
     end
   end
 
@@ -15,7 +15,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     if @user.blank?
       render json: { error: "User with id #{params[:id]} not found." }, status: :not_found
     elsif @user.update(user_params)
-      render json: { success: true, user: @user }
+      render json: { success: true, user: @user }, status: :ok
     else
       render json: { error: @user.errors.full_messages }, status: :unprocessable_entity
     end
@@ -29,7 +29,8 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     def load_user
       @user = User.find_by!(id: params[:id])
-      end
+    end
+
 end
 
 
