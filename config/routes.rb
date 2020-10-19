@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy] do
         resources :chapters, only: [:create, :update, :show, :destroy]
+        resources :course_students, only: [:create]
       end
 
       resources :chapters, except: [:new, :edit] do
