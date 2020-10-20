@@ -7,10 +7,11 @@ const Home = () => {
   return (
     <div className="flex h-screen">
       <Navbar />
-      <div>Dashboard</div>
-      <Switch>
-        <Route path="/courses" component={Course} />
-      </Switch>
+      <div className="content-main">
+        <Switch>
+          <Route path="/courses" component={Course} />
+        </Switch>
+      </div>
     </div>
   );
 };
