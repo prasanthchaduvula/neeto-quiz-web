@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :courses, only: [:create, :update, :show, :destroy] do
         resources :chapters, only: [:create, :update, :show, :destroy]
         resources :course_students, only: [:create]
+        resources :add_students, only: [:create]
       end
 
       resources :chapters, except: [:new, :edit] do

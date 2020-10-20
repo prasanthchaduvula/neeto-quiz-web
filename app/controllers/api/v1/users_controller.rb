@@ -30,7 +30,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     def load_user
       @user = User.find_by!(id: params[:id])
     end
-
 end
 
 
