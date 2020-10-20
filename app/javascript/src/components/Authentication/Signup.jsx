@@ -14,7 +14,10 @@ function Signup() {
   const newRegistration = phonePayload => {
     if (phoneNumber && phoneNumber.length == 10) {
       createOtp(phonePayload).then(() => {
-        setPhonePage(false);
+        Toastr.success("OTP sent successfully");
+        setTimeout(() => {
+          setPhonePage(false);
+        }, 1000);
       });
     } else {
       Toastr.error("Please enter a valid phone number");
