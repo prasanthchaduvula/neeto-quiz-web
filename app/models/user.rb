@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_many :courses
+
+  has_many :courses, dependent: :destroy
   has_many :course_students, dependent: :destroy
   has_many :joined_courses, through: :course_students,  source: :course
+
 
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable, :rememberable

@@ -7,16 +7,17 @@ import { initializeLogger } from "common/logger";
 import { registerIntercepts } from "apis/axios";
 import Dashboard from "components/Dashboard";
 
-import PrivateRoute from "components/Common/PrivateRoute";
+// import PrivateRoute from "components/Common/PrivateRoute";
 import PasswordReset from "components/Authentication/ResetPassword";
 import Login from "components/Authentication/Login";
 import Signup from "components/Authentication/Signup";
 
-import { useAuthState, useAuthDispatch } from "contexts/auth";
+import { useAuthDispatch } from "contexts/auth";
 import { useUserDispatch } from "contexts/user";
+import LandingPage from "./LandingPage/LandingPage";
 
 const App = props => {
-  const { authToken } = useAuthState();
+  // const { authToken } = useAuthState();
   const userDispatch = useUserDispatch();
   const authDispatch = useAuthDispatch();
 
@@ -32,12 +33,14 @@ const App = props => {
         <Route exact path="/users/password/new" component={PasswordReset} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/login" component={Login} />
-        <PrivateRoute
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        {/* <PrivateRoute
           path="/"
           redirectRoute="/login"
           condition={!!authToken}
           component={Dashboard}
-        />
+        /> */}
       </Switch>
     </BrowserRouter>
   );

@@ -10,21 +10,15 @@ axios.defaults.headers = {
 
 const handleRequest = config => {
   const token = JSON.parse(localStorage.getItem("authToken"));
-  const email = JSON.parse(localStorage.getItem("authEmail"));
-  if (token && email) {
-    config.headers["X-Auth-Email"] = email;
+  const phone = JSON.parse(localStorage.getItem("authPhone"));
+  if (token && phone) {
+    config.headers["X-Auth-Phone"] = phone;
     config.headers["X-Auth-Token"] = token;
   }
   return config;
 };
 
 const handleSuccessResponse = response => {
-  if (response) {
-    response.success = response.status === 200;
-    if (response.data.notice) {
-      Toastr.success(response.data.notice);
-    }
-  }
   return response;
 };
 
