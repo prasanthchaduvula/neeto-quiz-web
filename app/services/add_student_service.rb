@@ -6,6 +6,9 @@ class AddStudentService
     @course = course
     @user = user
     @phone_number = phone_number
+    @message = "Welcome to NitoAcademy"
+    @welcome_msg = "you have joined #{@course.name} successfully"
+    @invitation_msg = "to join #{@course.name} course, use join code #{@course.id} or click on the invitation link http://localhost:3000/api/v1/courses/#{@course.id}/course_students"
   end
 
   def add_student
@@ -16,12 +19,12 @@ class AddStudentService
   def send_invitation
     message = "Welcome to NitoAcademy, to join #{@course.name} course, use join code #{@course.id} or click on the invitation link http://localhost:3000/api/v1/courses/#{@course.id}/course_students"
 
-    Msg91MessageService.new.send_sms(@phone_number, message)
+    Msg91MessageService.new.send_sms(@phone_number, "#{@message}, #{@invitation_msg}")
   end
 
   def send_welcome_msg
     message = "Welcome to NitoAcademy, you have joined #{@course.name} successfully"
 
-    Msg91MessageService.new.send_sms(@phone_number, message)
+    Msg91MessageService.new.send_sms(@phone_number, "#{@message}, #{@welcome_msg}")
   end
 end

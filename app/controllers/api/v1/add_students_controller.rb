@@ -43,6 +43,6 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
 
     def send_invitation
       AddStudentService.new(current_user, @course, @user, params[:phone_number]).send_invitation
-      render json: { notice: "Invitation send successfully" }, status: :ok
+      render json: { notice: "Invitation sent successfully" }, status: :ok
     end
 end
