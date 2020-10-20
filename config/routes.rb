@@ -17,6 +17,10 @@ Rails.application.routes.draw do
       resources :chapters, except: [:new, :edit] do
         resources :lessons, except: [:new, :edit]
       end
+
+      resources :chapters, except: [:new, :edit] do
+        resources :lessons, except: [:new, :edit]
+      end
     end
   end
 
