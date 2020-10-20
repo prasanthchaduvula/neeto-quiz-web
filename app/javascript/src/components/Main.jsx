@@ -36,8 +36,8 @@ const App = props => {
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/dashboard" component={Dashboard} />
         <PrivateRoute
-          path="/dashboard"
-          redirectRoute="/login"
+          path="/"
+          redirectRoute="/signup"
           condition={!!authToken}
           component={Dashboard}
         />
