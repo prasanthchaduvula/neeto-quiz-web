@@ -11,6 +11,7 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     else
       render json: { notice: "You are already a member of course", course: @course, joined_students: @course.joined_students }, status: :ok
     end
+    Msg91MessageService.new.send_sms(params[:phone_number], "hello welcome to ")
   end
 
   private
