@@ -1,7 +1,9 @@
 import React from "react";
 import { Pane } from "nitroui";
+import NewCourseForm from "./NewCourseForm";
 
 export default function NewCoursePane(props) {
+  const onClose = () => props.setShowPane(false);
   return (
     <Pane
       title="Create a new note"
@@ -9,7 +11,7 @@ export default function NewCoursePane(props) {
       onClose={props.onClose}
     >
       <div className="p-6">
-        <h1>PAne</h1>
+        <NewCourseForm onClose={onClose} />
       </div>
     </Pane>
   );
