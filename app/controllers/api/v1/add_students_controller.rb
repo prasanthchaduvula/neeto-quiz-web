@@ -2,25 +2,57 @@
 
 class Api::V1::AddStudentsController < Api::V1::BaseController
   before_action :find_course, only: :create
+  before_action :ensure_course_admin, only: :create
+  before_action :load_student, only: :create
 
 
   def create
-    if ensure_not_course_student
-      @course.course_students.create!(user: current_user)
-      render json: { notice: "Joined course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
+    if @user.nil? || params[:paid] == false
+      send_invitation
+    elsif ensure_not_course_student
+      add_student
     else
-      render json: { notice: "You are already a member of course", course: @course, joined_students: @course.joined_students }, status: :ok
+      already_course_student
     end
-    Msg91MessageService.new.send_sms(params[:phone_number], "hello welcome to ")
   end
 
   private
 
     def load_student
-      @student = User.find_by(phone_number: params[:phone_number])
+      @user = User.find_by(phone_number: params[:phone_number])
+    end
+
+    def ensure_course_admin
+      puts "netered #{current_user.first_name}"
+      if current_user != @course.user
+        render json: { notice: "You are not the creator of course" }
+      end
     end
 
     def ensure_not_course_student
-      current_user == @course.user && @course.joined_student_ids.exclude?(params)
+      current_user != @user && @course.joined_student_ids.exclude?(@user.id)
+    end
+
+    def add_student
+      @course.course_students.create!(user: @user)
+      send_welcome_msg
+      render json: { notice: "Added student to course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
+    end
+
+    def already_course_student
+      render json: { notice: "This student is already a member of course", course: @course, joined_students: @course.joined_students }, status: :ok
+    end
+
+    def send_invitation
+      message = "Welcome to NitoAcademy, to join #{@course.name} course, use join code #{@course.id} or click on the invitation link http://localhost:3000/api/v1/courses/#{@course.id}/course_students"
+
+      Msg91MessageService.new.send_sms(params[:phone_number], message)
+      render json: { notice: "Invitation send successfully" }
+    end
+
+    def send_welcome_msg
+      message = "Welcome to NitoAcademy, you have joined #{@course.name} successfully"
+
+      Msg91MessageService.new.send_sms(params[:phone_number], message)
     end
 end
