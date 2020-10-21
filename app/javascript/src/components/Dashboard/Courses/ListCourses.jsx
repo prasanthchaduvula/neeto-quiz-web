@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "nitroui";
+import CourseApi from "../../../apis/courses";
 
 export default function ListCourses(props) {
   return (
@@ -23,6 +24,17 @@ export default function ListCourses(props) {
                       onClick={() => {
                         props.setCourseId(course.id);
                         props.setShowEditPane(true);
+                      }}
+                    />
+                  </span>
+                  <span className="inline-block  px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                    <Button
+                      type="button"
+                      label="Delete"
+                      onClick={() => {
+                        CourseApi.deleteCourse(course.id).then(() =>
+                          props.refetch()
+                        );
                       }}
                     />
                   </span>

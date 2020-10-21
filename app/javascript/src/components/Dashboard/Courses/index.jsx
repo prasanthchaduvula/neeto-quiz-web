@@ -37,6 +37,7 @@ export default function Course() {
           setShowEditPane={setShowEditCoursePane}
           courses={courses}
           setCourseId={setCourseEditId}
+          refetch={fetchCourses}
         />
       ) : null}
       <NewCoursePane
