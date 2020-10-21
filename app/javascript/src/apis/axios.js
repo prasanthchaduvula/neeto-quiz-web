@@ -32,8 +32,11 @@ const handleErrorResponse = (error, authDispatch) => {
   return Promise.reject(error);
 };
 
-export const registerIntercepts = authDispatch => {
+export const registerRequestIntercept = () => {
   axios.interceptors.request.use(handleRequest);
+};
+
+export const registerResponseIntercept = authDispatch => {
   axios.interceptors.response.use(handleSuccessResponse, error =>
     handleErrorResponse(error, authDispatch)
   );
