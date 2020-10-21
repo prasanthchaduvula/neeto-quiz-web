@@ -10,14 +10,9 @@ export default function EditCoursePane(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // async function fetchData() {
-    //   const result = await Axios(`/api/v1/courses/${props.courseId}`);
-    //   setCourseName(result.data.course.name);
-    //   setCourseDescription(result.data.course.description);
-    //   setIsLoading(false);
-    // }
-    // fetchData();
-    fetchCourse();
+    if (props.courseId) {
+      fetchCourse();
+    }
   }, [props.courseId]);
 
   const fetchCourse = () => {
