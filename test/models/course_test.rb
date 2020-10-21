@@ -4,8 +4,7 @@ require 'test_helper'
 
 class CourseTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(first_name: "tester", last_name: "ronald", phone_number: "+919411101050")
-    @course = Course.create!(name: "Learn RRuby on Rails", description: "A comprehensive guide to Rails with indepth understanding of interview problems", user_id: @user.id)
+    @course = courses(:ruby_on_rails)
   end
 
   test "course is valid" do
@@ -22,7 +21,7 @@ class CourseTest < ActiveSupport::TestCase
     assert_not @course.valid?
   end
 
-  test "course has an author" do
+  test "course has a teacher" do
     @course.user_id = "   "
     assert_not @course.valid?
   end

@@ -1,0 +1,4 @@
+# frozen_string_literal: true
+
+en:
+  not_found: "Record not found"

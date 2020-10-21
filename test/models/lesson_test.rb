@@ -33,4 +33,12 @@ class LessonTest < ActiveSupport::TestCase
     @lesson.lesson_type = ""
     assert_not @lesson.valid?
   end
+
+  test "lesson_name_should_be_unique_within_the_same_chapter" do
+    @chapter = chapters(:getting_started)
+    @lesson = @chapter.lessons.new(name: "Rails Migration", content: "https://youtu.be/G-B_KUFNkQQ", lesson_type: "youtube")
+    @lesson.save
+    assert_not @lesson.valid?
+    assert_equal ["Name has already been taken"], @lesson.errors.full_messages
+  end
 end
