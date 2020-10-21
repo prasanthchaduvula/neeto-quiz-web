@@ -5,5 +5,6 @@ class Chapter < ApplicationRecord
 
   has_many :lessons, dependent: :destroy
 
-  validates :name, :course_id, presence: true
+  validates :course_id, presence: true
+  validates :name, presence: true, uniqueness: { scope: :course_id }
 end
