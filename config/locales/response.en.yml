@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+en:
+  not_found: "Record not found"
+  registration:
+    success: "Registration successful"
+    fail: "Registration failed"
+    exist: "User exists, use user token and phone number for login"
+  record:
+    create:
+      success: "Record created successfully!"
+    update:
+      success: "Record updated successfully!"
+    destroy:
+      success: "Record deleted successfully!"
