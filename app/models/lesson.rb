@@ -9,7 +9,8 @@ class Lesson < ApplicationRecord
 
   has_one_attached :file
 
-  validates :name, :lesson_type, presence: true
+  validates :name, presence: true, uniqueness: { scope: :chapter_id }
+  validates :lesson_type, presence: true
   validates :content, presence: true, if: -> { lesson_type == "youtube" }
   validates :file, content_type: { in: VALID_FILE_TYPE, message: "must be a valid image or pdf format" },
       presence: true, if: -> { lesson_type == "image" || lesson_type == "pdf" }
