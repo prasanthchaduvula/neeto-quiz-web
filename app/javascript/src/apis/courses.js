@@ -1,14 +1,11 @@
 import axios from "axios";
 
-export const courseFetch = () => {
-  // const token = JSON.parse(localStorage.getItem("authToken"));
-  // const phone = JSON.parse(localStorage.getItem("authPhone"));
-  return axios.get("/api/v1/courses");
-  // ,
-  //  {
-  //   headers: {
-  //     "X-Auth-Phone": phone,
-  //     "X-Auth-Token": token,
-  //   },
-  // });
+const coursesFetch = () => axios.get("/api/v1/courses");
+
+const courseFetch = id => {
+  return axios.get(`/api/v1/courses/${id}`);
+};
+export default {
+  coursesFetch,
+  courseFetch,
 };

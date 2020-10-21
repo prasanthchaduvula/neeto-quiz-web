@@ -20,7 +20,10 @@ export default function ListCourses(props) {
                     <Button
                       type="button"
                       label="Edit"
-                      onClick={() => props.setShowEditPane(true)}
+                      onClick={() => {
+                        props.setCourseId(course.id);
+                        props.setShowEditPane(true);
+                      }}
                     />
                   </span>
                 </div>

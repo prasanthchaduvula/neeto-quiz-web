@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Toastr } from "common";
+import { showToastr } from "../common";
 
 axios.defaults.baseURL = "/";
 axios.defaults.headers = {
@@ -25,9 +25,9 @@ const handleSuccessResponse = response => {
 const handleErrorResponse = (error, authDispatch) => {
   if (error.response?.status === 401) {
     authDispatch({ type: "LOGOUT" });
-    Toastr.error(error.response?.data?.error);
+    showToastr("error", error.response?.data?.error);
   } else {
-    Toastr.error(error.response?.data?.message || error.message);
+    showToastr("error", error.response?.data?.message || error.message);
   }
   return Promise.reject(error);
 };

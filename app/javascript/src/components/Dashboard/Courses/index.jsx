@@ -3,21 +3,23 @@ import { PageHeading } from "nitroui/layouts";
 import { Button } from "nitroui";
 import NewCoursePane from "./NewCoursePane";
 import ListCourses from "./ListCourses";
-import { courseFetch } from "../../../apis/courses";
+import CourseApi from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 
 export default function Course() {
   const [showNewCoursePane, setShowNewCoursePane] = useState(false);
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [courseEditId, setCourseEditId] = useState("");
 
   useEffect(() => {
     fetchCourses();
   }, []);
 
   const fetchCourses = () => {
-    courseFetch().then(response => setCourses(response.data));
+    CourseApi.coursesFetch().then(response => setCourses(response.data));
   };
+
   return (
     <div>
       <PageHeading
@@ -34,6 +36,7 @@ export default function Course() {
         <ListCourses
           setShowEditPane={setShowEditCoursePane}
           courses={courses}
+          setCourseId={setCourseEditId}
         />
       ) : null}
       <NewCoursePane
@@ -45,6 +48,7 @@ export default function Course() {
         showPane={showEditCoursePane}
         setShowPane={setShowEditCoursePane}
         fetchCourses={fetchCourses}
+        courseId={courseEditId}
       />
     </div>
   );

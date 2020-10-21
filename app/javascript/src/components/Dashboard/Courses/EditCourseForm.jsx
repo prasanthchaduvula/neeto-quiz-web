@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "nitroui";
 import Axios from "axios";
 
-export default function NewCourseForm(props) {
+export default function EditCourseForm(props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    setName(props.courseName);
+    setDescription(props.courseDescription);
+  }, [props.courseName, props.courseDescription]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    Axios.post("/api/v1/courses", {
+    Axios.patch(`/api/v1/courses/${props.courseId}`, {
       course: {
         name,
         description,
@@ -17,7 +22,6 @@ export default function NewCourseForm(props) {
       props.refetch();
       props.onClose();
     });
-    // .then(props.onClose);
   };
   return (
     <form

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { verifyOtp } from "../../apis/authentication";
-import { Toastr } from "../../common";
+import { showToastr } from "../../common";
 
 function EnterOtp(props) {
   const [otp, setOtp] = useState("");
 
   const verifyRegistration = otpPayload => {
     verifyOtp(otpPayload).then(response => {
-      Toastr.success("Success");
+      showToastr("success", "Success");
       localStorage.setItem(
         "authToken",
         JSON.stringify(response.data.user.authentication_token)
