@@ -2,6 +2,7 @@
 
 en:
   not_found: "Record not found"
+  auth_error: "Could not authenticate with the provided credentials"
   registration:
     success: "Registration successful"
     fail: "Registration failed"
