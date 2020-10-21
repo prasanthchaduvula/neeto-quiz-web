@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Pane, PageLoader } from "nitroui";
-import EditCourseForm from "./EditCourseForm";
+import CourseForm from "./CourseForm";
 import Axios from "axios";
 import { showToastr } from "../../../common/index";
 
@@ -32,12 +32,13 @@ export default function EditCoursePane(props) {
         {isLoading ? (
           <PageLoader />
         ) : (
-          <EditCourseForm
+          <CourseForm
             onClose={onClose}
             courseName={courseName}
             courseDescription={courseDescription}
             courseId={props.courseId}
             refetch={props.fetchCourses}
+            isCreateForm={false}
           />
         )}
       </div>
