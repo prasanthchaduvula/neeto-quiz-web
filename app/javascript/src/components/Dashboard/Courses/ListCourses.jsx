@@ -17,7 +17,11 @@ export default function ListCourses(props) {
                 </div>
                 <div className="px-6 pt-4 pb-2">
                   <span className="inline-block  px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button type="button" label="Edit" />
+                    <Button
+                      type="button"
+                      label="Edit"
+                      onClick={() => props.setShowEditPane(true)}
+                    />
                   </span>
                 </div>
               </div>
