@@ -73,6 +73,9 @@ gem "typhoeus"
 # Active storage validations
 gem 'active_storage_validations'
 
+# I18n Internationalization
+gem "rails-i18n"
+
 # Preview email in browser
 gem "letter_opener", group: :development
 
