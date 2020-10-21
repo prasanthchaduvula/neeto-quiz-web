@@ -13,7 +13,9 @@ export default function NewCourseForm(props) {
         name,
         description,
       },
-    }).then(res => (window.location.href = `/courses/${res.data.course.id}`));
+    })
+      .then(props.refetch())
+      .then(props.onClose());
   };
   return (
     <form

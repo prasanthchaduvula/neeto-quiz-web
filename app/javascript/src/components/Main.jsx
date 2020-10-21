@@ -20,6 +20,7 @@ const App = props => {
     initializeLogger();
     registerIntercepts(authDispatch);
   }, []);
+
   return (
     <BrowserRouter>
       <ToastContainer />

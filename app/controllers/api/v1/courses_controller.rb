@@ -4,6 +4,15 @@ class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
   before_action :check_published_course, only: :destroy
 
+  def index
+    courses = Course.all
+    if courses
+      render status: :ok, json: courses
+    else
+      render status: :not_found, json: { errors: ["No courses found"] }
+    end
+  end
+
   def create
     course = current_user.courses.new(course_params)
     if course.save

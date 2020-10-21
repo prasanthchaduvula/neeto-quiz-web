@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 import { createOtp } from "apis/authentication";
-import { Toastr } from "../../common";
+// import { Toastr } from "../../common";
 import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";
 import EnterPhoneNumber from "./EnterPhoneNumber";
+import { showToastr } from "../../common";
 
 function Signup() {
   const [userPage, setUserPage] = useState(false);
@@ -14,13 +15,13 @@ function Signup() {
   const newRegistration = phonePayload => {
     if (phoneNumber && phoneNumber.length == 10) {
       createOtp(phonePayload).then(() => {
-        Toastr.success("OTP sent successfully");
+        showToastr("success", "OTP sent successfully");
         setTimeout(() => {
           setPhonePage(false);
         }, 1000);
       });
     } else {
-      Toastr.error("Please enter a valid phone number");
+      showToastr("error", "Please enter a valid phone number");
     }
   };
 

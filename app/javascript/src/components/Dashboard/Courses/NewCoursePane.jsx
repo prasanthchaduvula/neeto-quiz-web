@@ -7,7 +7,7 @@ export default function NewCoursePane(props) {
   return (
     <Pane title="Create a new note" isOpen={props.showPane} onClose={onClose}>
       <div className="p-6">
-        <NewCourseForm onClose={onClose} />
+        <NewCourseForm onClose={onClose} refetch={props.fetchCourses} />
       </div>
     </Pane>
   );
