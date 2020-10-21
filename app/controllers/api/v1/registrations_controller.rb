@@ -30,12 +30,12 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
       if @user.nil?
         @user = User.new(user_params)
         if @user.save
-          render json: { notice: I18n.t("registration.success"), user: @user }, status: :ok
+          render json: { notice: "Registration successful", user: @user }, status: :ok
         else
-          render json: { notice: "registration.success", user: @user.errors.full_messages }, status: :ok
+          render json: { notice: "Registration failed", user: @user.errors.full_messages }, status: :ok
         end
       else
-        render json: { notice: "registration.exist", user: @user }, status: :ok
+        render json: { notice: "User exists, use user token and phone number for login", user: @user }, status: :ok
       end
     end
 

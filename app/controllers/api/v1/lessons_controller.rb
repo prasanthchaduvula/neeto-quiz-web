@@ -19,17 +19,17 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
   def create
     @lesson = @chapter.lessons.create!(lesson_params)
-    render json: { lesson: @lesson }, status: :ok
+    render json: { notice: "Lesson created successfully", lesson: @lesson }, status: :ok
   end
 
   def update
     @lesson.update!(lesson_params)
-    render json: { lesson: @lesson }, status: :ok
+    render json: { notice: "Lesson created successfully", lesson: @lesson }, status: :ok
   end
 
   def destroy
     if @lesson.destroy
-      render json: { lesson: @lesson }, status: :ok
+      render json: { notice: "Lesson created successfully", lesson: @lesson }, status: :ok
     else
       render json: { errors: @lesson.errors.full_messages }, status: :bad_request
     end

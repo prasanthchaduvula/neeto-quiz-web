@@ -26,7 +26,7 @@ class Api::V1::BaseController < ApplicationController
       if user && Devise.secure_compare(user.authentication_token, auth_token)
         sign_in user, store: false
       else
-        respond_with_error(I18n.t("auth_error"), 401)
+        respond_with_error("Could not authenticate with the provided credentials", 401)
       end
     end
 
