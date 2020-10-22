@@ -6,8 +6,8 @@ import IndivitualCourse from "../Dashboard/Courses/IndivitualCourse";
 const DashboardRoutes = () => {
   return (
     <Switch>
+      <Route exact path="/courses/:course_id" component={IndivitualCourse} />
       <Route path="/courses" component={Course} />
-      <Route path="/courses/:course_id" component={IndivitualCourse} />
     </Switch>
   );
 };

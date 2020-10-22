@@ -25,9 +25,14 @@ export default function CourseForm(props) {
         ? CourseApi.updateCourse(props.courseId, payload)
         : CourseApi.createCourse(payload);
     };
-    sendRequest(payload).then(() => {
-      props.refetch();
-      props.onClose();
+    sendRequest(payload).then(response => {
+      if (props.isCreateForm) {
+        props.refetch();
+        props.onClose();
+      } else {
+        props.setCourse(response.data.course_details);
+        props.onClose();
+      }
     });
   };
   return (

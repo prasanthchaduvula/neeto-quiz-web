@@ -24,7 +24,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def update
     if @course.update(course_params)
-      render status: :ok, json: { notice: "Course updated successfully", course: @course }
+      render status: :ok, json: { notice: "Course updated successfully", course_details: { course: @course, chapters: @course.chapters, joined_students: @course.joined_students } }
     else
       render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
     end
