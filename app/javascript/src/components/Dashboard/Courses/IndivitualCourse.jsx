@@ -23,6 +23,8 @@ export default function IndivitualCourse(props) {
     });
   };
 
+  // const fetchChapters =()=>{}
+
   return (
     <div className="px-6 pt-4 pb-2">
       <PageHeading
@@ -96,6 +98,7 @@ export default function IndivitualCourse(props) {
             showPane={showAddChapterPane}
             setShowPane={setShowAddChapterPane}
             courseDetails={courseDetails}
+            refetch={fetchSingleCourse}
           />
         </>
       ) : (

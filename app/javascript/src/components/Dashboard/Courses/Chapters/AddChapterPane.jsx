@@ -1,5 +1,6 @@
 import React from "react";
 import { Pane } from "nitroui";
+import ChapterForm from "./ChapterForm";
 
 export default function AddChapterPane(props) {
   const onClose = () => props.setShowPane(false);
@@ -10,11 +11,12 @@ export default function AddChapterPane(props) {
       onClose={onClose}
     >
       <div className="p-6">
-        {/* <ChapterForm
+        <ChapterForm
           onClose={onClose}
-          
           isCreateForm={true}
-        /> */}
+          courseId={props.courseDetails.course.id}
+          refetch={props.refetch}
+        />
       </div>
     </Pane>
   );
