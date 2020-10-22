@@ -27,6 +27,7 @@ export default function IndivitualCourse(props) {
     });
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     fetchSingleCourse();
   }, [showEditCoursePane]);
@@ -74,6 +75,9 @@ export default function IndivitualCourse(props) {
       }
     );
   };
+=======
+  // const fetchChapters =()=>{}
+>>>>>>> addition of chapter and displaying chapter in indivitual course component functionaliity done
 
   return (
     <div>
