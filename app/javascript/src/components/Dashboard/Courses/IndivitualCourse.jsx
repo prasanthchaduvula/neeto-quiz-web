@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import CourseApi from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
+import LessonList from "./LessonList";
+import NewLessonPane from "../Lessons/NewLessonPane";
 
 export default function IndivitualCourse(props) {
   const [courseDetails, setCourseDetails] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
   const [courseEditId] = useState(props.match.params.course_id);
   const [isLoading, setIsLoading] = useState(true);
+  const [showNewLessonPane, setShowNewLessonPane] = useState(false);
 
   useEffect(() => {
     fetchSingleCourse();
@@ -65,6 +68,12 @@ export default function IndivitualCourse(props) {
                         <h2 className="text-blue-700 text-2xl pb-2">
                           {chapter.name}
                         </h2>
+                        <LessonList chapterId={chapter.id} />
+                        <Button
+                          type="button"
+                          label="Add Lesson"
+                          onClick={() => setShowNewLessonPane(true)}
+                        />
                       </div>
                     );
                   })}
@@ -78,6 +87,10 @@ export default function IndivitualCourse(props) {
             courseId={courseEditId}
             courseDetails={courseDetails}
             setCourse={setCourseDetails}
+          />
+          <NewLessonPane
+            showPane={showNewLessonPane}
+            setShowPane={setShowNewLessonPane}
           />
         </>
       ) : (
