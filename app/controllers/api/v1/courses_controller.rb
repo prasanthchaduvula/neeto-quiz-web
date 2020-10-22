@@ -5,7 +5,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   before_action :check_published_course, only: :destroy
 
   def index
-    courses = Course.all
+    courses = current_user.courses
     if courses
       render status: :ok, json: courses
     else
