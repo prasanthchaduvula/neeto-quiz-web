@@ -4,6 +4,7 @@ import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import AddChapterPane from "./Chapters/AddChapterPane";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function IndivitualCourse(props) {
   const [courseDetails, setCourseDetails] = useState({});
@@ -23,10 +24,8 @@ export default function IndivitualCourse(props) {
     });
   };
 
-  // const fetchChapters =()=>{}
-
   return (
-    <div className="px-6 pt-4 pb-2">
+    <div>
       <PageHeading
         title="Chapters"
         rightButton={() => (
@@ -40,32 +39,34 @@ export default function IndivitualCourse(props) {
       {!isLoading ? (
         <>
           <div className="flex-auto flex-row ">
-            <div className="inline-flex max-w-xl">
-              <div className="px-4 py-8">
-                <div className="flex">
-                  <h1 className="text-gray-900 text-5xl leading-none mb-4">
+            <div className="inline-flex max-w-screen-xl">
+              <div className="px-3 py-8">
+                <div className="flex justify-between">
+                  <h1 className="text-gray-900 text-3xl font-bold leading-none mb-4">
                     {courseDetails.course.name}
                   </h1>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Edit"
-                      onClick={() => {
-                        setShowEditCoursePane(true);
-                      }}
-                    />
-                  </span>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Delete"
-                      onClick={() => {
-                        CourseApi.deleteCourse(
-                          props.match.params.course_id
-                        ).then(() => (window.location.href = "/courses"));
-                      }}
-                    />
-                  </span>
+                  <div className="flex">
+                    <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                      <Button
+                        type="button"
+                        label="Edit"
+                        onClick={() => {
+                          setShowEditCoursePane(true);
+                        }}
+                      />
+                    </span>
+                    <span className="inline-block  pl-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                      <Button
+                        type="button"
+                        label="Delete"
+                        onClick={() => {
+                          CourseApi.deleteCourse(
+                            props.match.params.course_id
+                          ).then(() => (window.location.href = "/courses"));
+                        }}
+                      />
+                    </span>
+                  </div>
                 </div>
                 <p className="text-gray-600 text-xl leading-tight">
                   {courseDetails.course.description}
@@ -78,7 +79,11 @@ export default function IndivitualCourse(props) {
                     return (
                       <div key={chapter.id}>
                         <h2 className="text-blue-700 text-2xl pb-2">
-                          {chapter.name}
+                          <Link
+                            to={`/courses/${courseDetails.course.id}/chapters/${chapter.id}`}
+                          >
+                            {chapter.name}
+                          </Link>
                         </h2>
                       </div>
                     );

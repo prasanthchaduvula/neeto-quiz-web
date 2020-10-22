@@ -15,7 +15,7 @@ class Api::V1::ChaptersController < Api::V1::BaseController
 
   def update
     if @chapter.update(chapter_params)
-      render status: :ok, json: { notice: "Chapter updated successfully", chapter: @chapter }
+      render status: :ok, json: { notice: "Chapter updated successfully", chapter_details: { chapter: @chapter, lessons: @chapter.lessons } }
     else
       render status: :unprocessable_entity, json: { errors: @chapter.errors.full_messages }
     end
@@ -23,7 +23,7 @@ class Api::V1::ChaptersController < Api::V1::BaseController
 
   def show
     if @chapter
-      render status: :ok, json: @chapter
+      render status: :ok, json: { chapter: @chapter, lessons: @chapter.lessons }
     else
       render status: :not_found, json: { errors: ["Chapter with id #{params[:id]} not found"] }
     end

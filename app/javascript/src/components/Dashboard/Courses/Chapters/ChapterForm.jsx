@@ -20,15 +20,15 @@ export default function ChapterForm(props) {
     const sendRequest = payload => {
       return props.isCreateForm
         ? ChapterApi.createChapter(props.courseId, payload)
-        : ChapterApi.updateChapter(props.courseId, payload);
+        : ChapterApi.updateChapter(props.courseId, props.chapterId, payload);
     };
     sendRequest(payload).then(response => {
       if (props.isCreateForm) {
         props.refetch();
         props.onClose();
       } else {
-        props.setCourse(response.data.course_details);
         props.onClose();
+        props.setChapter(response.data.chapter_details);
       }
     });
   };
