@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { createOtp } from "apis/authentication";
-// import { Toastr } from "../../common";
 import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";
 import EnterPhoneNumber from "./EnterPhoneNumber";
