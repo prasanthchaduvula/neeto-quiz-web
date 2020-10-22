@@ -6,11 +6,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def index
     courses = current_user.courses
-    if courses
-      render status: :ok, json: courses
-    else
-      render status: :not_found, json: { errors: ["No courses found"] }
-    end
+    render status: :ok, json: courses
   end
 
   def create
