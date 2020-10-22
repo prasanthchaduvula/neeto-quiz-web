@@ -1,20 +1,18 @@
 import React, { useEffect } from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import { initializeLogger } from "common/logger";
 import { registerResponseIntercept } from "apis/axios";
-import Dashboard from "components/Dashboard";
-import PrivateRoute from "components/Common/PrivateRoute";
-import Signup from "components/Authentication/Signup";
-import { useAuthState, useAuthDispatch } from "contexts/auth";
+import { useAuthDispatch } from "contexts/auth";
 import { useUserDispatch } from "contexts/user";
 import { registerRequestIntercept } from "../apis/axios";
+import PublicRoutes from "./routes/PublicRoutes";
+import PrivateRoutes from "./routes/PrivateRoutes";
 
 registerRequestIntercept();
 
 const App = props => {
-  const { authToken } = useAuthState();
   const userDispatch = useUserDispatch();
   const authDispatch = useAuthDispatch();
 
@@ -24,18 +22,19 @@ const App = props => {
     initializeLogger();
   }, []);
 
+  const publicRoutes = () => {
+    return <PublicRoutes />;
+  };
+
+  const privateRoutes = () => {
+    return <PrivateRoutes />;
+  };
   return (
     <BrowserRouter>
       <ToastContainer />
-      <Switch>
-        <Route exact path="/signup" component={Signup} />
-        <PrivateRoute
-          path="/"
-          redirectRoute="/signup"
-          condition={!!authToken}
-          component={Dashboard}
-        />
-      </Switch>
+      {localStorage.user_id && localStorage.authToken
+        ? privateRoutes()
+        : publicRoutes()}
     </BrowserRouter>
   );
 };

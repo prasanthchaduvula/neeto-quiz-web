@@ -20,4 +20,8 @@ module ApplicationHelper
       link_to text, path, options
     end
   end
+
+  def get_current_user
+    current_user
+  end
 end

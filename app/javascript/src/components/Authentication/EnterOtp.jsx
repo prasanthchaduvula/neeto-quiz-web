@@ -18,7 +18,7 @@ function EnterOtp(props) {
       );
       localStorage.setItem("user_id", JSON.stringify(response.data.user.id));
       if (response.data.user.first_name || response.data.user.last_name) {
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       } else {
         props.setUserPage(true);
       }
