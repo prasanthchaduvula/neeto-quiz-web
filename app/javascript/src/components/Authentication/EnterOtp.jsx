@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { verifyOtp } from "../../apis/authentication";
-import { Toastr } from "../../common";
+import { showToastr } from "../../common";
 
 function EnterOtp(props) {
   const [otp, setOtp] = useState("");
 
   const verifyRegistration = otpPayload => {
     verifyOtp(otpPayload).then(response => {
-      Toastr.success("Success");
+      showToastr("success", "Success");
       localStorage.setItem(
         "authToken",
         JSON.stringify(response.data.user.authentication_token)
@@ -18,7 +18,7 @@ function EnterOtp(props) {
       );
       localStorage.setItem("user_id", JSON.stringify(response.data.user.id));
       if (response.data.user.first_name || response.data.user.last_name) {
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       } else {
         props.setUserPage(true);
       }

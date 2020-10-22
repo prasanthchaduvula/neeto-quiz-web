@@ -12,12 +12,7 @@ class NavBar extends Component {
           </div>
         </div>
         <div className="flex flex-col items-center justify-start w-full pt-4">
-          <NavItem
-            title="Features"
-            link="/features"
-            icon="ri-shield-star-line"
-          />
-          <NavItem title="Contact" link="/contact" icon="ri-user-line" />
+          <NavItem title="Courses" link="/courses" icon="ri-book-open-line" />
         </div>
       </div>
     );

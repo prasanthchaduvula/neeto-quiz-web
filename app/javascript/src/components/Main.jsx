@@ -1,47 +1,40 @@
 import React, { useEffect } from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
-
 import { initializeLogger } from "common/logger";
-import { registerIntercepts } from "apis/axios";
-import Dashboard from "components/Dashboard";
-
-// import PrivateRoute from "components/Common/PrivateRoute";
-import PasswordReset from "components/Authentication/ResetPassword";
-import Login from "components/Authentication/Login";
-import Signup from "components/Authentication/Signup";
-
+import { registerResponseIntercept } from "apis/axios";
 import { useAuthDispatch } from "contexts/auth";
 import { useUserDispatch } from "contexts/user";
-import LandingPage from "./LandingPage/LandingPage";
+import { registerRequestIntercept } from "../apis/axios";
+import PublicRoutes from "./routes/PublicRoutes";
+import PrivateRoutes from "./routes/PrivateRoutes";
+
+registerRequestIntercept();
 
 const App = props => {
-  // const { authToken } = useAuthState();
   const userDispatch = useUserDispatch();
   const authDispatch = useAuthDispatch();
 
   useEffect(() => {
     userDispatch({ type: "SET_USER", payload: { user: props.user } });
+    registerResponseIntercept(authDispatch);
     initializeLogger();
-    registerIntercepts(authDispatch);
   }, []);
+
+  const publicRoutes = () => {
+    return <PublicRoutes />;
+  };
+
+  const privateRoutes = () => {
+    return <PrivateRoutes />;
+  };
   return (
     <BrowserRouter>
       <ToastContainer />
-      <Switch>
-        <Route exact path="/users/password/new" component={PasswordReset} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        {/* <PrivateRoute
-          path="/"
-          redirectRoute="/login"
-          condition={!!authToken}
-          component={Dashboard}
-        /> */}
-      </Switch>
+      {localStorage.user_id && localStorage.authToken
+        ? privateRoutes()
+        : publicRoutes()}
     </BrowserRouter>
   );
 };

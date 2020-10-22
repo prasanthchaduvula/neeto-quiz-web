@@ -4,6 +4,11 @@ class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
   before_action :check_published_course, only: :destroy
 
+  def index
+    courses = current_user.courses
+    render status: :ok, json: courses
+  end
+
   def create
     course = current_user.courses.new(course_params)
     if course.save
@@ -15,7 +20,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def update
     if @course.update(course_params)
-      render status: :ok, json: { notice: "Course updated successfully", course: @course }
+      render status: :ok, json: { notice: "Course updated successfully", course_details: { course: @course, chapters: @course.chapters, joined_students: @course.joined_students } }
     else
       render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
     end

@@ -1,17 +1,14 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-
 import Navbar from "components/Common/Navbar";
-
-import Profile from "./Users/Profile";
+import DashboardRoutes from "../routes/DashboardRoutes";
 
 const Home = () => {
   return (
     <div className="flex h-screen">
       <Navbar />
-      <Switch>
-        <Route exact path="/my/profile" component={Profile} />
-      </Switch>
+      <div className="content-main">
+        <DashboardRoutes />
+      </div>
     </div>
   );
 };

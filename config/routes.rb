@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :registrations, only: [:create, :update] 
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
-      resources :courses, only: [:create, :update, :show, :destroy] do
+      resources :courses, only: [:create, :update, :show, :destroy, :index] do
         resources :chapters, only: [:create, :update, :show, :destroy]
         resources :course_students, only: [:create]
         resources :add_students, only: [:create]
