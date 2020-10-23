@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
-// import showToastr from "../../../common";
 import { createLesson, updateLesson } from "../../../apis/lessons";
 
 export default function LessonForm(props) {
@@ -71,6 +70,7 @@ export default function LessonForm(props) {
           placeholder="Name"
           onChange={e => setName(e.target.value)}
           value={name}
+          required
         />
       </div>
       <div className="mb-6">
@@ -98,6 +98,7 @@ export default function LessonForm(props) {
         <select
           value={lesson_type}
           onChange={e => setLessonType(e.target.value)}
+          required
         >
           <option value="youtube">Youtube</option>
           <option value="pdf">Pdf</option>
@@ -111,12 +112,14 @@ export default function LessonForm(props) {
           placeholder="Youtube video link"
           onChange={e => setContent(e.target.value)}
           value={content}
+          required
         />
       )}
       {(lesson_type == "pdf" || lesson_type == "image") && (
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
           type="file"
+          required
           onChange={e => setFile(e.target.files[0])}
         />
       )}
