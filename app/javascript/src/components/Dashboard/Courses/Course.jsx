@@ -3,7 +3,7 @@ import CourseApi from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 
-export default function IndivitualCourse(props) {
+export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
@@ -61,15 +61,11 @@ export default function IndivitualCourse(props) {
                   Table of Contents
                 </h2>
                 <div>
-                  {chapters.map(chapter => {
-                    return (
-                      <div key={chapter.id}>
-                        <h2 className="text-blue-700 text-2xl pb-2">
-                          {chapter.name}
-                        </h2>
-                      </div>
-                    );
-                  })}
+                  {chapters.map((chapter, index) => (
+                    <div key={index}>
+                      <h2 className="text-blue-700 text-2xl pb-2">hello</h2>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
