@@ -71,7 +71,7 @@ export default function IndivitualCourse(props) {
                         <h2 className="text-blue-700 text-2xl pb-2">
                           {chapter.name}
                         </h2>
-                        <LessonList chapterId={chapter.id} />
+                        <LessonList lessons={chapter.lessons} />
                         <Button
                           type="button"
                           label="Add Lesson"
