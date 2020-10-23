@@ -12,7 +12,11 @@ export default function LessonForm(props) {
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("lesson[file]", file);
+    
+    if(file && file.name) {
+      formData.append("lesson[file]", file);
+    }
+    
     formData.append("lesson[name]", name);
     formData.append("lesson[lesson_type]", lesson_type);
     formData.append("lesson[content]", content);
@@ -103,7 +107,6 @@ export default function LessonForm(props) {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
           type="file"
           onChange={e => setFile(e.target.files[0])}
-          value={file}
         />
       )}
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
