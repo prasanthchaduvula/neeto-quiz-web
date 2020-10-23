@@ -31,11 +31,7 @@ export default function Course(props) {
           <PageHeading
             title={`${course.name}`}
             rightButton={() => (
-              <Button
-                onClick={() => setShowEditCoursePane(true)}
-                label="Add Chapter"
-                icon="ri-add-line"
-              />
+              <Button label="Add Chapter" icon="ri-add-line" />
             )}
           />
           <nav className="bg-gray-100 p-3 rounded-md">
@@ -71,7 +67,6 @@ export default function Course(props) {
               </span>
             </div>
           </nav>
-          {/* <Chapters chapters={chapters} course={course} /> */}
           <Chapters chapters={chapters} />
           <EditCoursePane
             showPane={showEditCoursePane}
