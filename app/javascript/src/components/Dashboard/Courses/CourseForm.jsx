@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 import CourseApi from "../../../apis/courses";
+import { showToastr } from "../../../common";
 export default function CourseForm(props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -29,6 +30,14 @@ export default function CourseForm(props) {
         : CourseApi.createCourse(payload);
     };
     sendRequest(payload).then(response => {
+      showToastr(
+        "success",
+        `${
+          props.isCreateForm
+            ? "Course added successfully"
+            : "Course updated successfully"
+        }`
+      );
       if (props.isCreateForm) {
         props.refetch();
         props.onClose();
@@ -56,6 +65,7 @@ export default function CourseForm(props) {
           placeholder="Name"
           onChange={e => setName(e.target.value)}
           value={name}
+          required
         />
       </div>
       <div className="mb-4">
