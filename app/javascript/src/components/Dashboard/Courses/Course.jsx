@@ -18,8 +18,8 @@ export default function Course(props) {
 
   const fetchSingleCourse = () => {
     CourseApi.fetchCourse(props.match.params.course_id).then(response => {
-      setCourse(response.data.course.course);
-      setChapters(response.data.course.chapters);
+      setCourse(response.data.course);
+      setChapters(response.data.chapters);
       setIsLoading(false);
     });
   };
