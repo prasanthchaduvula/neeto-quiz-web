@@ -22,14 +22,9 @@ export default function ChapterForm(props) {
         ? ChapterApi.createChapter(props.courseId, payload)
         : ChapterApi.updateChapter(props.courseId, props.chapterId, payload);
     };
-    sendRequest(payload).then(response => {
-      if (props.isCreateForm) {
-        props.refetch();
-        props.onClose();
-      } else {
-        props.onClose();
-        props.setChapter(response.data.chapter_details);
-      }
+    sendRequest(payload).then(() => {
+      props.refetch();
+      props.onClose();
     });
   };
   return (
@@ -50,6 +45,7 @@ export default function ChapterForm(props) {
           placeholder="Name"
           onChange={e => setName(e.target.value)}
           value={name}
+          required
         />
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">

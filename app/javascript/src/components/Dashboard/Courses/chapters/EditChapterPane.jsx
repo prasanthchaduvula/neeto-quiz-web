@@ -18,6 +18,7 @@ export default function EditChapterPane(props) {
             courseId={props.chapterDetails.chapter.course_id}
             chapterId={props.chapterDetails.chapter.id}
             setChapter={props.setChapter}
+            refetch={props.refetch}
           />
         ) : (
           <h1>Chapter Pane</h1>
