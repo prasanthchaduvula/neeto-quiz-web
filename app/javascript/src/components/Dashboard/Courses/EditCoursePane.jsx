@@ -3,9 +3,9 @@ import { Pane } from "nitroui";
 import CourseForm from "./CourseForm";
 
 export default function EditCoursePane(props) {
-  const [courseName] = useState(props.courseDetails.course.name);
-  const [courseDescription] = useState(props.courseDetails.course.description);
-  const [coursePrice] = useState(props.courseDetails.course.price);
+  const [courseName] = useState(props.course.name);
+  const [courseDescription] = useState(props.course.description);
+  const [coursePrice] = useState(props.course.price);
 
   const onClose = () => props.setShowPane(false);
 

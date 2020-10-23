@@ -3,8 +3,6 @@ import { Pane } from "nitroui";
 import ChapterForm from "./ChapterForm";
 
 export default function EditChapterPane(props) {
-  // const [chapterName] = useState(props.chapterDetails.chapter.name || "");
-
   const onClose = () => props.setShowPane(false);
 
   return (
