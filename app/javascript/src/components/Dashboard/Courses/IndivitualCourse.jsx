@@ -27,6 +27,7 @@ export default function IndivitualCourse(props) {
     });
   };
 
+
   useEffect(() => {
     fetchSingleCourse();
   }, [showEditCoursePane]);
@@ -74,8 +75,6 @@ export default function IndivitualCourse(props) {
       }
     );
   };
-
-
 
   return (
     <div>
