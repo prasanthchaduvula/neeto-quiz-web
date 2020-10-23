@@ -24,7 +24,7 @@ export default function ShowChapter(props) {
     });
   };
   return (
-    <div className="px-6 pt-4 pb-2">
+    <div>
       <PageHeading
         title="Lessons"
         rightButton={() => (
@@ -38,41 +38,39 @@ export default function ShowChapter(props) {
       {!isLoading ? (
         <>
           <div className="flex-auto flex-row ">
-            <div className="inline-flex max-w-xl">
-              <div className="px-4 py-8">
-                <div className="flex">
-                  <h1 className="text-gray-900 text-5xl leading-none mb-4">
+            <div className="inline-flex max-w-screen-xl">
+              <div className="px-3 py-8">
+                <div className="flex justify-between">
+                  <h1 className="text-gray-900 text-3xl leading-none mb-4">
                     {chapterDetails.chapter.name}
                   </h1>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Edit"
-                      onClick={() => {
-                        setShowEditChapterPane(true);
-                      }}
-                    />
-                  </span>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Delete"
-                      onClick={() => {
-                        ChapterApi.deleteChapter(
-                          props.match.params.course_id,
-                          props.match.params.chapter_id
-                        ).then(
-                          () =>
-                            (window.location.href = `/courses/${props.match.params.course_id}`)
-                        );
-                      }}
-                    />
-                  </span>
+                  <div className="flex">
+                    <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                      <Button
+                        type="button"
+                        label="Edit"
+                        onClick={() => {
+                          setShowEditChapterPane(true);
+                        }}
+                      />
+                    </span>
+                    <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                      <Button
+                        type="button"
+                        label="Delete"
+                        onClick={() => {
+                          ChapterApi.deleteChapter(
+                            props.match.params.course_id,
+                            props.match.params.chapter_id
+                          ).then(
+                            () =>
+                              (window.location.href = `/courses/${props.match.params.course_id}`)
+                          );
+                        }}
+                      />
+                    </span>
+                  </div>
                 </div>
-                <p className="text-gray-600 text-xl leading-tight">
-                  {chapterDetails.chapter.description}
-                </p>
-
                 <div>
                   {chapterDetails.lessons.map(lesson => {
                     return (

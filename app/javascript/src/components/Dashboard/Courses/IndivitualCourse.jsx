@@ -1,27 +1,78 @@
 import React, { useEffect, useState } from "react";
 import CourseApi from "../../../apis/courses";
+import ChapterApi from "../../../apis/chapters";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import AddChapterPane from "./Chapters/AddChapterPane";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import EditChapterPane from "./Chapters/EditChapterPane";
 
 export default function IndivitualCourse(props) {
   const [courseDetails, setCourseDetails] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
   const [showAddChapterPane, setShowAddChapterPane] = useState(false);
+  const [showEditChapterPane, setShowEditChapterPane] = useState(false);
   const [courseEditId] = useState(props.match.params.course_id);
   const [isLoading, setIsLoading] = useState(true);
+  const [editChapterId, setEditChapterId] = useState("");
+  const [chapterDetails, setchapterDetails] = useState({});
+  const [chapterIndex, setChapterIndex] = useState("");
 
-  useEffect(() => {
-    fetchSingleCourse();
-  }, [showEditCoursePane]);
-
+  //fetching single course
   const fetchSingleCourse = () => {
     CourseApi.fetchCourse(props.match.params.course_id).then(response => {
       setCourseDetails(response.data);
       setIsLoading(false);
     });
+  };
+
+  useEffect(() => {
+    fetchSingleCourse();
+  }, [showEditCoursePane]);
+
+  // handle click on edit button of chapter
+  const handleChapterEdit = (id, index) => {
+    setShowEditChapterPane(true);
+    setEditChapterId(id);
+    setChapterIndex(index);
+  };
+
+  useEffect(() => {
+    if (editChapterId) {
+      fetchChapter(props.match.params.course_id, editChapterId);
+    }
+  }, [editChapterId]);
+
+  const fetchChapter = (courseId, chapterId) => {
+    ChapterApi.fetchChapter(courseId, chapterId).then(response =>
+      setchapterDetails(response.data)
+    );
+  };
+
+  useEffect(() => {
+    if (chapterDetails.chapter) {
+      updateCourseDetailsWithUpdatedChapter(chapterDetails);
+    }
+  }, [chapterDetails]);
+
+  const updateCourseDetailsWithUpdatedChapter = chapterDetails => {
+    if (chapterDetails.chapter) {
+      let updatedChapters = courseDetails.chapters;
+      if (updatedChapters[chapterIndex].id == chapterDetails.chapter.id) {
+        updatedChapters[chapterIndex] = chapterDetails.chapter;
+      }
+      setCourseDetails({ ...courseDetails, chapters: updatedChapters });
+    }
+  };
+
+  const handleChapterDelete = chapterId => {
+    ChapterApi.deleteChapter(props.match.params.course_id, chapterId).then(
+      () => {
+        setIsLoading(true);
+        fetchSingleCourse();
+      }
+    );
   };
 
   return (
@@ -75,16 +126,49 @@ export default function IndivitualCourse(props) {
                   Table of Contents
                 </h2>
                 <div>
-                  {courseDetails.chapters.map(chapter => {
+                  {courseDetails.chapters.map((chapter, index) => {
                     return (
-                      <div key={chapter.id}>
-                        <h2 className="text-blue-700 text-2xl pb-2">
-                          <Link
-                            to={`/courses/${courseDetails.course.id}/chapters/${chapter.id}`}
-                          >
-                            {chapter.name}
-                          </Link>
-                        </h2>
+                      <div
+                        key={chapter.id}
+                        className="max-w-sm rounded shadow-lg mb-2"
+                      >
+                        <div className="border-r border-b border-l border-gray-400 pb-2 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                          <div className="mb-8">
+                            <div className="bg-gray-300 flex flex-row-reverse items-center">
+                              <span
+                                className="px-2"
+                                onClick={() =>
+                                  handleChapterEdit(chapter.id, index)
+                                }
+                              >
+                                Edit
+                              </span>
+                              <span
+                                className="px-2"
+                                onClick={() =>
+                                  handleChapterDelete(chapter.id, index)
+                                }
+                              >
+                                Delete
+                              </span>
+                            </div>
+                            <div className="text-gray-500 font-bold text-xl mb-2">
+                              <Link
+                                to={`/courses/${courseDetails.course.id}/chapters/${chapter.id}`}
+                              >
+                                {chapter.name}
+                              </Link>
+                            </div>
+                            <Button
+                              label="Add Lesson"
+                              size="large"
+                              type="secondary"
+                              onClick={() =>
+                                (window.location.href = `/courses/${courseDetails.course.id}/chapters/${chapter.id}`)
+                              }
+                            />
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
@@ -105,6 +189,14 @@ export default function IndivitualCourse(props) {
             courseDetails={courseDetails}
             refetch={fetchSingleCourse}
           />
+          {editChapterId ? (
+            <EditChapterPane
+              showPane={showEditChapterPane}
+              setShowPane={setShowEditChapterPane}
+              chapterDetails={chapterDetails}
+              setChapter={setchapterDetails}
+            />
+          ) : null}
         </>
       ) : (
         <PageLoader />
