@@ -15,11 +15,7 @@ class Api::V1::ChaptersController < Api::V1::BaseController
 
   def update
     if @chapter.update(chapter_params)
-<<<<<<< HEAD
       render status: :ok, json: { notice: "Chapter updated successfully", chapter_details: load_chapter_json }
-=======
-      render status: :ok, json: { notice: "Chapter updated successfully", chapter_details: { chapter: @chapter, lessons: @chapter.lessons } }
->>>>>>> chapter controller updated to include lessons in show and update action, made  chapter api routes, updated chapter form for edit chapter functionality, created editchapter sectionor pane, created show chapter component and completed functionality of chapter edit and delete, made minor ui changes to indivitualcourse component
     else
       render status: :unprocessable_entity, json: { errors: @chapter.errors.full_messages }
     end
@@ -27,11 +23,7 @@ class Api::V1::ChaptersController < Api::V1::BaseController
 
   def show
     if @chapter
-<<<<<<< HEAD
       render status: :ok, json: load_chapter_json
-=======
-      render status: :ok, json: { chapter: @chapter, lessons: @chapter.lessons }
->>>>>>> chapter controller updated to include lessons in show and update action, made  chapter api routes, updated chapter form for edit chapter functionality, created editchapter sectionor pane, created show chapter component and completed functionality of chapter edit and delete, made minor ui changes to indivitualcourse component
     else
       render status: :not_found, json: { errors: ["Chapter with id #{params[:id]} not found"] }
     end
