@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import CourseApi from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
+import { PageHeading } from "nitroui/layouts";
+import Chapters from "../chapters/Chapters";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -23,53 +25,54 @@ export default function Course(props) {
   };
 
   return (
-    <div className="px-6 pt-4 pb-2">
+    <div className="">
       {!isLoading ? (
         <>
-          <div className="flex-auto flex-row ">
-            <div className="inline-flex max-w-xl">
-              <div className="px-4 py-8">
-                <div className="flex">
-                  <h1 className="text-gray-900 text-5xl leading-none mb-4">
-                    {course.name}
-                  </h1>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Edit"
-                      onClick={() => {
-                        setShowEditCoursePane(true);
-                      }}
-                    />
-                  </span>
-                  <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    <Button
-                      type="button"
-                      label="Delete"
-                      onClick={() => {
-                        CourseApi.deleteCourse(
-                          props.match.params.course_id
-                        ).then(() => (window.location.href = "/courses"));
-                      }}
-                    />
-                  </span>
-                </div>
-                <p className="text-gray-600 text-xl leading-tight">
-                  {course.description}
-                </p>
-                <h2 className="my-4 text-gray-900 text-2xl">
-                  Table of Contents
-                </h2>
-                <div>
-                  {chapters.map((chapter, index) => (
-                    <div key={index}>
-                      <h2 className="text-blue-700 text-2xl pb-2">hello</h2>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <PageHeading
+            title={`${course.name}`}
+            rightButton={() => (
+              <Button
+                onClick={() => setShowEditCoursePane(true)}
+                label="Add Chapter"
+                icon="ri-add-line"
+              />
+            )}
+          />
+          <nav className="bg-gray-100 p-3 rounded-md">
+            <p className="text-gray-600 text-base leading-tight leading-5">
+              {course.description}
+            </p>
+            <div className="flex items-center justify-end w-full">
+              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2 ">
+                <Button
+                  type="button"
+                  label="Edit Course"
+                  onClick={() => {
+                    setShowEditCoursePane(true);
+                  }}
+                />
+              </span>
+              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
+                <Button type="button" label="Preview Course" />
+              </span>
+              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
+                <Button type="button" label="Publish Course" />
+              </span>
+              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
+                <Button
+                  type="button"
+                  label="Delete Course"
+                  onClick={() => {
+                    CourseApi.deleteCourse(props.match.params.course_id).then(
+                      () => (window.location.href = "/courses")
+                    );
+                  }}
+                />
+              </span>
             </div>
-          </div>
+          </nav>
+          {/* <Chapters chapters={chapters} course={course} /> */}
+          <Chapters chapters={chapters} />
           <EditCoursePane
             showPane={showEditCoursePane}
             setShowPane={setShowEditCoursePane}
