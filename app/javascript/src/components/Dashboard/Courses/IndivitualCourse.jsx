@@ -11,6 +11,7 @@ export default function IndivitualCourse(props) {
   const [courseEditId] = useState(props.match.params.course_id);
   const [isLoading, setIsLoading] = useState(true);
   const [showNewLessonPane, setShowNewLessonPane] = useState(false);
+  const [chapter, setChapter] = useState({});
 
   useEffect(() => {
     fetchSingleCourse();
@@ -72,7 +73,10 @@ export default function IndivitualCourse(props) {
                         <Button
                           type="button"
                           label="Add Lesson"
-                          onClick={() => setShowNewLessonPane(true)}
+                          onClick={() => {
+                            setShowNewLessonPane(true);
+                            setChapter(chapter);
+                          }}
                         />
                       </div>
                     );
@@ -91,6 +95,7 @@ export default function IndivitualCourse(props) {
           <NewLessonPane
             showPane={showNewLessonPane}
             setShowPane={setShowNewLessonPane}
+            chapter={chapter}
           />
         </>
       ) : (
