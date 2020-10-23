@@ -65,7 +65,6 @@ export default function CourseForm(props) {
           placeholder="Name"
           onChange={e => setName(e.target.value)}
           value={name}
-          required
         />
       </div>
       <div className="mb-4">
