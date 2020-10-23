@@ -11,6 +11,7 @@ export default function NewLessonPane(props) {
           onClose={onClose}
           chapter={props.chapter}
           isCreateForm={true}
+          fetchSingleCourse={props.fetchSingleCourse}
         />
       </div>
     </Pane>

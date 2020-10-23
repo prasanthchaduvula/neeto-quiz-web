@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import showToastr from "../../../common";
+// import showToastr from "../../../common";
 import { createLesson } from "../../../apis/lessons";
 
 export default function LessonForm(props) {
@@ -22,7 +22,7 @@ export default function LessonForm(props) {
     formData.append("lesson[description]", description);
 
     createLesson(props.chapter.id, formData).then(() => {
-      showToastr("success", "Lesson added successfully");
+      props.fetchSingleCourse();
       props.onClose();
     });
   };

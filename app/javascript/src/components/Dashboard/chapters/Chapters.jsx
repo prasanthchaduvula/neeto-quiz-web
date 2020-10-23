@@ -3,7 +3,7 @@ import { Button } from "nitroui";
 import Lessons from "../Lessons/Lessons";
 import NewLessonPane from "../Lessons/NewLessonPane";
 
-export default function Chapters({ chapters }) {
+export default function Chapters({ chapters, fetchSingleCourse }) {
   const [showNewLessonPane, setShowNewLessonPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
@@ -15,6 +15,7 @@ export default function Chapters({ chapters }) {
           showPane={showNewLessonPane}
           setShowPane={setShowNewLessonPane}
           chapter={chapter}
+          fetchSingleCourse={fetchSingleCourse}
         />
       </>
     ) : (
@@ -47,7 +48,11 @@ export default function Chapters({ chapters }) {
                 </th>
               </tr>
             </thead>
-            <Lessons lessons={lessons} chapter={chapter} />
+            <Lessons
+              lessons={lessons}
+              chapter={chapter}
+              fetchSingleCourse={fetchSingleCourse}
+            />
           </table>
           <div className="w-40 my-4 ml-4">
             <Button

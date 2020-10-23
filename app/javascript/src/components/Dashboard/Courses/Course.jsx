@@ -67,7 +67,7 @@ export default function Course(props) {
               </span>
             </div>
           </nav>
-          <Chapters chapters={chapters} />
+          <Chapters chapters={chapters} fetchSingleCourse={fetchSingleCourse} />
           <EditCoursePane
             showPane={showEditCoursePane}
             setShowPane={setShowEditCoursePane}
