@@ -27,7 +27,8 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def show
-    render status: :ok, json: { course: @course, chapters: @course.chapters, joined_students: @course.joined_students }
+    course = CourseViewService.new(@course).course_view
+    render status: :ok, json: { course: course, joined_students: @course.joined_students }
   end
 
   def destroy
