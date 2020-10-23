@@ -1,11 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Course from "../Dashboard/Courses/Course";
-<<<<<<< HEAD
 import Courses from "../Dashboard/Courses";
-=======
-import Courses from "../Dashboard/Courses/Courses";
->>>>>>> Added chapters table
 
 const DashboardRoutes = () => {
   return (
