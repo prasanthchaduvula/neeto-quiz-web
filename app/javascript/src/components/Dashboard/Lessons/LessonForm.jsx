@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 // import showToastr from "../../../common";
 import { createLesson } from "../../../apis/lessons";
@@ -10,15 +10,27 @@ export default function LessonForm(props) {
   const [content, setContent] = useState("");
   const [file, setFile] = useState("");
 
+  props.isCreateForm
+    ? null
+    : useEffect(() => {
+        setName(props.lesson.name);
+        setDescription(props.lesson.description);
+        setLessonType(props.lesson.lesson_type);
+        setContent(props.lesson.content);
+        setFile(props.lesson.file);
+      }, []);
+
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
     if (file && file.name) {
       formData.append("lesson[file]", file);
     }
+    if (lesson_type == "youtube") {
+      formData.append("lesson[content]", content);
+    }
     formData.append("lesson[name]", name);
     formData.append("lesson[lesson_type]", lesson_type);
-    formData.append("lesson[content]", content);
     formData.append("lesson[description]", description);
 
     createLesson(props.chapter.id, formData).then(() => {
