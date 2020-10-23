@@ -59,6 +59,8 @@ export default function Chapters({ chapters, handleEdit, handleDelete }) {
       </div>
     );
   };
-
+  // if(!chapters.length){
+  //   return(<NoResourceMessage />);
+  // }
   return <div className="mt-15">{display()}</div>;
 }

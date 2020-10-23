@@ -8,6 +8,7 @@ export default function ShowChapter(props) {
   const [chapterDetails, setChapterDetails] = useState({});
   const [showEditChapterPane, setShowEditChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  // const [showAddLessonPane, setShowAddLessonPane] = useState(false);
 
   useEffect(() => {
     fetchChapter();
@@ -26,7 +27,13 @@ export default function ShowChapter(props) {
     <div>
       <PageHeading
         title="Lessons"
-        rightButton={() => <Button label="Add new Lesson" icon="ri-add-line" />}
+        rightButton={() => (
+          <Button
+            // onClick={() => setShowAddLessonPane(true)}
+            label="Add new Lesson"
+            icon="ri-add-line"
+          />
+        )}
       />
       {!isLoading ? (
         <>

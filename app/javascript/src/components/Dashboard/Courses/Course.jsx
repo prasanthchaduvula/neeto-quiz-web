@@ -14,8 +14,14 @@ export default function Course(props) {
   const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+<<<<<<< HEAD
   const [students, setStudents] = useState([]);
   const [showstudents, setShowStudents] = useState(false);
+=======
+  const [showEditChapterPane, setShowEditChapterPane] = useState(false);
+  const [editChapterId, setEditChapterId] = useState("");
+  const [chapterDetails, setchapterDetails] = useState({});
+>>>>>>> edit chapter and delete chapter implemented
 
   useEffect(() => {
     fetchSingleCourse();

@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "nitroui";
-import Lessons from "../Lessons/Lessons";
+import Lessons from "../../Lessons/Lessons";
 
-export default function Chapters({ chapters }) {
+export default function Chapters({ chapters, handleEdit, handleDelete }) {
   const display = () => {
     return chapters.length ? chaptersList() : noResourceMessage();
   };
@@ -21,12 +21,20 @@ export default function Chapters({ chapters }) {
                   <p className="text-base">{chapter.name}</p>
                 </th>
                 <th className="py-2">
-                  <button>
+                  <button
+                    onClick={() => {
+                      handleEdit(chapter.id);
+                    }}
+                  >
                     <i className="text-gray-400 mr-3 text-2xl ri-pencil-line hover:text-indigo-500 cursor-pointer"></i>
                   </button>
                 </th>
                 <th className="py-2">
-                  <button>
+                  <button
+                    onClick={() => {
+                      handleDelete(chapter.id);
+                    }}
+                  >
                     <i className="cursor-pointer text-gray-400 mr-3 text-2xl ri-delete-bin-line hover:text-red-700"></i>
                   </button>
                 </th>

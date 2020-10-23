@@ -3,8 +3,6 @@ import { Pane } from "nitroui";
 import ChapterForm from "./ChapterForm";
 
 export default function EditChapterPane(props) {
-  // const [chapterName] = useState(props.chapterDetails.chapter.name || "");
-
   const onClose = () => props.setShowPane(false);
 
   return (
@@ -18,6 +16,7 @@ export default function EditChapterPane(props) {
             courseId={props.chapterDetails.chapter.course_id}
             chapterId={props.chapterDetails.chapter.id}
             setChapter={props.setChapter}
+            refetch={props.refetch}
           />
         ) : (
           <h1>Chapter Pane</h1>

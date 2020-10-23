@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 import ChapterApi from "../../../../apis/chapters";
-import { showToastr } from "../../../../common/index";
 export default function ChapterForm(props) {
   const [name, setName] = useState("");
 
@@ -23,22 +22,9 @@ export default function ChapterForm(props) {
         ? ChapterApi.createChapter(props.courseId, payload)
         : ChapterApi.updateChapter(props.courseId, props.chapterId, payload);
     };
-    sendRequest(payload).then(response => {
-      showToastr(
-        "success",
-        `${
-          props.isCreateForm
-            ? "Chapter added successfully"
-            : "Chapter updated succesfully"
-        }`
-      );
-      if (props.isCreateForm) {
-        props.refetch();
-        props.onClose();
-      } else {
-        props.onClose();
-        props.setChapter(response.data.chapter_details);
-      }
+    sendRequest(payload).then(() => {
+      props.refetch();
+      props.onClose();
     });
   };
   return (
