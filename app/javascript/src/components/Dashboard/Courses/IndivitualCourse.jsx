@@ -27,7 +27,6 @@ export default function IndivitualCourse(props) {
     });
   };
 
-
   useEffect(() => {
     fetchSingleCourse();
   }, [showEditCoursePane]);
@@ -95,7 +94,7 @@ export default function IndivitualCourse(props) {
               <div className="px-3 py-8">
                 <div className="flex justify-between">
                   <h1 className="text-gray-900 text-3xl font-bold leading-none mb-4">
-                    {courseDetails.course.name}
+                    {course.name}
                   </h1>
                   <div className="flex">
                     <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
