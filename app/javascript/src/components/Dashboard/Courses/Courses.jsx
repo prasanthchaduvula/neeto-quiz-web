@@ -4,7 +4,7 @@ import { Button, PageLoader } from "nitroui";
 import NewCoursePane from "./NewCoursePane";
 import ListCourses from "./ListCourses";
 import CourseApi from "../../../apis/courses";
-export default function Course() {
+export default function Courses() {
   const [showNewCoursePane, setShowNewCoursePane] = useState(false);
   const [courses, setCourses] = useState([]);
 

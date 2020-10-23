@@ -4,7 +4,8 @@ import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 
 export default function IndivitualCourse(props) {
-  const [courseDetails, setCourseDetails] = useState({});
+  const [course, setCourse] = useState({});
+  const [chapters, setChapters] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
   const [courseEditId] = useState(props.match.params.course_id);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +16,8 @@ export default function IndivitualCourse(props) {
 
   const fetchSingleCourse = () => {
     CourseApi.fetchCourse(props.match.params.course_id).then(response => {
-      setCourseDetails(response.data);
+      setCourse(response.data.course.course);
+      setChapters(response.data.course.chapters);
       setIsLoading(false);
     });
   };
@@ -29,7 +31,7 @@ export default function IndivitualCourse(props) {
               <div className="px-4 py-8">
                 <div className="flex">
                   <h1 className="text-gray-900 text-5xl leading-none mb-4">
-                    {courseDetails.course.name}
+                    {course.name}
                   </h1>
                   <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                     <Button
@@ -53,13 +55,13 @@ export default function IndivitualCourse(props) {
                   </span>
                 </div>
                 <p className="text-gray-600 text-xl leading-tight">
-                  {courseDetails.course.description}
+                  {course.description}
                 </p>
                 <h2 className="my-4 text-gray-900 text-2xl">
                   Table of Contents
                 </h2>
                 <div>
-                  {courseDetails.chapters.map(chapter => {
+                  {chapters.map(chapter => {
                     return (
                       <div key={chapter.id}>
                         <h2 className="text-blue-700 text-2xl pb-2">
@@ -76,8 +78,8 @@ export default function IndivitualCourse(props) {
             showPane={showEditCoursePane}
             setShowPane={setShowEditCoursePane}
             courseId={courseEditId}
-            courseDetails={courseDetails}
-            setCourse={setCourseDetails}
+            course={course}
+            setCourse={setCourse}
           />
         </>
       ) : (
