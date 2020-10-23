@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "nitroui";
+import Lessons from "../Lessons/Lessons";
 
 export default function Chapters({ chapters }) {
   const display = () => {
@@ -7,7 +8,7 @@ export default function Chapters({ chapters }) {
   };
 
   const chaptersList = () => {
-    return chapters.map(({ chapter }) => {
+    return chapters.map(({ chapter, lessons }) => {
       return (
         <div
           className="w-full border rounded mx-auto my-6 bg-white rounded-lg"
@@ -27,12 +28,7 @@ export default function Chapters({ chapters }) {
                 </th>
               </tr>
             </thead>
-            {/* <LessonsList
-              lessons={lessons}
-              chapter={chapter}
-              courseSlug={courseSlug}
-              handleDeleteLesson={handleDeleteLesson}
-            /> */}
+            <Lessons lessons={lessons} chapter={chapter} />
           </table>
           <div className="w-40 my-4 ml-4">
             <Button type="button" label="Add Lesson" />
