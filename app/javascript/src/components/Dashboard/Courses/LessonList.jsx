@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
-import LessonApi from "../../../apis/lessons";
+import React from "react";
 
-export default function LessonList({ chapterId }) {
-  const [lessons, setLessons] = useState("");
-
-  useEffect(() => {
-    LessonApi.fetchChapterLessons(chapterId).then(response => {
-      setLessons(response.data.lessons);
-    });
-  }, []);
-
+export default function LessonList({ lessons }) {
   return (
     <div>
       <p>lessons</p>
