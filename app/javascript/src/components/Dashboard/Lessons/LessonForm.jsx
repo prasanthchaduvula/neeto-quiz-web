@@ -18,11 +18,15 @@ export default function LessonForm(props) {
     formData.append("lesson[content]", content);
     formData.append("lesson[description]", description);
 
-    Axios.post(`/api/v1/chapters/${props.chapter.id}/lessons`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(() => {
+    Axios.post(
+      `/api/v1/chapters/${props.chapter.chapter.id}/lessons`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    ).then(() => {
       props.onClose();
     });
   };
@@ -36,7 +40,7 @@ export default function LessonForm(props) {
         className="block text-gray-700 text-sm font-bold mb-4"
         htmlor="name"
       >
-        Chapter Name: {props.chapter.name}
+        Chapter Name: {props.chapter.chapter.name}
       </label>
       <div className="mb-4">
         <label
