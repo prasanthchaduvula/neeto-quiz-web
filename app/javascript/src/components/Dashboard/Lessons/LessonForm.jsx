@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import Axios from "axios";
+import showToastr from "../../../common";
+import { createLesson } from "../../../apis/lessons";
 
 export default function LessonForm(props) {
   const [name, setName] = useState("");
@@ -20,11 +21,8 @@ export default function LessonForm(props) {
     formData.append("lesson[content]", content);
     formData.append("lesson[description]", description);
 
-    Axios.post(`/api/v1/chapters/${props.chapter.id}/lessons`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(() => {
+    createLesson(props.chapter.id, formData).then(() => {
+      showToastr("success", "Lesson added successfully");
       props.onClose();
     });
   };

@@ -25,9 +25,11 @@ const handleSuccessResponse = response => {
 const handleErrorResponse = (error, authDispatch) => {
   if (error.response?.status === 401) {
     authDispatch({ type: "LOGOUT" });
-    showToastr("error", error.response?.data?.error);
+    showToastr("error", error.response.data.error);
   } else {
-    showToastr("error", error.response?.data?.message || error.message);
+    error.response.data.errors.map(error => {
+      showToastr("error", error);
+    });
   }
   return Promise.reject(error);
 };
