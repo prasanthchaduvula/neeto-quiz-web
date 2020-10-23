@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 // import showToastr from "../../../common";
-import { createLesson } from "../../../apis/lessons";
+import { createLesson, updateLesson } from "../../../apis/lessons";
 
 export default function LessonForm(props) {
   const [name, setName] = useState("");
@@ -33,10 +33,17 @@ export default function LessonForm(props) {
     formData.append("lesson[lesson_type]", lesson_type);
     formData.append("lesson[description]", description);
 
-    createLesson(props.chapter.id, formData).then(() => {
-      props.fetchSingleCourse();
-      props.onClose();
-    });
+    if (props.isCreateForm)
+      createLesson(props.chapter.id, formData).then(() => {
+        props.fetchSingleCourse();
+        props.onClose();
+      });
+    else {
+      updateLesson(props.chapter.id, formData, props.lesson.id).then(() => {
+        props.fetchSingleCourse();
+        props.onClose();
+      });
+    }
   };
 
   return (
@@ -111,7 +118,6 @@ export default function LessonForm(props) {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
           type="file"
           onChange={e => setFile(e.target.files[0])}
-          // value={file}
         />
       )}
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">

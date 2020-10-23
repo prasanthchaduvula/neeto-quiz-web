@@ -11,20 +11,11 @@ export const createLesson = (chapterId, payload) =>
     },
   });
 
-// const createLesson = (chapterId, payload) => {
-//   const token = JSON.parse(localStorage.getItem("authToken"));
-//   const phone = JSON.parse(localStorage.getItem("authPhone"));
-//   fetch(`/api/v1/chapters/${chapterId}/lessons`,
-//   {
-//     method: 'POST',
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//       "X-Auth-Phone": phone,
-//       "X-Auth-Token": token
-//     },
-//     body: payload
-//   }
-//   ).then(res => res.json()).then( console.log(res) )
-// }
+export const updateLesson = (chapterId, payload, lessonId) =>
+  axios.patch(`/api/v1/chapters/${chapterId}/lessons/${lessonId}`, payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
 export default { fetchChapterLessons, createLesson };
