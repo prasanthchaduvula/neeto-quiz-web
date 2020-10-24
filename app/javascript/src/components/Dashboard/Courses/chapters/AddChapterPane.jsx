@@ -14,7 +14,7 @@ export default function AddChapterPane(props) {
         <ChapterForm
           onClose={onClose}
           isCreateForm={true}
-          courseId={props.courseDetails.course.id}
+          courseId={props.courseDetails.id}
           refetch={props.refetch}
         />
       </div>
