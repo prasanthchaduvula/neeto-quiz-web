@@ -36,11 +36,48 @@ export default function Course(props) {
     });
   };
 
+<<<<<<< HEAD
   const deleteSingleCourse = () => {
     deleteCourse(course.id).then(() => {
       showToastr("success", "Deleted successfully");
       props.history.push("/courses");
     });
+=======
+  const handleChapterEdit = id => {
+    setShowEditChapterPane(true);
+    setEditChapterId(id);
+  };
+
+  useEffect(() => {
+    if (editChapterId) {
+      fetchChapter(props.match.params.course_id, editChapterId);
+    }
+  }, [editChapterId]);
+
+  const fetchChapter = (courseId, chapterId) => {
+    ChapterApi.fetchChapter(courseId, chapterId).then(response =>
+      setchapterDetails(response.data)
+    );
+  };
+
+  useEffect(() => {
+    if (chapterDetails.chapter) {
+      updateChaptersArrayWithUpdatedChapter(chapterDetails);
+    }
+  }, [chapterDetails]);
+
+  const updateChaptersArrayWithUpdatedChapter = chapterDetail => {
+    if (chapterDetail.chapter.id) {
+      let updatedChapters = chapters.map(item => {
+        if (item.chapter.id == chapterDetail.chapter.id) {
+          return chapterDetail;
+        } else {
+          return item;
+        }
+      });
+      setChapters(updatedChapters);
+    }
+>>>>>>> resolved the problem of chapters not re-rendering with updated props on the use of response object from update request rather than making an ajax request for refetching the single course every time one update the chapter.
   };
 
   const publishCourse = () => {

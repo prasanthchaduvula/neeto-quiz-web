@@ -23,7 +23,7 @@ export default function ChapterForm(props) {
         ? ChapterApi.createChapter(props.courseId, payload)
         : ChapterApi.updateChapter(props.courseId, props.chapterId, payload);
     };
-    sendRequest(payload).then(() => {
+    sendRequest(payload).then(response => {
       showToastr(
         "success",
         `${
@@ -32,8 +32,13 @@ export default function ChapterForm(props) {
             : "Chapter updated succesfully"
         }`
       );
-      props.refetch();
-      props.onClose();
+      if (props.isCreateForm) {
+        props.refetch();
+        props.onClose();
+      } else {
+        props.onClose();
+        props.setChapter(response.data.chapter_details);
+      }
     });
   };
   return (
