@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 import { createLesson, updateLesson } from "../../../apis/lessons";
+import { showToastr } from "../../../common/index";
 
 export default function LessonForm(props) {
   const [name, setName] = useState("");
@@ -32,17 +33,16 @@ export default function LessonForm(props) {
     formData.append("lesson[lesson_type]", lesson_type);
     formData.append("lesson[description]", description);
 
-    if (props.isCreateForm)
-      createLesson(props.chapter.id, formData).then(() => {
-        props.fetchSingleCourse();
-        props.onClose();
-      });
-    else {
-      updateLesson(props.chapter.id, formData, props.lesson.id).then(() => {
-        props.fetchSingleCourse();
-        props.onClose();
-      });
-    }
+    const sendRequest = payload => {
+      return props.isCreateForm
+        ? createLesson(props.chapter.id, payload)
+        : updateLesson(props.chapter.id, payload, props.lesson.id);
+    };
+    sendRequest(formData).then(response => {
+      showToastr("success", response.data.notice);
+      props.fetchSingleCourse();
+      props.onClose();
+    });
   };
 
   return (
