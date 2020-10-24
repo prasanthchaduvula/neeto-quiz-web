@@ -64,7 +64,7 @@ export default function CourseForm(props) {
           type="text"
           placeholder="Name"
           onChange={e => setName(e.target.value)}
-          value={name}
+          value={name || ""}
         />
       </div>
       <div className="mb-4">
@@ -93,7 +93,7 @@ export default function CourseForm(props) {
           type="number"
           placeholder="Price"
           onChange={e => setPrice(e.target.value)}
-          value={price}
+          value={price || ""}
         />
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">

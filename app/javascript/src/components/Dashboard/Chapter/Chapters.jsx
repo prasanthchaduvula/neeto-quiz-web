@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "nitroui";
-import Lessons from "../../Lessons/Lessons";
+import Lessons from "../Lessons/Lessons";
 
 export default function Chapters({ chapters, handleEdit, handleDelete }) {
   const display = () => {
