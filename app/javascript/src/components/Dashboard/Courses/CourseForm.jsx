@@ -1,8 +1,9 @@
 import React from "react";
 import { Button } from "nitroui";
-// import CourseApi from "../../../apis/courses";
+import { createCourse, updateCourse } from "../../../apis/courses";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
+import { showToastr } from "../../../common";
 
 export default function CourseForm(props) {
   const initialValues = {
@@ -23,28 +24,27 @@ export default function CourseForm(props) {
   //       setDescription(props.courseDescription);
   //     }, [props.courseName, props.courseDescription]);
 
-  const handleSubmit = () => {
-    // const payload = {
-    //   course: {
-    //     name,
-    //     description,
-    //   },
-    // };
-    // const sendRequest = payload => {
-    //   return props.courseId
-    //     ? CourseApi.updateCourse(props.courseId, payload)
-    //     : CourseApi.createCourse(payload);
-    // };
-    // sendRequest(payload).then(response => {
-    //   if (props.isCreateForm) {
-    //     props.refetch();
-    //     props.onClose();
-    //   } else {
-    //     props.setCourse(response.data.course_details);
-    //     props.onClose();
-    //   }
-    // });
+  const handleSubmit = values => {
+    const payload = {
+      course: {
+        name: values.name,
+        description: values.description,
+        price: values.price,
+      },
+    };
+    const sendRequest = payload => {
+      return props.courseId
+        ? updateCourse(props.courseId, payload)
+        : createCourse(payload);
+    };
+
+    sendRequest(payload).then(response => {
+      showToastr("success", response.data.notice);
+      props.refetch();
+      props.onClose();
+    });
   };
+
   return (
     <Formik
       initialValues={initialValues}
