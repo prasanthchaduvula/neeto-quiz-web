@@ -3,13 +3,48 @@ import { Button } from "nitroui";
 import { createLesson, updateLesson } from "../../../apis/lessons";
 import { showToastr } from "../../../common/index";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as yup from "yup";
+
 export default function LessonForm(props) {
   const initialValues = {
     name: "",
     description: "",
     lesson_type: "youtube",
     content: "",
-    file: undefined,
+    file: "",
+  };
+
+  // const FILE_SIZE = 160 * 1024;
+  // const SUPPORTED_FORMATS = [
+  //   "image/jpg",
+  //   "image/jpeg",
+  //   "image/gif",
+  //   "image/png",
+  //   "application/pdf",
+  // ];
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Required *"),
+    // file: yup
+    //   .mixed()
+    //   .test(
+    //     "fileSize",
+    //     "File too large",
+    //     value => value && value.size <= FILE_SIZE
+    //   )
+    //   .test(
+    //     "fileFormat",
+    //     "Unsupported Format",
+    //     value => value && SUPPORTED_FORMATS.includes(value.type)
+    //   ),
+  });
+
+  const validateContent = value => {
+    let error;
+    if (!value) {
+      error = "Required";
+    }
+    return error;
   };
 
   props.isCreateForm
@@ -40,6 +75,7 @@ export default function LessonForm(props) {
         ? createLesson(props.chapter.id, payload)
         : updateLesson(props.chapter.id, payload, props.lesson.id);
     };
+
     sendRequest(formData).then(response => {
       showToastr("success", response.data.notice);
       props.fetchSingleCourse();
@@ -51,6 +87,7 @@ export default function LessonForm(props) {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
+      validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
       {formik => {
@@ -70,13 +107,17 @@ export default function LessonForm(props) {
               >
                 Name of the lesson
               </label>
+              <ErrorMessage
+                name="name"
+                component="div"
+                className="text-red-600"
+              />
               <Field
                 type="text"
                 id="name"
                 name="name"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
               />
-              <ErrorMessage name="name" />
             </div>
 
             <div className="mb-4">
@@ -108,7 +149,11 @@ export default function LessonForm(props) {
                 <option value="pdf">Pdf</option>
                 <option value="image">Image</option>
               </Field>
-              <ErrorMessage name="lesson_type" />
+              <ErrorMessage
+                name="lesson_type"
+                component="div"
+                className="text-red-600"
+              />
             </div>
 
             {formik.values.lesson_type == "youtube" ? (
@@ -117,9 +162,14 @@ export default function LessonForm(props) {
                   type="text"
                   id="content"
                   name="content"
+                  validate={validateContent}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
                 />
-                <ErrorMessage name="content" />
+                <ErrorMessage
+                  name="content"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
             ) : (
               <div className="mb-4">
@@ -131,7 +181,11 @@ export default function LessonForm(props) {
                     formik.setFieldValue("file", event.currentTarget.files[0]);
                   }}
                 />
-                <ErrorMessage name="file" />
+                <ErrorMessage
+                  name="file"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
             )}
 
