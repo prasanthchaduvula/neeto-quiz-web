@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Pane } from "nitroui";
 import CourseForm from "./CourseForm";
 
 export default function EditCoursePane(props) {
-  const [courseName] = useState(props.course.name);
-  const [courseDescription] = useState(props.course.description);
-
   const onClose = () => props.setShowPane(false);
 
   return (
@@ -13,9 +10,7 @@ export default function EditCoursePane(props) {
       <div className="p-6">
         <CourseForm
           onClose={onClose}
-          courseName={courseName}
-          courseDescription={courseDescription}
-          courseId={props.courseId}
+          course={props.course}
           isCreateForm={false}
           setCourse={props.setCourse}
         />

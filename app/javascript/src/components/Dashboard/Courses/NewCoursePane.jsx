@@ -9,7 +9,7 @@ export default function NewCoursePane(props) {
       <div className="p-6">
         <CourseForm
           onClose={onClose}
-          refetch={props.fetchCourses}
+          fetchCourses={props.fetchCourses}
           isCreateForm={true}
         />
       </div>

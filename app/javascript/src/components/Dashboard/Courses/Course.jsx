@@ -9,7 +9,6 @@ export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
-  const [courseEditId] = useState(props.match.params.course_id);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -71,7 +70,6 @@ export default function Course(props) {
           <EditCoursePane
             showPane={showEditCoursePane}
             setShowPane={setShowEditCoursePane}
-            courseId={courseEditId}
             course={course}
             setCourse={setCourse}
           />

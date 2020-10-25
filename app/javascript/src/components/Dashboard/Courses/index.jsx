@@ -3,7 +3,8 @@ import { PageHeading } from "nitroui/layouts";
 import { Button, PageLoader } from "nitroui";
 import NewCoursePane from "./NewCoursePane";
 import ListCourses from "./ListCourses";
-import CourseApi from "../../../apis/courses";
+import { getCourses } from "../../../apis/courses";
+
 export default function Courses() {
   const [showNewCoursePane, setShowNewCoursePane] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -13,7 +14,7 @@ export default function Courses() {
   }, []);
 
   const fetchCourses = () => {
-    CourseApi.coursesFetch().then(response => setCourses(response.data));
+    getCourses().then(response => setCourses(response.data));
   };
 
   return (
