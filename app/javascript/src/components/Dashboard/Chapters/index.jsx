@@ -17,9 +17,9 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
           chapter={chapter}
           fetchSingleCourse={fetchSingleCourse}
         />
-        <EditLessonPane
-          showPane={editLessonPane}
-          setShowPane={setEditLessonPane}
+        <EditChapterPane
+          showPane={editChapterPane}
+          setShowPane={setEditChapterPane}
           chapter={chapter}
           course={course}
           fetchSingleCourse={fetchSingleCourse}
@@ -49,7 +49,7 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
                     icon="ri-pencil-line"
                     className="hover:text-indigo-500"
                     onClick={() => {
-                      setEditLessonPane(true);
+                      setEditChapterPane(true);
                       setChapter(chapter);
                     }}
                   />

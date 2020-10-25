@@ -11,7 +11,7 @@ export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
-  const [showNewChapterPane, setShowNewChapterPane] = useState(false);
+  const [newChapterPane, setNewChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Course(props) {
                 label="Add Chapter"
                 icon="ri-add-line"
                 onClick={() => {
-                  setShowNewChapterPane(true);
+                  setNewChapterPane(true);
                 }}
               />
             )}
@@ -89,8 +89,8 @@ export default function Course(props) {
             setCourse={setCourse}
           />
           <NewChapterPane
-            showPane={showNewChapterPane}
-            setShowPane={setShowNewChapterPane}
+            showPane={newChapterPane}
+            setShowPane={setNewChapterPane}
             course={course}
             fetchSingleCourse={fetchSingleCourse}
           />

@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "nitroui";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { showToastr } from "../../../common";
-import { createChapter } from "../../../apis/chapters";
+import { createChapter, updateChapter } from "../../../apis/chapters";
 
-export default function ChapterForm(props) {
+export default function ChapterForm({
+  onClose,
+  course,
+  chapter,
+  isCreateForm,
+  fetchSingleCourse,
+}) {
   const initialValues = {
     name: "",
   };
@@ -14,13 +20,11 @@ export default function ChapterForm(props) {
     name: yup.string().required("Required *"),
   });
 
-  // props.isCreateForm
-  //   ? null
-  //   : useEffect(() => {
-  //       initialValues.name = props.course.name;
-  //       initialValues.description = props.course.description;
-  //       initialValues.price = props.course.price;
-  //     }, []);
+  isCreateForm
+    ? null
+    : useEffect(() => {
+        initialValues.name = chapter.name;
+      }, []);
 
   const handleSubmit = values => {
     const payload = {
@@ -29,13 +33,15 @@ export default function ChapterForm(props) {
       },
     };
     const sendRequest = payload => {
-      return props.isCreateForm ? createChapter(props.course.id, payload) : "";
+      return isCreateForm
+        ? createChapter(course.id, payload)
+        : updateChapter(course.id, chapter.id, payload);
     };
 
     sendRequest(payload).then(response => {
       showToastr("success", response.data.notice);
-      props.fetchSingleCourse();
-      props.onClose();
+      fetchSingleCourse();
+      onClose();
     });
   };
 
@@ -65,7 +71,7 @@ export default function ChapterForm(props) {
 
         <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
           <Button
-            onClick={props.onClose}
+            onClick={onClose}
             label="Cancel"
             size="large"
             style="secondary"

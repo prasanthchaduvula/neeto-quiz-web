@@ -10,6 +10,7 @@ export default function NewChapterPane(props) {
         <ChapterForm
           onClose={onClose}
           course={props.course}
+          chapter=""
           isCreateForm={true}
           fetchSingleCourse={props.fetchSingleCourse}
         />
