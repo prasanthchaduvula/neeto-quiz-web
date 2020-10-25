@@ -14,29 +14,9 @@ export default function LessonForm(props) {
     file: "",
   };
 
-  // const FILE_SIZE = 160 * 1024;
-  // const SUPPORTED_FORMATS = [
-  //   "image/jpg",
-  //   "image/jpeg",
-  //   "image/gif",
-  //   "image/png",
-  //   "application/pdf",
-  // ];
-
   const validationSchema = yup.object().shape({
     name: yup.string().required("Required *"),
-    // file: yup
-    //   .mixed()
-    //   .test(
-    //     "fileSize",
-    //     "File too large",
-    //     value => value && value.size <= FILE_SIZE
-    //   )
-    //   .test(
-    //     "fileFormat",
-    //     "Unsupported Format",
-    //     value => value && SUPPORTED_FORMATS.includes(value.type)
-    //   ),
+    lesson_type: yup.string().required("Required *"),
   });
 
   const validateContent = value => {
@@ -59,7 +39,6 @@ export default function LessonForm(props) {
 
   const handleSubmit = values => {
     const formData = new FormData();
-
     if (values.file && values.file.name) {
       formData.append("lesson[file]", values.file);
     }
@@ -177,6 +156,7 @@ export default function LessonForm(props) {
                   id="file"
                   name="file"
                   type="file"
+                  required
                   onChange={event => {
                     formik.setFieldValue("file", event.currentTarget.files[0]);
                   }}
