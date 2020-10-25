@@ -10,3 +10,7 @@ export const updateChapter = (courseId, chapterId, payload) => {
     payload
   );
 };
+
+export const deleteChapter = (courseId, chapterId) => {
+  return axios.delete(`/api/v1/courses/${courseId}/chapters/${chapterId}`);
+};

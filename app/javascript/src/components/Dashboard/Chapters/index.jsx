@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Button } from "nitroui";
 import Lessons from "../Lessons";
 import AddLessonPane from "../Lessons/Pane/Add";
+import EditChapterPane from "./EditChapterPane";
+import { deleteChapter } from "../../../apis/chapters";
+import { showToastr } from "../../../common";
 
-export default function Chapters({ chapters, fetchSingleCourse }) {
+export default function Chapters({ chapters, fetchSingleCourse, course }) {
   const [newLessonPane, setNewLessonPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
@@ -30,6 +33,12 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
     );
   };
 
+  const deleteSingleChapter = chapterId => {
+    deleteChapter(course.id, chapterId).then(() => {
+      showToastr("success", "Deleted successfully");
+      fetchSingleCourse();
+    });
+  };
   const chaptersList = () => {
     return chapters.map(({ chapter, lessons }) => {
       return (
@@ -55,9 +64,14 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
                   />
                 </th>
                 <th className="py-2">
-                  <button>
-                    <i className="cursor-pointer text-gray-400 mr-3 text-2xl ri-delete-bin-line hover:text-red-700"></i>
-                  </button>
+                  <Button
+                    style="icon"
+                    icon="ri-delete-bin-line"
+                    className="hover:text-red-500"
+                    onClick={() => {
+                      deleteSingleChapter(chapter.id);
+                    }}
+                  />
                 </th>
               </tr>
             </thead>
