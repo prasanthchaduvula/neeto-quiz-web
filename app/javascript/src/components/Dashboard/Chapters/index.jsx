@@ -17,6 +17,13 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
           chapter={chapter}
           fetchSingleCourse={fetchSingleCourse}
         />
+        <EditLessonPane
+          showPane={editLessonPane}
+          setShowPane={setEditLessonPane}
+          chapter={chapter}
+          course={course}
+          fetchSingleCourse={fetchSingleCourse}
+        />
       </>
     ) : (
       noResourceMessage()
@@ -41,6 +48,10 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
                     style="icon"
                     icon="ri-pencil-line"
                     className="hover:text-indigo-500"
+                    onClick={() => {
+                      setEditLessonPane(true);
+                      setChapter(chapter);
+                    }}
                   />
                 </th>
                 <th className="py-2">
