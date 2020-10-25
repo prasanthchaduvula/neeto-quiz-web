@@ -29,11 +29,7 @@ export default function Courses() {
           />
         )}
       />
-      {courses ? (
-        <ListCourses courses={courses} refetch={fetchCourses} />
-      ) : (
-        <PageLoader />
-      )}
+      {courses ? <ListCourses courses={courses} /> : <PageLoader />}
       <NewCoursePane
         showPane={showNewCoursePane}
         setShowPane={setShowNewCoursePane}
