@@ -37,9 +37,11 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
                   <p className="text-base">{chapter.name}</p>
                 </th>
                 <th className="py-2">
-                  <button>
-                    <i className="text-gray-400 mr-3 text-2xl ri-pencil-line hover:text-indigo-500 cursor-pointer"></i>
-                  </button>
+                  <Button
+                    style="icon"
+                    icon="ri-pencil-line"
+                    className="hover:text-indigo-500"
+                  />
                 </th>
                 <th className="py-2">
                   <button>

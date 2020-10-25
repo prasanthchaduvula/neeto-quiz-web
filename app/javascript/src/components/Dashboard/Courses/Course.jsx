@@ -5,11 +5,13 @@ import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import Chapters from "../Chapters";
 import { showToastr } from "../../../common";
+import NewChapterPane from "../chapters/NewChapterPane";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
   const [showEditCoursePane, setShowEditCoursePane] = useState(false);
+  const [showNewChapterPane, setShowNewChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -37,7 +39,13 @@ export default function Course(props) {
           <PageHeading
             title={`${course.name}`}
             rightButton={() => (
-              <Button label="Add Chapter" icon="ri-add-line" />
+              <Button
+                label="Add Chapter"
+                icon="ri-add-line"
+                onClick={() => {
+                  setShowNewChapterPane(true);
+                }}
+              />
             )}
           />
           <nav className="bg-gray-100 p-3 rounded-md">
@@ -69,12 +77,22 @@ export default function Course(props) {
               </span>
             </div>
           </nav>
-          <Chapters chapters={chapters} fetchSingleCourse={fetchSingleCourse} />
+          <Chapters
+            chapters={chapters}
+            fetchSingleCourse={fetchSingleCourse}
+            course={course}
+          />
           <EditCoursePane
             showPane={showEditCoursePane}
             setShowPane={setShowEditCoursePane}
             course={course}
             setCourse={setCourse}
+          />
+          <NewChapterPane
+            showPane={showNewChapterPane}
+            setShowPane={setShowNewChapterPane}
+            course={course}
+            fetchSingleCourse={fetchSingleCourse}
           />
         </>
       ) : (
