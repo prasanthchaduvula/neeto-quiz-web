@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CourseApi from "../../../apis/courses";
+import { getCourse, deleteCourse } from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import Chapters from "../Chapters";
+import { showToastr } from "../../../common";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -16,13 +17,19 @@ export default function Course(props) {
   }, [showEditCoursePane]);
 
   const fetchSingleCourse = () => {
-    CourseApi.fetchCourse(props.match.params.course_id).then(response => {
+    getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
       setIsLoading(false);
     });
   };
 
+  const deleteSingleCourse = () => {
+    deleteCourse(props.match.params.course_id).then(() => {
+      showToastr("success", "Deleted successfully");
+      props.history.push("/courses");
+    });
+  };
   return (
     <div className="">
       {!isLoading ? (
@@ -57,11 +64,7 @@ export default function Course(props) {
                 <Button
                   type="button"
                   label="Delete Course"
-                  onClick={() => {
-                    CourseApi.deleteCourse(props.match.params.course_id).then(
-                      () => (window.location.href = "/courses")
-                    );
-                  }}
+                  onClick={deleteSingleCourse}
                 />
               </span>
             </div>
