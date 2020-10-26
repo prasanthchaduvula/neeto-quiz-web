@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getCourse, deleteCourse } from "../../../apis/courses";
+import { getCourse, deleteCourse } from "apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import Chapters from "../Chapters";
-import { showToastr } from "../../../common";
+import { showToastr } from "common";
 import AddChapterPane from "../Chapters/Pane/Add";
 
 export default function Course(props) {

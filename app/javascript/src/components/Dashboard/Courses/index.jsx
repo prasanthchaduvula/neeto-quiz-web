@@ -3,7 +3,7 @@ import { PageHeading } from "nitroui/layouts";
 import { Button, PageLoader } from "nitroui";
 import NewCoursePane from "./NewCoursePane";
 import ListCourses from "./ListCourses";
-import { getCourses } from "../../../apis/courses";
+import { getCourses } from "apis/courses";
 
 export default function Courses() {
   const [showNewCoursePane, setShowNewCoursePane] = useState(false);
