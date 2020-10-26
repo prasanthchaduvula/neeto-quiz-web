@@ -15,8 +15,8 @@ export default function EditCoursePane({
       <div className="px-6">
         <CourseForm
           onClose={onClose}
-          course={course}
           isCreateForm={false}
+          course={course}
           setCourse={setCourse}
         />
       </div>
