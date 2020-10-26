@@ -1,5 +1,5 @@
 import React from "react";
-import { Pane } from "../Chapters/node_modules/nitroui";
+import { Pane } from "nitroui";
 import CourseForm from "./CourseForm";
 
 export default function EditCoursePane(props) {

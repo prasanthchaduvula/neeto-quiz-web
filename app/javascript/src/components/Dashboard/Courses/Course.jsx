@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getCourse, deleteCourse } from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
-import { PageLoader, Button } from "../Chapters/node_modules/nitroui";
+import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import Chapters from "../Chapters";
 import { showToastr } from "../../../common";
