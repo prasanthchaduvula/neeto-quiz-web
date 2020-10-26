@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import EditLessonPane from "./Pane/Edit";
+import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
-  const [editLessonPane, setEditLessonPane] = useState(false);
+  const [lessonPane, setLessonPane] = useState(false);
   const [lesson, setLesson] = useState({});
 
   const showDraftStatus = isPublished => {
@@ -48,7 +48,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   <p
                     className="hover:text-blue-600 hover:underline text-base font-medium  cursor-pointer"
                     onClick={() => {
-                      setEditLessonPane(true);
+                      setLessonPane(true);
                       setLesson(lesson);
                     }}
                   >
@@ -83,9 +83,10 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
           );
         })}
       </tbody>
-      <EditLessonPane
-        showPane={editLessonPane}
-        setShowPane={setEditLessonPane}
+      <LessonPane
+        showPane={lessonPane}
+        setShowPane={setLessonPane}
+        isCreateForm={false}
         chapter={chapter}
         lesson={lesson}
         fetchSingleCourse={fetchSingleCourse}

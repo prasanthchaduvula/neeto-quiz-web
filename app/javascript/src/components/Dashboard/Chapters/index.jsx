@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
 import Lessons from "../Lessons";
-import AddLessonPane from "../Lessons/Pane/Add";
 import ChapterPane from "./Pane";
 import { deleteChapter } from "apis/chapters";
 import { showToastr } from "common";
+import LessonPane from "../Lessons/Pane";
 
 export default function Chapters({ chapters, fetchSingleCourse, course }) {
-  const [addLessonPane, setAddLessonPane] = useState(false);
+  const [lessonPane, setLessonPane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
@@ -15,10 +15,12 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
     return chapters.length ? (
       <>
         {chaptersList()}
-        <AddLessonPane
-          showPane={addLessonPane}
-          setShowPane={setAddLessonPane}
+        <LessonPane
+          showPane={lessonPane}
+          setShowPane={setLessonPane}
+          isCreateForm={true}
           chapter={chapter}
+          lesson=""
           fetchSingleCourse={fetchSingleCourse}
         />
         <ChapterPane
@@ -88,7 +90,7 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
               type="button"
               label="Add Lesson"
               onClick={() => {
-                setAddLessonPane(true);
+                setLessonPane(true);
                 setChapter(chapter);
               }}
             />

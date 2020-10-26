@@ -7,9 +7,9 @@ import * as yup from "yup";
 
 export default function LessonForm({
   onClose,
+  isCreateForm,
   chapter,
   lesson,
-  isCreateForm,
   fetchSingleCourse,
 }) {
   const initialValues = {
