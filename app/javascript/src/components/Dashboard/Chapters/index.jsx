@@ -7,7 +7,7 @@ import { deleteChapter } from "apis/chapters";
 import { showToastr } from "common";
 
 export default function Chapters({ chapters, fetchSingleCourse, course }) {
-  const [newLessonPane, setNewLessonPane] = useState(false);
+  const [addLessonPane, setAddLessonPane] = useState(false);
   const [editChapterPane, setEditChapterPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
@@ -16,8 +16,8 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
       <>
         {chaptersList()}
         <AddLessonPane
-          showPane={newLessonPane}
-          setShowPane={setNewLessonPane}
+          showPane={addLessonPane}
+          setShowPane={setAddLessonPane}
           chapter={chapter}
           fetchSingleCourse={fetchSingleCourse}
         />
@@ -87,7 +87,7 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
               type="button"
               label="Add Lesson"
               onClick={() => {
-                setNewLessonPane(true);
+                setAddLessonPane(true);
                 setChapter(chapter);
               }}
             />
