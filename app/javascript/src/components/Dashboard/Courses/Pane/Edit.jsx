@@ -17,6 +17,7 @@ export default function EditCoursePane({
           onClose={onClose}
           isCreateForm={false}
           course={course}
+          fetchCourses=""
           setCourse={setCourse}
         />
       </div>

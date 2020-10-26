@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import { Button } from "nitroui";
-import { createCourse, updateCourse } from "../../../apis/courses";
+import { createCourse, updateCourse } from "apis/courses";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import { showToastr } from "../../../common";
+import { showToastr } from "common";
 
-export default function CourseForm(props) {
+export default function CourseForm({
+  onClose,
+  isCreateForm,
+  course,
+  fetchCourses,
+  setCourse,
+}) {
   const initialValues = {
     name: "",
     description: "",
@@ -17,13 +23,15 @@ export default function CourseForm(props) {
     description: yup.string().required("Required *"),
   });
 
-  props.isCreateForm
-    ? null
-    : useEffect(() => {
-        initialValues.name = props.course.name;
-        initialValues.description = props.course.description;
-        initialValues.price = props.course.price;
-      }, []);
+  const loadIntialValues = () => {
+    initialValues.name = course.name;
+    initialValues.description = course.description;
+    initialValues.price = course.price;
+  };
+
+  useEffect(() => {
+    if (!isCreateForm) loadIntialValues();
+  }, []);
 
   const handleSubmit = values => {
     const payload = {
@@ -33,20 +41,21 @@ export default function CourseForm(props) {
         price: values.price,
       },
     };
+
     const sendRequest = payload => {
-      return props.isCreateForm
+      return isCreateForm
         ? createCourse(payload)
-        : updateCourse(props.course.id, payload);
+        : updateCourse(course.id, payload);
     };
 
     sendRequest(payload).then(response => {
       showToastr("success", response.data.notice);
-      if (props.isCreateForm) {
-        props.fetchCourses();
+      if (isCreateForm) {
+        fetchCourses();
       } else {
-        props.setCourse(response.data.course_details);
+        setCourse(response.data.course_details);
       }
-      props.onClose();
+      onClose();
     });
   };
 
@@ -105,7 +114,7 @@ export default function CourseForm(props) {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlor="price"
               >
-                Price
+                Price of the course in rupees
               </label>
               <Field
                 type="number"
@@ -118,7 +127,7 @@ export default function CourseForm(props) {
 
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button
-                onClick={props.onClose}
+                onClick={onClose}
                 label="Cancel"
                 size="large"
                 style="secondary"

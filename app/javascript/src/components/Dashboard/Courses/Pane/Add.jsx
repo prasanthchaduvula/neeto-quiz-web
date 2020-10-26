@@ -10,7 +10,9 @@ export default function AddCoursePane({ setShowPane, showPane, fetchCourses }) {
         <CourseForm
           onClose={onClose}
           isCreateForm={true}
+          course=""
           fetchCourses={fetchCourses}
+          setCourse=""
         />
       </div>
     </Pane>
