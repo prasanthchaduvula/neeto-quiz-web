@@ -2,17 +2,22 @@ import React from "react";
 import { Pane } from "nitroui";
 import CourseForm from "../CourseForm";
 
-export default function EditCoursePane(props) {
-  const onClose = () => props.setShowPane(false);
+export default function EditCoursePane({
+  setShowPane,
+  showPane,
+  course,
+  setCourse,
+}) {
+  const onClose = () => setShowPane(false);
 
   return (
-    <Pane title="Edit Course" isOpen={props.showPane} onClose={onClose}>
-      <div className="p-6">
+    <Pane title="Edit Course" isOpen={showPane} onClose={onClose}>
+      <div className="px-6">
         <CourseForm
           onClose={onClose}
-          course={props.course}
+          course={course}
           isCreateForm={false}
-          setCourse={props.setCourse}
+          setCourse={setCourse}
         />
       </div>
     </Pane>
