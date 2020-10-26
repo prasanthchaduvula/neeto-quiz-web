@@ -12,7 +12,11 @@ export default function LessonPane({
 }) {
   const onClose = () => setShowPane(false);
   return (
-    <Pane title="Edit lesson" isOpen={showPane} onClose={onClose}>
+    <Pane
+      title={isCreateForm ? "Add Lesson" : "Edit Lesson"}
+      isOpen={showPane}
+      onClose={onClose}
+    >
       <div className="px-6">
         <LessonForm
           onClose={onClose}

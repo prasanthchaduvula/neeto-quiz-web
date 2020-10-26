@@ -13,7 +13,11 @@ export default function CoursePane({
   const onClose = () => setShowPane(false);
 
   return (
-    <Pane title="Edit Course" isOpen={showPane} onClose={onClose}>
+    <Pane
+      title={isCreateForm ? "Add Course" : "Edit Course"}
+      isOpen={showPane}
+      onClose={onClose}
+    >
       <div className="px-6">
         <CourseForm
           onClose={onClose}
