@@ -3,7 +3,7 @@ import classNames from "classnames";
 import EditLessonPane from "./EditLessonPane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
-  const [showEditLessonPane, setShowEditLessonPane] = useState(false);
+  const [editLessonPane, setEditLessonPane] = useState(false);
   const [lesson, setLesson] = useState({});
 
   const showDraftStatus = isPublished => {
@@ -48,7 +48,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   <p
                     className="hover:text-blue-600 hover:underline text-base font-medium  cursor-pointer"
                     onClick={() => {
-                      setShowEditLessonPane(true);
+                      setEditLessonPane(true);
                       setLesson(lesson);
                     }}
                   >
@@ -84,8 +84,8 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
         })}
       </tbody>
       <EditLessonPane
-        showPane={showEditLessonPane}
-        setShowPane={setShowEditLessonPane}
+        showPane={editLessonPane}
+        setShowPane={setEditLessonPane}
         chapter={chapter}
         lesson={lesson}
         fetchSingleCourse={fetchSingleCourse}

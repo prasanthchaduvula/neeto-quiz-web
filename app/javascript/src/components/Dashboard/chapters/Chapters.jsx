@@ -4,7 +4,7 @@ import Lessons from "../Lessons/Lessons";
 import NewLessonPane from "../Lessons/NewLessonPane";
 
 export default function Chapters({ chapters, fetchSingleCourse }) {
-  const [showNewLessonPane, setShowNewLessonPane] = useState(false);
+  const [newLessonPane, setNewLessonPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
   const display = () => {
@@ -12,8 +12,8 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
       <>
         {chaptersList()}
         <NewLessonPane
-          showPane={showNewLessonPane}
-          setShowPane={setShowNewLessonPane}
+          showPane={newLessonPane}
+          setShowPane={setNewLessonPane}
           chapter={chapter}
           fetchSingleCourse={fetchSingleCourse}
         />
@@ -59,7 +59,7 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
               type="button"
               label="Add Lesson"
               onClick={() => {
-                setShowNewLessonPane(true);
+                setNewLessonPane(true);
                 setChapter(chapter);
               }}
             />
