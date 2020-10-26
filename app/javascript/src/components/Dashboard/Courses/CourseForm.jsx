@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button } from "nitroui";
+import { Button } from "../Chapters/node_modules/nitroui";
 import { createCourse, updateCourse } from "../../../apis/courses";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
