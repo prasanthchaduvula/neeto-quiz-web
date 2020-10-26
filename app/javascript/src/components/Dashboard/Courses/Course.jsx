@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
+import { Link } from "react-router-dom";
 import { showToastr } from "common";
 import { getCourse, updateCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
@@ -14,20 +15,8 @@ export default function Course(props) {
   const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [students, setStudents] = useState([]);
   const [showstudents, setShowStudents] = useState(false);
-=======
-  const [showEditChapterPane, setShowEditChapterPane] = useState(false);
-  const [editChapterId, setEditChapterId] = useState("");
-  const [chapterDetails, setchapterDetails] = useState({});
->>>>>>> edit chapter and delete chapter implemented
-=======
-  // const [showEditChapterPane, setShowEditChapterPane] = useState(false);
-  // const [editChapterId, setEditChapterId] = useState("");
-  // const [chapterDetails, setchapterDetails] = useState({});
->>>>>>> resolved warning
 
   useEffect(() => {
     fetchSingleCourse();
@@ -67,7 +56,7 @@ export default function Course(props) {
   };
 
   return (
-    <div className="">
+    <div>
       {!isLoading ? (
         <>
           <PageHeading
@@ -100,7 +89,13 @@ export default function Course(props) {
                   setCoursePane(true);
                 }}
               />
-              <Button label="Preview Course" className="ml-4" />
+              <Link
+                className="ml-4"
+                to={`/courses/${props.match.params.course_id}/preview`}
+              >
+                <Button label="Preview Course" />
+              </Link>
+
               <Button
                 label={course.published ? "Unpublish Course" : "Publish Course"}
                 className="ml-4"
