@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "nitroui";
 import Lessons from "../Lessons";
 import AddLessonPane from "../Lessons/Pane/Add";
-import EditChapterPane from "./EditChapterPane";
+import EditChapterPane from "./Pane/Edit";
 import { deleteChapter } from "apis/chapters";
 import { showToastr } from "common";
 

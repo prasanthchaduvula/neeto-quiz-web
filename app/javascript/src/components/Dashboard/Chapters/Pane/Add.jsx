@@ -1,8 +1,8 @@
 import React from "react";
 import { Pane } from "nitroui";
-import ChapterForm from "./ChapterForm";
+import ChapterForm from "../ChapterForm";
 
-export default function NewChapterPane(props) {
+export default function AddChapterPane(props) {
   const onClose = () => props.setShowPane(false);
   return (
     <Pane title="Add a new chapter" isOpen={props.showPane} onClose={onClose}>
