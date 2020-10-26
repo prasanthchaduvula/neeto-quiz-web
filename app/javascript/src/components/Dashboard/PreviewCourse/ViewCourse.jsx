@@ -5,7 +5,7 @@ import SidePanel from "./SidePanel";
 import Lesson from "./Lesson";
 
 export default function ViewCourse(props) {
-  const [sidepanelVisible] = useState(true);
+  const [sidepanelVisible, setSidepanelVisible] = useState(true);
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
@@ -37,6 +37,7 @@ export default function ViewCourse(props) {
         showPanel={sidepanelVisible}
         course={course}
         chapters={chapters}
+        setSidepanel={setSidepanelVisible}
       />
       <Lesson lesson={lesson} />
     </div>
