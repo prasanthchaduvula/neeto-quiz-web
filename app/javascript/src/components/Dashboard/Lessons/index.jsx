@@ -22,10 +22,10 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
         {lessons.map(lesson => {
           return (
             <tr
-              className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out"
+              className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out border-t border-b"
               key={lesson.id}
             >
-              <td className="w-3/4 border-t border-b px-4 py-2">
+              <td className="w-3/4  px-4 py-2">
                 <div className="flex space-x-2">
                   <p
                     className="hover:text-blue-600 hover:underline text-base font-medium  cursor-pointer"
@@ -39,14 +39,12 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   <div>{showDraftStatus(lesson.isPublished)}</div>
                 </div>
               </td>
-              <td className="text-center border-t border-b py-2">
+              <td className="flex justify-end items-center py-2 mr-4">
                 <Button
                   style="icon"
                   icon="ri-toggle-line"
-                  className="hover:text-indigo-500"
+                  className="hover:text-indigo-500 mr-6"
                 />
-              </td>
-              <td className="flex justify-center items-center border-t py-2">
                 <Button
                   style="icon"
                   icon="ri-delete-bin-line"

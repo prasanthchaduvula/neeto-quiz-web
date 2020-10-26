@@ -1,6 +1,6 @@
 import React from "react";
 import { Pane } from "nitroui";
-import CourseForm from "../CourseForm";
+import CourseForm from "./Form";
 
 export default function CoursePane({
   setShowPane,

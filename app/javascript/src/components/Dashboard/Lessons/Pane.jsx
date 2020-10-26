@@ -1,24 +1,24 @@
 import React from "react";
 import { Pane } from "nitroui";
-import ChapterForm from "../ChapterForm";
+import LessonForm from "./Form";
 
-export default function ChapterPane({
+export default function LessonPane({
   setShowPane,
   showPane,
   isCreateForm,
-  course,
   chapter,
+  lesson,
   fetchSingleCourse,
 }) {
   const onClose = () => setShowPane(false);
   return (
-    <Pane title="Edit chapter" isOpen={showPane} onClose={onClose}>
+    <Pane title="Edit lesson" isOpen={showPane} onClose={onClose}>
       <div className="px-6">
-        <ChapterForm
+        <LessonForm
           onClose={onClose}
           isCreateForm={isCreateForm}
-          course={course}
           chapter={chapter}
+          lesson={lesson}
           fetchSingleCourse={fetchSingleCourse}
         />
       </div>

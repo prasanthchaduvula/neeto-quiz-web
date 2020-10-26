@@ -52,24 +52,22 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
         >
           <table className="w-full table-fixed mx-auto mb-4 bg-white">
             <thead className="bg-gray-100">
-              <tr className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
-                <th className="w-3/4 border-t border-b px-4 py-2t">
+              <tr className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out border-t border-b">
+                <th className="w-3/4 px-4 py-2t">
                   <div className="flex space-x-2">
                     <p className="text-base">{chapter.name}</p>
                   </div>
                 </th>
-                <th className="py-2">
+                <th className="flex justify-end items-center py-2 mr-4">
                   <Button
                     style="icon"
                     icon="ri-pencil-line"
-                    className="hover:text-indigo-500"
+                    className="hover:text-indigo-500 mr-6"
                     onClick={() => {
                       setChapterPane(true);
                       setChapter(chapter);
                     }}
                   />
-                </th>
-                <th className="flex justify-center items-center py-2">
                   <Button
                     style="icon"
                     icon="ri-delete-bin-line"
