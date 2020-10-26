@@ -33,15 +33,17 @@ export default function LessonForm({
     return error;
   };
 
-  isCreateForm
-    ? null
-    : useEffect(() => {
-        initialValues.name = lesson.name;
-        initialValues.description = lesson.description;
-        initialValues.lesson_type = lesson.lesson_type;
-        initialValues.content = lesson.content;
-        initialValues.file = lesson.file;
-      }, []);
+  const loadIntialValues = () => {
+    initialValues.name = lesson.name;
+    initialValues.description = lesson.description;
+    initialValues.lesson_type = lesson.lesson_type;
+    initialValues.content = lesson.content;
+    initialValues.file = lesson.file;
+  };
+
+  useEffect(() => {
+    if (!isCreateForm) loadIntialValues();
+  }, []);
 
   const handleSubmit = values => {
     const formData = new FormData();

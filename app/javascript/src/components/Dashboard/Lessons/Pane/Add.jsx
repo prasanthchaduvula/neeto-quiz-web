@@ -1,8 +1,8 @@
 import React from "react";
 import { Pane } from "nitroui";
-import LessonForm from "./LessonForm";
+import LessonForm from "../LessonForm";
 
-export default function NewLessonPane({
+export default function AddLessonPane({
   setShowPane,
   showPane,
   chapter,

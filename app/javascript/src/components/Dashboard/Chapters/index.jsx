@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import Lessons from "../Lessons/Lessons";
-import NewLessonPane from "../Lessons/NewLessonPane";
+import Lessons from "../Lessons";
+import AddLessonPane from "../Lessons/Pane/Add";
 
 export default function Chapters({ chapters, fetchSingleCourse }) {
   const [newLessonPane, setNewLessonPane] = useState(false);
@@ -11,7 +11,7 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
     return chapters.length ? (
       <>
         {chaptersList()}
-        <NewLessonPane
+        <AddLessonPane
           showPane={newLessonPane}
           setShowPane={setNewLessonPane}
           chapter={chapter}

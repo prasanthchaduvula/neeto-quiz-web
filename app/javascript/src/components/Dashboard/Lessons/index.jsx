@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import EditLessonPane from "./EditLessonPane";
+import EditLessonPane from "./Pane/Edit";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
   const [editLessonPane, setEditLessonPane] = useState(false);
