@@ -11,7 +11,7 @@ export default function AddChapterPane({
   const onClose = () => setShowPane(false);
   return (
     <Pane title="Add a new chapter" isOpen={showPane} onClose={onClose}>
-      <div className="p-6">
+      <div className="px-6">
         <ChapterForm
           onClose={onClose}
           course={course}

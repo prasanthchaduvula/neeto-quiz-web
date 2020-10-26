@@ -12,7 +12,7 @@ export default function EditLessonPane({
   const onClose = () => setShowPane(false);
   return (
     <Pane title="Edit lesson" isOpen={showPane} onClose={onClose}>
-      <div className="p-6">
+      <div className="px-6">
         <LessonForm
           onClose={onClose}
           chapter={chapter}
