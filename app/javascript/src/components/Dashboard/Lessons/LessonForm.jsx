@@ -5,7 +5,13 @@ import { showToastr } from "../../../common/index";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-export default function LessonForm(props) {
+export default function LessonForm({
+  onClose,
+  chapter,
+  lesson,
+  isCreateForm,
+  fetchSingleCourse,
+}) {
   const initialValues = {
     name: "",
     description: "",
@@ -27,14 +33,14 @@ export default function LessonForm(props) {
     return error;
   };
 
-  props.isCreateForm
+  isCreateForm
     ? null
     : useEffect(() => {
-        initialValues.name = props.lesson.name;
-        initialValues.description = props.lesson.description;
-        initialValues.lesson_type = props.lesson.lesson_type;
-        initialValues.content = props.lesson.content;
-        initialValues.file = props.lesson.file;
+        initialValues.name = lesson.name;
+        initialValues.description = lesson.description;
+        initialValues.lesson_type = lesson.lesson_type;
+        initialValues.content = lesson.content;
+        initialValues.file = lesson.file;
       }, []);
 
   const handleSubmit = values => {
@@ -50,15 +56,15 @@ export default function LessonForm(props) {
     formData.append("lesson[description]", values.description);
 
     const sendRequest = payload => {
-      return props.isCreateForm
-        ? createLesson(props.chapter.id, payload)
-        : updateLesson(props.chapter.id, payload, props.lesson.id);
+      return isCreateForm
+        ? createLesson(chapter.id, payload)
+        : updateLesson(chapter.id, payload, lesson.id);
     };
 
     sendRequest(formData).then(response => {
       showToastr("success", response.data.notice);
-      props.fetchSingleCourse();
-      props.onClose();
+      fetchSingleCourse();
+      onClose();
     });
   };
 
@@ -76,7 +82,7 @@ export default function LessonForm(props) {
               className="block text-gray-700 text-sm font-bold mb-4"
               htmlor="name"
             >
-              Chapter Name: {props.chapter.name}
+              Chapter Name: {chapter.name}
             </label>
 
             <div className="mb-4">
@@ -156,7 +162,6 @@ export default function LessonForm(props) {
                   id="file"
                   name="file"
                   type="file"
-                  required
                   onChange={event => {
                     formik.setFieldValue("file", event.currentTarget.files[0]);
                   }}
@@ -171,7 +176,7 @@ export default function LessonForm(props) {
 
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button
-                onClick={props.onClose}
+                onClick={onClose}
                 label="Cancel"
                 size="large"
                 style="secondary"
