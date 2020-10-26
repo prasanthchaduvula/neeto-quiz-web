@@ -3,7 +3,7 @@ import CourseApi from "../../../apis/courses";
 import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
-import Chapters from "../chapters/Chapters";
+import Chapters from "../Chapters/Chapters";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
