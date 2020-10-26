@@ -2,9 +2,10 @@ import React from "react";
 import { Pane } from "nitroui";
 import ChapterForm from "../ChapterForm";
 
-export default function EditChapterPane({
+export default function ChapterPane({
   setShowPane,
   showPane,
+  isCreateForm,
   course,
   chapter,
   fetchSingleCourse,
@@ -15,9 +16,9 @@ export default function EditChapterPane({
       <div className="px-6">
         <ChapterForm
           onClose={onClose}
+          isCreateForm={isCreateForm}
           course={course}
           chapter={chapter}
-          isCreateForm={false}
           fetchSingleCourse={fetchSingleCourse}
         />
       </div>

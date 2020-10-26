@@ -7,24 +7,26 @@ import { createChapter, updateChapter } from "apis/chapters";
 
 export default function ChapterForm({
   onClose,
+  isCreateForm,
   course,
   chapter,
-  isCreateForm,
   fetchSingleCourse,
 }) {
   const initialValues = {
     name: "",
   };
 
+  const loadIntialValues = () => {
+    initialValues.name = chapter.name;
+  };
+
+  useEffect(() => {
+    if (!isCreateForm) loadIntialValues();
+  }, []);
+
   const validationSchema = yup.object().shape({
     name: yup.string().required("Required *"),
   });
-
-  isCreateForm
-    ? null
-    : useEffect(() => {
-        initialValues.name = chapter.name;
-      }, []);
 
   const handleSubmit = values => {
     const payload = {
