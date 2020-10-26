@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { PageHeading } from "nitroui/layouts";
 import { Button, PageLoader } from "nitroui";
-import AddCoursePane from "./Pane/Add";
 import ListCourses from "./ListCourses";
 import { getCourses } from "apis/courses";
+import CoursePane from "./Pane";
 
 export default function Courses() {
-  const [addCoursePane, setAddCoursePane] = useState(false);
+  const [coursePane, setCoursePane] = useState(false);
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -23,17 +23,20 @@ export default function Courses() {
         title="Courses"
         rightButton={() => (
           <Button
-            onClick={() => setAddCoursePane(true)}
+            onClick={() => setCoursePane(true)}
             label="Add new course"
             icon="ri-add-line"
           />
         )}
       />
       {courses ? <ListCourses courses={courses} /> : <PageLoader />}
-      <AddCoursePane
-        showPane={addCoursePane}
-        setShowPane={setAddCoursePane}
+      <CoursePane
+        showPane={coursePane}
+        setShowPane={setCoursePane}
+        isCreateForm={true}
+        course=""
         fetchCourses={fetchCourses}
+        setCourse={""}
       />
     </div>
   );

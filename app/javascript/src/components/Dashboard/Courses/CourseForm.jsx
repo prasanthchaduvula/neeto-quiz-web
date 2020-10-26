@@ -18,11 +18,6 @@ export default function CourseForm({
     price: "",
   };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required("Required *"),
-    description: yup.string().required("Required *"),
-  });
-
   const loadIntialValues = () => {
     initialValues.name = course.name;
     initialValues.description = course.description;
@@ -32,6 +27,11 @@ export default function CourseForm({
   useEffect(() => {
     if (!isCreateForm) loadIntialValues();
   }, []);
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Required *"),
+    description: yup.string().required("Required *"),
+  });
 
   const handleSubmit = values => {
     const payload = {

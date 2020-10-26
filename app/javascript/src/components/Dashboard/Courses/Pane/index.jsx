@@ -2,10 +2,12 @@ import React from "react";
 import { Pane } from "nitroui";
 import CourseForm from "../CourseForm";
 
-export default function EditCoursePane({
+export default function CoursePane({
   setShowPane,
   showPane,
+  isCreateForm,
   course,
+  fetchCourses,
   setCourse,
 }) {
   const onClose = () => setShowPane(false);
@@ -15,9 +17,9 @@ export default function EditCoursePane({
       <div className="px-6">
         <CourseForm
           onClose={onClose}
-          isCreateForm={false}
+          isCreateForm={isCreateForm}
           course={course}
-          fetchCourses=""
+          fetchCourses={fetchCourses}
           setCourse={setCourse}
         />
       </div>

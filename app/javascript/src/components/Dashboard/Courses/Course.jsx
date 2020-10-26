@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getCourse, deleteCourse } from "apis/courses";
-import EditCoursePane from "./Pane/Edit";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import Chapters from "../Chapters";
 import { showToastr } from "common";
 import ChapterPane from "../Chapters/Pane";
+import CoursePane from "./Pane";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
-  const [editCoursePane, setEditCoursePane] = useState(false);
+  const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchSingleCourse();
-  }, [editCoursePane]);
+  }, [coursePane]);
 
   const fetchSingleCourse = () => {
     getCourse(props.match.params.course_id).then(response => {
@@ -58,7 +58,7 @@ export default function Course(props) {
                   type="button"
                   label="Edit Course"
                   onClick={() => {
-                    setEditCoursePane(true);
+                    setCoursePane(true);
                   }}
                 />
               </span>
@@ -82,9 +82,10 @@ export default function Course(props) {
             fetchSingleCourse={fetchSingleCourse}
             course={course}
           />
-          <EditCoursePane
-            showPane={editCoursePane}
-            setShowPane={setEditCoursePane}
+          <CoursePane
+            showPane={coursePane}
+            setShowPane={setCoursePane}
+            isCreateForm={false}
             course={course}
             setCourse={setCourse}
           />
