@@ -1,8 +1,8 @@
 import React from "react";
 import { Pane } from "nitroui";
-import CourseForm from "./CourseForm";
+import CourseForm from "../CourseForm";
 
-export default function NewCoursePane(props) {
+export default function AddCoursePane(props) {
   const onClose = () => props.setShowPane(false);
   return (
     <Pane title="Create a new course" isOpen={props.showPane} onClose={onClose}>
