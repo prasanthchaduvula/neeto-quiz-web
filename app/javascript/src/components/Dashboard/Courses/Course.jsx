@@ -56,9 +56,9 @@ export default function Course(props) {
   };
 
   return (
-    <div>
+    <>
       {!isLoading ? (
-        <>
+        <div>
           <PageHeading
             title={`${course.name}`}
             rightButton={() => (
@@ -136,10 +136,10 @@ export default function Course(props) {
             course={course}
             fetchSingleCourse={fetchSingleCourse}
           />
-        </>
+        </div>
       ) : (
         <PageLoader />
       )}
-    </div>
+    </>
   );
 }
