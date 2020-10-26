@@ -10,7 +10,7 @@ const DashboardRoutes = () => {
     <Switch>
       <Route
         exact
-        path="/courses/:course_id/preview/lessons/lesson_id"
+        path="/courses/:course_id/preview/chapters/:chapter_id/lessons/:lesson_id"
         component={ViewCourse}
       />
       <Route

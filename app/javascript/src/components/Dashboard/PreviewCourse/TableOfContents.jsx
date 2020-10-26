@@ -63,7 +63,8 @@ function TableOfContents(props) {
                           <Link
                             className="text-lg font-normal text-gray-600"
                             to={
-                              window.location.pathname + `/lessons/${lesson.id}`
+                              window.location.pathname +
+                              `/chapters/${chapter.id}/lessons/${lesson.id}`
                             }
                           >
                             <span className="text-gray-400 text-normal">

@@ -1,7 +1,11 @@
 import axios from "axios";
 
+export const fetchChapterLessons = chapterId => {
+  return axios.get(`api/v1/chapters/${chapterId}/lessons`);
+};
+
 export const createLesson = (chapterId, payload) => {
-  return axios.post(`/api/v1/chapters/${chapterId}/lessons`, payload, {
+  axios.post(`/api/v1/chapters/${chapterId}/lessons`, payload, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
