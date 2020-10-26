@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Button } from "nitroui";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import { showToastr } from "../../../common";
-import { createChapter, updateChapter } from "../../../apis/chapters";
+import { showToastr } from "common";
+import { createChapter, updateChapter } from "apis/chapters";
 
 export default function ChapterForm({
   onClose,

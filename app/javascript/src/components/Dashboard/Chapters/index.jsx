@@ -3,11 +3,12 @@ import { Button } from "nitroui";
 import Lessons from "../Lessons";
 import AddLessonPane from "../Lessons/Pane/Add";
 import EditChapterPane from "./EditChapterPane";
-import { deleteChapter } from "../../../apis/chapters";
-import { showToastr } from "../../../common";
+import { deleteChapter } from "apis/chapters";
+import { showToastr } from "common";
 
 export default function Chapters({ chapters, fetchSingleCourse, course }) {
   const [newLessonPane, setNewLessonPane] = useState(false);
+  const [editChapterPane, setEditChapterPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
   const display = () => {

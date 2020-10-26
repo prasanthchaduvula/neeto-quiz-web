@@ -6,7 +6,7 @@ export default function EditChapterPane(props) {
   const onClose = () => props.setShowPane(false);
   return (
     <Pane title="Edit chapter" isOpen={props.showPane} onClose={onClose}>
-      <div className="p-6">
+      <div className="px-6">
         <ChapterForm
           onClose={onClose}
           course={props.course}
