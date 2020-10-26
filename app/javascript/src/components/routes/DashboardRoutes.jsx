@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Course from "../Dashboard/Courses/Course";
-import Courses from "../Dashboard/Courses/Courses";
+import Courses from "../Dashboard/Courses";
 
 const DashboardRoutes = () => {
   return (

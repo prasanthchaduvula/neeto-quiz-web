@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "nitroui";
-import Lessons from "../Lessons/Lessons";
+import Lessons from "../Lessons";
+import AddLessonPane from "../Lessons/Pane/Add";
 
-export default function Chapters({ chapters }) {
+export default function Chapters({ chapters, fetchSingleCourse }) {
+  const [newLessonPane, setNewLessonPane] = useState(false);
+  const [chapter, setChapter] = useState({});
+
   const display = () => {
-    return chapters.length ? chaptersList() : noResourceMessage();
+    return chapters.length ? (
+      <>
+        {chaptersList()}
+        <AddLessonPane
+          showPane={newLessonPane}
+          setShowPane={setNewLessonPane}
+          chapter={chapter}
+          fetchSingleCourse={fetchSingleCourse}
+        />
+      </>
+    ) : (
+      noResourceMessage()
+    );
   };
 
   const chaptersList = () => {
@@ -32,10 +48,21 @@ export default function Chapters({ chapters }) {
                 </th>
               </tr>
             </thead>
-            <Lessons lessons={lessons} chapter={chapter} />
+            <Lessons
+              lessons={lessons}
+              chapter={chapter}
+              fetchSingleCourse={fetchSingleCourse}
+            />
           </table>
           <div className="w-40 my-4 ml-4">
-            <Button type="button" label="Add Lesson" />
+            <Button
+              type="button"
+              label="Add Lesson"
+              onClick={() => {
+                setNewLessonPane(true);
+                setChapter(chapter);
+              }}
+            />
           </div>
         </div>
       );

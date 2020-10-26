@@ -24,12 +24,12 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
   def update
     @lesson.update!(lesson_params)
-    render json: { notice: "Lesson created successfully", lesson: @lesson }, status: :ok
+    render json: { notice: "Lesson updated successfully", lesson: @lesson }, status: :ok
   end
 
   def destroy
     if @lesson.destroy
-      render json: { notice: "Lesson created successfully", lesson: @lesson }, status: :ok
+      render json: { notice: "Lesson deleted successfully", lesson: @lesson }, status: :ok
     else
       render json: { errors: @lesson.errors.full_messages }, status: :bad_request
     end

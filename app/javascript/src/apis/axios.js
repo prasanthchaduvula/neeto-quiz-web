@@ -27,7 +27,9 @@ const handleErrorResponse = (error, authDispatch) => {
     authDispatch({ type: "LOGOUT" });
     showToastr("error", error.response?.data?.error);
   } else {
-    showToastr("error", error.response?.data?.message || error.message);
+    error.response.data.errors.map(error => {
+      showToastr("error", error);
+    });
   }
   return Promise.reject(error);
 };
