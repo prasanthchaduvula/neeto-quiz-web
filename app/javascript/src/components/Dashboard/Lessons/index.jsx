@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import classNames from "classnames";
+import { Button } from "nitroui";
 import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
@@ -14,24 +14,6 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     ) : (
       ""
     );
-  };
-
-  const publishStatusClass = isPublished => {
-    return classNames({
-      "bg-green-600": isPublished,
-      "bg-gray-200": !isPublished,
-    });
-  };
-
-  const isOn = isPublished => {
-    return classNames({
-      "translate-x-3": isPublished,
-      "translate-x-0": !isPublished,
-    });
-  };
-
-  const handleStatus = isPublished => {
-    return isPublished ? "Published" : "Unpublished";
   };
 
   return (
@@ -57,27 +39,19 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   <div>{showDraftStatus(lesson.isPublished)}</div>
                 </div>
               </td>
-              <td className="text-center border-t border-b py-2 px-2 tooltip">
-                <span
-                  aria-label={handleStatus(lesson.isPublished)}
-                  data-balloon-pos="left"
-                  role="checkbox"
-                  tabIndex="0"
-                  aria-checked="false"
-                  className={`${publishStatusClass(
-                    lesson.isPublished
-                  )} relative inline-flex flex-shrink-0 h-4 w-7 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`${isOn(
-                      lesson.isPublished
-                    )} inline-block h-3 w-3 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
-                  ></span>
-                </span>
-              </td>
               <td className="text-center border-t border-b py-2">
-                <i className="cursor-pointer text-gray-400 mr-3 text-2xl ri-delete-bin-line hover:text-red-600"></i>
+                <Button
+                  style="icon"
+                  icon="ri-toggle-line"
+                  className="hover:text-indigo-500"
+                />
+              </td>
+              <td className="flex justify-center items-center border-t py-2">
+                <Button
+                  style="icon"
+                  icon="ri-delete-bin-line"
+                  className="hover:text-red-500"
+                />
               </td>
             </tr>
           );
