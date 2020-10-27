@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "nitroui";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -13,20 +13,10 @@ export default function CourseForm({
   setCourse,
 }) {
   const initialValues = {
-    name: "",
-    description: "",
-    price: "",
+    name: course.name || "",
+    description: course.description || "",
+    price: course.price,
   };
-
-  const loadIntialValues = () => {
-    initialValues.name = course.name;
-    initialValues.description = course.description;
-    initialValues.price = course.price;
-  };
-
-  useEffect(() => {
-    if (!isCreateForm) loadIntialValues();
-  }, []);
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Required *"),
@@ -66,7 +56,7 @@ export default function CourseForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {formik => {
+      {({ values, handleSubmit }) => {
         return (
           <Form>
             <div className="mb-4">
@@ -120,7 +110,7 @@ export default function CourseForm({
                 type="number"
                 id="price"
                 name="price"
-                value={formik.values.price || ""}
+                value={values.price || ""}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
               />
             </div>
@@ -134,11 +124,11 @@ export default function CourseForm({
               />
 
               <Button
-                type="submit"
                 label="Submit"
                 size="large"
                 style="primary"
                 className="ml-2"
+                onClick={handleSubmit}
               />
             </div>
           </Form>

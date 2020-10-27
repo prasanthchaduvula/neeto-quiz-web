@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "nitroui";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -13,11 +13,11 @@ export default function LessonForm({
   fetchSingleCourse,
 }) {
   const initialValues = {
-    name: "",
-    description: "",
-    lesson_type: "youtube",
-    content: "",
-    file: "",
+    name: lesson.name || "",
+    description: lesson.description || "",
+    lesson_type: lesson.lesson_type || "youtube",
+    content: lesson.content || "",
+    file: lesson.file || "",
   };
 
   const validationSchema = yup.object().shape({
@@ -32,18 +32,6 @@ export default function LessonForm({
     }
     return error;
   };
-
-  const loadIntialValues = () => {
-    initialValues.name = lesson.name;
-    initialValues.description = lesson.description;
-    initialValues.lesson_type = lesson.lesson_type;
-    initialValues.content = lesson.content;
-    initialValues.file = lesson.file;
-  };
-
-  useEffect(() => {
-    if (!isCreateForm) loadIntialValues();
-  }, []);
 
   const handleSubmit = values => {
     const formData = new FormData();
@@ -77,7 +65,7 @@ export default function LessonForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {formik => {
+      {({ values, setFieldValue, handleSubmit }) => {
         return (
           <Form>
             <label
@@ -143,7 +131,7 @@ export default function LessonForm({
               />
             </div>
 
-            {formik.values.lesson_type == "youtube" ? (
+            {values.lesson_type == "youtube" ? (
               <div className="mb-4">
                 <Field
                   type="text"
@@ -165,7 +153,7 @@ export default function LessonForm({
                   name="file"
                   type="file"
                   onChange={event => {
-                    formik.setFieldValue("file", event.currentTarget.files[0]);
+                    setFieldValue("file", event.currentTarget.files[0]);
                   }}
                 />
                 <ErrorMessage
@@ -185,11 +173,11 @@ export default function LessonForm({
               />
 
               <Button
-                type="submit"
                 label="Submit"
                 size="large"
                 style="primary"
                 className="ml-2"
+                onClick={handleSubmit}
               />
             </div>
           </Form>
