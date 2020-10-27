@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import Lessons from "../Lessons";
-import ChapterPane from "./Pane";
-import { deleteChapter } from "apis/chapters";
 import { showToastr } from "common";
+import { deleteChapter } from "apis/chapters";
+import Lessons from "../Lessons";
 import LessonPane from "../Lessons/Pane";
+import ChapterPane from "./Pane";
 
 export default function Chapters({ chapters, fetchSingleCourse, course }) {
   const [lessonPane, setLessonPane] = useState(false);

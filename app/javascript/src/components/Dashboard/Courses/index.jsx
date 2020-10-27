@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { PageHeading } from "nitroui/layouts";
 import { Button, PageLoader } from "nitroui";
-import ListCourses from "./ListCourses";
 import { getCourses } from "apis/courses";
+import ListCourses from "./ListCourses";
 import CoursePane from "./Pane";
 
 export default function Courses() {

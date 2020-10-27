@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Button } from "nitroui";
-import { createCourse, updateCourse } from "apis/courses";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common";
+import { createCourse, updateCourse } from "apis/courses";
 
 export default function CourseForm({
   onClose,

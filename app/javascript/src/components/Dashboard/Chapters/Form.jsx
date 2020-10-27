@@ -12,12 +12,15 @@ export default function ChapterForm({
   chapter,
   fetchSingleCourse,
 }) {
+  // const [initialValues, setInitialValues] = useState({});
+
   const initialValues = {
     name: "",
   };
 
   const loadIntialValues = () => {
     initialValues.name = chapter.name;
+    // setInitialValues({ ...initialValues, name: chapter.name });
   };
 
   useEffect(() => {
