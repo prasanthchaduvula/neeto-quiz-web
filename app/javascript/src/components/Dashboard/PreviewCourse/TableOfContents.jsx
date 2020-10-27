@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader } from "nitroui";
+import { PageLoader, Button } from "nitroui";
 import { Link } from "react-router-dom";
 import { PageHeading } from "nitroui/layouts";
 import { getCourse } from "apis/courses";
 import Axios from "axios";
+import { showToastr } from "common/index";
 
 function TableOfContents(props) {
   const [course, setCourse] = useState({});
@@ -11,26 +12,40 @@ function TableOfContents(props) {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    loadCourse();
+    loadCourseDetails();
   }, []);
 
   const fullName = (firstName, lastName) => firstName + " " + lastName;
-  const loadCourse = () => {
-    getCourse(props.match.params.course_id).then(response => {
-      Axios.get(`/api/v1/users/${response.data.course.user_id}`).then(res => {
-        setUserName(
-          fullName(res.data.user.first_name, res.data.user.last_name)
-        );
-        setCourse(response.data.course);
-        setChapters(response.data.chapters);
+  const loadCourseDetails = () => {
+    getCourse(props.match.params.course_id)
+      .then(response => {
+        Axios.get(`/api/v1/users/${response.data.course.user_id}`).then(res => {
+          setUserName(
+            fullName(res.data.user.first_name, res.data.user.last_name)
+          );
+          setCourse(response.data.course);
+          setChapters(response.data.chapters);
+        });
+      })
+      .catch(error => {
+        showToastr("error", error);
       });
-    });
   };
   return (
     <div>
       {course && userName ? (
         <>
-          <PageHeading title={`${course.name}`} />
+          <PageHeading
+            title={`${course.name}`}
+            breadcrumbLinks={
+              <Link className="pr-2" to={`/courses/${course.id}`}>
+                <Button
+                  icon="ri-arrow-left-line"
+                  className="bg-white text-black border-none"
+                />
+              </Link>
+            }
+          />
           <div className="bg-gray-100 p-3 rounded-md mb-7">
             <p className="text-gray-600 text-base leading-tight leading-5">
               {course.description}
@@ -40,12 +55,13 @@ function TableOfContents(props) {
               {userName}
             </p>
           </div>
-          <div className="container">
-            <h2 className="text-xl font-medium mb-5">Table of Contents</h2>
+          <div className="container ml-4">
+            <h2 className="text-xl font-medium mb-2">Table of Contents</h2>
+            <hr />
 
             {chapters.map(({ chapter, lessons }, index) => {
               return (
-                <div key={chapter.id} className="mb-5">
+                <div key={chapter.id} className="my-5">
                   <h3>
                     <div className="flex items-center mb-2">
                       <span className="mr-2 text-gray-400 text-lg">
