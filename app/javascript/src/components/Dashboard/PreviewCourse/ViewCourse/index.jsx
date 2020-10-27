@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CourseApi from "apis/courses";
+import { getCourse } from "apis/courses";
 import { showLesson } from "apis/lessons";
 import SidePanel from "./SidePanel";
 import Lesson from "./Lesson";
@@ -10,8 +10,8 @@ export default function ViewCourse(props) {
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
 
-  const getCourse = () => {
-    CourseApi.fetchCourse(props.match.params.course_id).then(response => {
+  const loadCourse = () => {
+    getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
     });
@@ -27,7 +27,7 @@ export default function ViewCourse(props) {
   };
 
   useEffect(() => {
-    getCourse();
+    loadCourse();
     getLesson();
   }, []);
 

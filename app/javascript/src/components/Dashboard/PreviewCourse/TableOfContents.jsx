@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PageLoader } from "nitroui";
 import { Link } from "react-router-dom";
 import { PageHeading } from "nitroui/layouts";
-import CourseApi from "apis/courses";
+import { getCourse } from "apis/courses";
 import Axios from "axios";
 
 function TableOfContents(props) {
@@ -16,7 +16,7 @@ function TableOfContents(props) {
 
   const fullName = (firstName, lastName) => firstName + " " + lastName;
   const loadCourse = () => {
-    CourseApi.fetchCourse(props.match.params.course_id).then(response => {
+    getCourse(props.match.params.course_id).then(response => {
       Axios.get(`/api/v1/users/${response.data.course.user_id}`).then(res => {
         setUserName(
           fullName(res.data.user.first_name, res.data.user.last_name)
