@@ -17,18 +17,15 @@ export default function ViewCourse(props) {
     });
   };
 
-  const getLesson = () => {
-    showLesson(
-      props.match.params.chapter_id,
-      props.match.params.lesson_id
-    ).then(response => {
+  const getLesson = (chapter_id, lesson_id) => {
+    showLesson(chapter_id, lesson_id).then(response => {
       setLesson(response.data.lesson);
     });
   };
 
   useEffect(() => {
     loadCourse();
-    getLesson();
+    getLesson(props.match.params.chapter_id, props.match.params.lesson_id);
   }, []);
 
   return (
@@ -38,6 +35,8 @@ export default function ViewCourse(props) {
         course={course}
         chapters={chapters}
         setSidepanel={setSidepanelVisible}
+        getLesson={getLesson}
+        lessonId={lesson.id}
       />
       <Lesson lesson={lesson} />
     </div>

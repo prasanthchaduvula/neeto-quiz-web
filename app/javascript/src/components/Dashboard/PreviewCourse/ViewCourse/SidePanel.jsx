@@ -1,13 +1,25 @@
 import React from "react";
+import { Button } from "nitroui";
+import { Link } from "react-router-dom";
+import Dropdown from "./Dropdown";
 
-export default function SidePanel({ showPanel, setSidepanel }) {
+export default function SidePanel({
+  showPanel,
+  setSidepanel,
+  chapters,
+  course,
+  getLesson,
+  lessonId,
+}) {
   return showPanel ? (
-    <div className="w-1/3 h-screen bg-gray-700">
+    <div className="w-auto h-screen">
       <div className="flex bg-white justify-between items-center nui-header border-none">
-        <button className="p-2 pb-0 text-xl">
-          <i className="ri-arrow-left-line"></i>
-        </button>
-        <p>Table Of Contents</p>
+        <Link to={`/courses/${course.id}`}>
+          <button className="md:p-2 sm:pr-2 pb-0 text-xl">
+            <i className="ri-arrow-left-line"></i>
+          </button>
+        </Link>
+        <p className="p-2">Table Of Contents</p>
         <button
           className="p-2 text-xl pb-0"
           onClick={() => {
@@ -17,17 +29,29 @@ export default function SidePanel({ showPanel, setSidepanel }) {
           <i className="ri-menu-line"></i>
         </button>
       </div>
+
+      {chapters.map(chapter => {
+        return (
+          <Dropdown
+            key={chapter.chapter.id}
+            options={chapter.lessons}
+            chapter={chapter.chapter}
+            courseId={course.id}
+            onOptionSelect={getLesson}
+            lessonId={lessonId}
+          />
+        );
+      })}
     </div>
   ) : (
     <div className="flex items-start mt-7">
-      <button
+      <Button
         className="p-2 text-xl pb-0"
         onClick={() => {
           setSidepanel(true);
         }}
-      >
-        <i className="ri-menu-line"></i>
-      </button>
+        icon="ri-menu-line"
+      />
     </div>
   );
 }
