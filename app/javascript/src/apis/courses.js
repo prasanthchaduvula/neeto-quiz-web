@@ -1,22 +1,21 @@
 import axios from "axios";
 
-const coursesFetch = () => axios.get("/api/v1/courses");
+export const getCourses = () => {
+  return axios.get("/api/v1/courses");
+};
 
-const fetchCourse = id => {
+export const getCourse = id => {
   return axios.get(`/api/v1/courses/${id}`);
 };
 
-const createCourse = payload => axios.post("/api/v1/courses", payload);
+export const createCourse = payload => {
+  return axios.post("/api/v1/courses", payload);
+};
 
-const updateCourse = (id, payload) =>
-  axios.patch(`/api/v1/courses/${id}`, payload);
+export const updateCourse = (id, payload) => {
+  return axios.patch(`/api/v1/courses/${id}`, payload);
+};
 
-const deleteCourse = id => axios.delete(`/api/v1/courses/${id}`);
-
-export default {
-  coursesFetch,
-  fetchCourse,
-  createCourse,
-  updateCourse,
-  deleteCourse,
+export const deleteCourse = id => {
+  return axios.delete(`/api/v1/courses/${id}`);
 };

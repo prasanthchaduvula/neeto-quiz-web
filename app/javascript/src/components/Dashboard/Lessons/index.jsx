@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import classNames from "classnames";
-import EditLessonPane from "./Pane/Edit";
+import { Button } from "nitroui";
+import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
-  const [editLessonPane, setEditLessonPane] = useState(false);
+  const [lessonPane, setLessonPane] = useState(false);
   const [lesson, setLesson] = useState({});
 
   const showDraftStatus = isPublished => {
@@ -16,39 +16,21 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     );
   };
 
-  const publishStatusClass = isPublished => {
-    return classNames({
-      "bg-green-600": isPublished,
-      "bg-gray-200": !isPublished,
-    });
-  };
-
-  const isOn = isPublished => {
-    return classNames({
-      "translate-x-3": isPublished,
-      "translate-x-0": !isPublished,
-    });
-  };
-
-  const handleStatus = isPublished => {
-    return isPublished ? "Published" : "Unpublished";
-  };
-
   return (
     <>
       <tbody>
         {lessons.map(lesson => {
           return (
             <tr
-              className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out"
+              className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out border-t border-b"
               key={lesson.id}
             >
-              <td className="w-3/4 border-t border-b px-4 py-2">
+              <td className="w-3/4  px-4 py-2">
                 <div className="flex space-x-2">
                   <p
                     className="hover:text-blue-600 hover:underline text-base font-medium  cursor-pointer"
                     onClick={() => {
-                      setEditLessonPane(true);
+                      setLessonPane(true);
                       setLesson(lesson);
                     }}
                   >
@@ -57,35 +39,26 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   <div>{showDraftStatus(lesson.isPublished)}</div>
                 </div>
               </td>
-              <td className="text-center border-t border-b py-2 px-2 tooltip">
-                <span
-                  aria-label={handleStatus(lesson.isPublished)}
-                  data-balloon-pos="left"
-                  role="checkbox"
-                  tabIndex="0"
-                  aria-checked="false"
-                  className={`${publishStatusClass(
-                    lesson.isPublished
-                  )} relative inline-flex flex-shrink-0 h-4 w-7 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline`}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`${isOn(
-                      lesson.isPublished
-                    )} inline-block h-3 w-3 rounded-full bg-white shadow transform transition ease-in-out duration-200`}
-                  ></span>
-                </span>
-              </td>
-              <td className="text-center border-t border-b py-2">
-                <i className="cursor-pointer text-gray-400 mr-3 text-2xl ri-delete-bin-line hover:text-red-600"></i>
+              <td className="flex justify-end items-center py-2 mr-4">
+                <Button
+                  style="icon"
+                  icon="ri-toggle-line"
+                  className="hover:text-indigo-500 mr-6"
+                />
+                <Button
+                  style="icon"
+                  icon="ri-delete-bin-line"
+                  className="hover:text-red-500"
+                />
               </td>
             </tr>
           );
         })}
       </tbody>
-      <EditLessonPane
-        showPane={editLessonPane}
-        setShowPane={setEditLessonPane}
+      <LessonPane
+        showPane={lessonPane}
+        setShowPane={setLessonPane}
+        isCreateForm={false}
         chapter={chapter}
         lesson={lesson}
         fetchSingleCourse={fetchSingleCourse}

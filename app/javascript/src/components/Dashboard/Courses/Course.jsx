@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
-import CourseApi from "../../../apis/courses";
-import EditCoursePane from "./EditCoursePane";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
+import { showToastr } from "common";
+import { getCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
+import ChapterPane from "../Chapters/Pane";
+import CoursePane from "./Pane";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState({});
-  const [showEditCoursePane, setShowEditCoursePane] = useState(false);
-  const [courseEditId] = useState(props.match.params.course_id);
+  const [coursePane, setCoursePane] = useState(false);
+  const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchSingleCourse();
-  }, [showEditCoursePane]);
+  }, [coursePane]);
 
   const fetchSingleCourse = () => {
-    CourseApi.fetchCourse(props.match.params.course_id).then(response => {
+    getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
       setIsLoading(false);
     });
   };
 
+  const deleteSingleCourse = () => {
+    deleteCourse(props.match.params.course_id).then(() => {
+      showToastr("success", "Deleted successfully");
+      props.history.push("/courses");
+    });
+  };
   return (
     <div className="">
       {!isLoading ? (
@@ -31,7 +39,13 @@ export default function Course(props) {
           <PageHeading
             title={`${course.name}`}
             rightButton={() => (
-              <Button label="Add Chapter" icon="ri-add-line" />
+              <Button
+                label="Add Chapter"
+                icon="ri-add-line"
+                onClick={() => {
+                  setChapterPane(true);
+                }}
+              />
             )}
           />
           <nav className="bg-gray-100 p-3 rounded-md">
@@ -44,7 +58,7 @@ export default function Course(props) {
                   type="button"
                   label="Edit Course"
                   onClick={() => {
-                    setShowEditCoursePane(true);
+                    setCoursePane(true);
                   }}
                 />
               </span>
@@ -58,22 +72,30 @@ export default function Course(props) {
                 <Button
                   type="button"
                   label="Delete Course"
-                  onClick={() => {
-                    CourseApi.deleteCourse(props.match.params.course_id).then(
-                      () => (window.location.href = "/courses")
-                    );
-                  }}
+                  onClick={deleteSingleCourse}
                 />
               </span>
             </div>
           </nav>
-          <Chapters chapters={chapters} fetchSingleCourse={fetchSingleCourse} />
-          <EditCoursePane
-            showPane={showEditCoursePane}
-            setShowPane={setShowEditCoursePane}
-            courseId={courseEditId}
+          <Chapters
+            chapters={chapters}
+            fetchSingleCourse={fetchSingleCourse}
+            course={course}
+          />
+          <CoursePane
+            showPane={coursePane}
+            setShowPane={setCoursePane}
+            isCreateForm={false}
             course={course}
             setCourse={setCourse}
+          />
+          <ChapterPane
+            showPane={chapterPane}
+            setShowPane={setChapterPane}
+            isCreateForm={true}
+            course={course}
+            chapter=""
+            fetchSingleCourse={fetchSingleCourse}
           />
         </>
       ) : (

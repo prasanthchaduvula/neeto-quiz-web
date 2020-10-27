@@ -1,20 +1,34 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
+import { showToastr } from "common";
+import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
-import AddLessonPane from "../Lessons/Pane/Add";
+import LessonPane from "../Lessons/Pane";
+import ChapterPane from "./Pane";
 
-export default function Chapters({ chapters, fetchSingleCourse }) {
-  const [newLessonPane, setNewLessonPane] = useState(false);
+export default function Chapters({ chapters, fetchSingleCourse, course }) {
+  const [lessonPane, setLessonPane] = useState(false);
+  const [chapterPane, setChapterPane] = useState(false);
   const [chapter, setChapter] = useState({});
 
   const display = () => {
     return chapters.length ? (
       <>
         {chaptersList()}
-        <AddLessonPane
-          showPane={newLessonPane}
-          setShowPane={setNewLessonPane}
+        <LessonPane
+          showPane={lessonPane}
+          setShowPane={setLessonPane}
+          isCreateForm={true}
           chapter={chapter}
+          lesson=""
+          fetchSingleCourse={fetchSingleCourse}
+        />
+        <ChapterPane
+          showPane={chapterPane}
+          setShowPane={setChapterPane}
+          isCreateForm={false}
+          chapter={chapter}
+          course={course}
           fetchSingleCourse={fetchSingleCourse}
         />
       </>
@@ -23,6 +37,12 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
     );
   };
 
+  const deleteSingleChapter = chapterId => {
+    deleteChapter(course.id, chapterId).then(() => {
+      showToastr("success", "Deleted successfully");
+      fetchSingleCourse();
+    });
+  };
   const chaptersList = () => {
     return chapters.map(({ chapter, lessons }) => {
       return (
@@ -32,19 +52,30 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
         >
           <table className="w-full table-fixed mx-auto mb-4 bg-white">
             <thead className="bg-gray-100">
-              <tr>
-                <th className="w-3/4 px-4 py-2 text-left">
-                  <p className="text-base">{chapter.name}</p>
+              <tr className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out border-t border-b">
+                <th className="w-3/4 px-4 py-2t">
+                  <div className="flex space-x-2">
+                    <p className="text-base">{chapter.name}</p>
+                  </div>
                 </th>
-                <th className="py-2">
-                  <button>
-                    <i className="text-gray-400 mr-3 text-2xl ri-pencil-line hover:text-indigo-500 cursor-pointer"></i>
-                  </button>
-                </th>
-                <th className="py-2">
-                  <button>
-                    <i className="cursor-pointer text-gray-400 mr-3 text-2xl ri-delete-bin-line hover:text-red-700"></i>
-                  </button>
+                <th className="flex justify-end items-center py-2 mr-4">
+                  <Button
+                    style="icon"
+                    icon="ri-pencil-line"
+                    className="hover:text-indigo-500 mr-6"
+                    onClick={() => {
+                      setChapterPane(true);
+                      setChapter(chapter);
+                    }}
+                  />
+                  <Button
+                    style="icon"
+                    icon="ri-delete-bin-line"
+                    className="hover:text-red-500"
+                    onClick={() => {
+                      deleteSingleChapter(chapter.id);
+                    }}
+                  />
                 </th>
               </tr>
             </thead>
@@ -59,7 +90,7 @@ export default function Chapters({ chapters, fetchSingleCourse }) {
               type="button"
               label="Add Lesson"
               onClick={() => {
-                setNewLessonPane(true);
+                setLessonPane(true);
                 setChapter(chapter);
               }}
             />
