@@ -18,12 +18,12 @@ function Dropdown({ options, onOptionSelect, chapter, lessonId }) {
         onClick={() => setActive(!isActive)}
       >
         <Button
-          className="text-gray-800 bg-gray-100 border-none text-xl p-2font-semibold"
+          className="text-gray-800 bg-gray-100 border-none shadow-none text-xl p-2font-semibold"
           onClick={() => setActive(!isActive)}
           label={chapter.name}
         />
         <Button
-          className="text-gray-800 bg-gray-100 border-none text-xl p-2"
+          className="text-gray-800 bg-gray-100 border-none shadow-none text-xl p-2"
           icon="ri-arrow-down-s-line"
         />
       </div>

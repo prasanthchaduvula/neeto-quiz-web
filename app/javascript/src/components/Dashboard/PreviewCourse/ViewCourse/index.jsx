@@ -9,7 +9,6 @@ export default function ViewCourse(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
-  const [lessonContent, setLessonContent] = useState("");
 
   const loadCourse = () => {
     getCourse(props.match.params.course_id).then(response => {
@@ -20,8 +19,10 @@ export default function ViewCourse(props) {
 
   const getLesson = (chapter_id, lesson_id) => {
     showLesson(chapter_id, lesson_id).then(response => {
-      setLesson(response.data.lesson);
-      setLessonContent(response.data.link);
+      setLesson({
+        ...response.data.lesson,
+        lessonAttachment: response.data.link,
+      });
     });
   };
 
@@ -42,7 +43,7 @@ export default function ViewCourse(props) {
       />
       <Lesson
         lesson={lesson}
-        content={lessonContent}
+        content={lesson.lessonAttachment}
         courseId={course.id}
         getLesson={getLesson}
       />

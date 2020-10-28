@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { PageHeading } from "nitroui/layouts";
 import { Button } from "nitroui";
 import ReactPlayer from "react-player";
-import { PDFReader } from "reactjs-pdf-reader";
+import { Document, Page, pdfjs } from "react-pdf";
 import Viewer from "react-viewer";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { getChapter } from "apis/chapters";
 
 function Lesson({ lesson, content, courseId, getLesson }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber] = useState(1);
+
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
   useEffect(() => {
     loadChapter(lesson.chapter_id);
   }, [lesson.chapter_id]);
@@ -38,6 +42,10 @@ function Lesson({ lesson, content, courseId, getLesson }) {
     }
   };
 
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
   return (
     <div className="p-2 w-full ml-2  p-4 ">
       <PageHeading
@@ -45,18 +53,25 @@ function Lesson({ lesson, content, courseId, getLesson }) {
         customClass="border-none font-semibold text-2xl"
       />
       <div className="p-3 mt-3 rounded-md text-lg p-2">
-        <p className="text-gray-600 leading-tight">{lesson.description}</p>
+        <p className="text-gray-600 ">{lesson.description}</p>
       </div>
       <div className="my-3 p-3">
         {lesson.content != null ? (
           <ReactPlayer url={lesson.content} controls={true} width={`100%`} />
         ) : lesson.lesson_type == "pdf" ? (
-          <PDFReader url={content} />
+          <>
+            <Document file={content} onLoadSuccess={onDocumentLoadSuccess}>
+              <Page pageNumber={pageNumber} />
+            </Document>
+            <p className="text-center">
+              Page {pageNumber} of {numPages}
+            </p>
+          </>
         ) : (
           <div>
             <Button
               className="my-2"
-              label="see Image"
+              label="See Image"
               onClick={() => setVisible(true)}
             />
             <Viewer
