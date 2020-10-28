@@ -53,28 +53,21 @@ export default function Course(props) {
               {course.description}
             </p>
             <div className="flex items-center justify-end w-full">
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2 ">
-                <Button
-                  type="button"
-                  label="Edit Course"
-                  onClick={() => {
-                    setCoursePane(true);
-                  }}
-                />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button type="button" label="Preview Course" />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button type="button" label="Publish Course" />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button
-                  type="button"
-                  label="Delete Course"
-                  onClick={deleteSingleCourse}
-                />
-              </span>
+              <Button label="Students" />
+              <Button
+                label="Edit Course"
+                className="ml-4"
+                onClick={() => {
+                  setCoursePane(true);
+                }}
+              />
+              <Button label="Preview Course" className="ml-4" />
+              <Button label="Publish Course" className="ml-4" />
+              <Button
+                label="Delete Course"
+                className="ml-4"
+                onClick={deleteSingleCourse}
+              />
             </div>
           </nav>
           <Chapters
