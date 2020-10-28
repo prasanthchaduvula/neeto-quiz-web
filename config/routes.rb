@@ -25,5 +25,7 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
-  get '*path', to: 'home#index', via: :all
+  get "*path", to: "home#index", constraints: -> (request) do
+    request.path.exclude?("/rails") 
+  end
 end

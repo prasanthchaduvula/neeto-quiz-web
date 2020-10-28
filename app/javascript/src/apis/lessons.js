@@ -9,7 +9,7 @@ export const showLesson = (chapterId, lessonId) => {
 };
 
 export const createLesson = (chapterId, payload) => {
-  axios.post(`/api/v1/chapters/${chapterId}/lessons`, payload, {
+  return axios.post(`/api/v1/chapters/${chapterId}/lessons`, payload, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

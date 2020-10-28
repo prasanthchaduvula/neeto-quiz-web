@@ -15,5 +15,5 @@ export const deleteChapter = (courseId, chapterId) => {
   return axios.delete(`/api/v1/courses/${courseId}/chapters/${chapterId}`);
 };
 
-export const fetchChapter = (courseId, chapterId) =>
+export const getChapter = (courseId, chapterId) =>
   axios.get(`/api/v1/courses/${courseId}/chapters/${chapterId}`);

@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "nitroui";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
-
 export default function SidePanel({
   showPanel,
   setSidepanel,
@@ -12,34 +11,33 @@ export default function SidePanel({
   lessonId,
 }) {
   return showPanel ? (
-    <div className="w-auto h-screen">
-      <div className="flex bg-white justify-between items-center nui-header border-none">
+    <div className="w-auto h-screen ml-0 top-0 left-0 w-9/12 ">
+      <div className="flex bg-white justify-between items-center nui-header border-none no-underline">
         <Link to={`/courses/${course.id}`}>
-          <button className="md:p-2 sm:pr-2 pb-0 text-xl">
-            <i className="ri-arrow-left-line"></i>
-          </button>
+          <Button className=" sm:pr-2 pb-0 text-xl" icon="ri-arrow-left-line" />
         </Link>
-        <p className="p-2">Table Of Contents</p>
-        <button
-          className="p-2 text-xl pb-0"
+        <p className="p-2 text-xl font-semibold">Table Of Contents</p>
+
+        <Button
           onClick={() => {
             setSidepanel(false);
           }}
-        >
-          <i className="ri-menu-line"></i>
-        </button>
+          className=" sm:pr-2 pb-0 text-xl"
+          icon="ri-close-line"
+        />
       </div>
 
       {chapters.map(chapter => {
         return (
-          <Dropdown
-            key={chapter.chapter.id}
-            options={chapter.lessons}
-            chapter={chapter.chapter}
-            courseId={course.id}
-            onOptionSelect={getLesson}
-            lessonId={lessonId}
-          />
+          <div key={chapter.chapter.id} className="bg-gray-100">
+            <Dropdown
+              options={chapter.lessons}
+              chapter={chapter.chapter}
+              courseId={course.id}
+              onOptionSelect={getLesson}
+              lessonId={lessonId}
+            />
+          </div>
         );
       })}
     </div>
