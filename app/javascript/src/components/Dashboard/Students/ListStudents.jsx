@@ -16,10 +16,10 @@ export default function ListStudents({ students }) {
                   <span className="text-base text-gray-600 font-medium">{`${index +
                     1}. `}</span>
                   <div className="ml-1">
-                    <p className="text-base font-medium">{student.name}</p>
-                    <p className="text-base mt-1 text-gray-600">
-                      {student.phone_number}
+                    <p className="text-sm font-medium">
+                      {student.name ? student.name : "Name not added"}
                     </p>
+                    <p className="mt-1 text-gray-600">{student.phone_number}</p>
                   </div>
                 </div>
               </li>

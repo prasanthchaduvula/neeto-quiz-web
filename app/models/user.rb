@@ -32,7 +32,11 @@ class User < ApplicationRecord
   end
 
   def name
-    "#{first_name} #{last_name}"
+    if (first_name)
+      "#{first_name} #{last_name}"
+    else
+      false
+    end
   end
   private
 
