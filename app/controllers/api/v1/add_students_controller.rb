@@ -18,7 +18,6 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
   private
 
     def load_user
-      puts "itcame #{params[:paid]}"
       @user = User.find_by(phone_number: params[:phone_number])
       if @user.nil?
         create_user
