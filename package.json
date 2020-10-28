@@ -45,6 +45,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
+    "react-router-nav-prompt": "^0.4.0",
     "react-toastify": "^6.0.9",
     "react_ujs": "^2.6.1",
     "tailwindcss": "^1.6.0",
