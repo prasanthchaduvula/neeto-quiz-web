@@ -51,7 +51,6 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
                 id="phone_number"
                 name="phone_number"
                 prefix="+91"
-                className="border"
                 placeholder="Enter phone number"
               />
             </div>
