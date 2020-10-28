@@ -6,6 +6,7 @@ import { getCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
+import Students from "../Students";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -13,6 +14,8 @@ export default function Course(props) {
   const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [students, setStudents] = useState([]);
+  const [showstudents, setShowStudents] = useState(false);
 
   useEffect(() => {
     fetchSingleCourse();
@@ -22,6 +25,7 @@ export default function Course(props) {
     getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
+      setStudents(response.data.students);
       setIsLoading(false);
     });
   };
@@ -53,28 +57,26 @@ export default function Course(props) {
               {course.description}
             </p>
             <div className="flex items-center justify-end w-full">
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2 ">
-                <Button
-                  type="button"
-                  label="Edit Course"
-                  onClick={() => {
-                    setCoursePane(true);
-                  }}
-                />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button type="button" label="Preview Course" />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button type="button" label="Publish Course" />
-              </span>
-              <span className="inline-block  pl-3 py-1 text-sm font-semibold text-gray-700 ml-2">
-                <Button
-                  type="button"
-                  label="Delete Course"
-                  onClick={deleteSingleCourse}
-                />
-              </span>
+              <Button
+                label="Students"
+                onClick={() => {
+                  setShowStudents(true);
+                }}
+              />
+              <Button
+                label="Edit Course"
+                className="ml-4"
+                onClick={() => {
+                  setCoursePane(true);
+                }}
+              />
+              <Button label="Preview Course" className="ml-4" />
+              <Button label="Publish Course" className="ml-4" />
+              <Button
+                label="Delete Course"
+                className="ml-4"
+                onClick={deleteSingleCourse}
+              />
             </div>
           </nav>
           <Chapters
@@ -95,6 +97,14 @@ export default function Course(props) {
             isCreateForm={true}
             course={course}
             chapter=""
+            fetchSingleCourse={fetchSingleCourse}
+          />
+          <Students
+            showPane={showstudents}
+            setShowPane={setShowStudents}
+            isCreateForm={false}
+            students={students}
+            course={course}
             fetchSingleCourse={fetchSingleCourse}
           />
         </>
