@@ -8,7 +8,7 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
 
 
   def create
-    if params[:paid] == false
+    if params[:is_paid] == false
       send_invitation
     else
       add_student

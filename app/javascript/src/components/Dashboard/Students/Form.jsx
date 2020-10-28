@@ -8,7 +8,7 @@ import { addStudent } from "apis/courses";
 export default function StudentForm({ onClose, course, fetchSingleCourse }) {
   const initialValues = {
     phone_number: "",
-    paid: false,
+    is_paid: false,
   };
 
   const validationSchema = yup.object().shape({
@@ -18,7 +18,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
   const handleSubmit = values => {
     const payload = {
       phone_number: "+91" + values.phone_number,
-      paid: values.paid,
+      is_paid: values.is_paid,
     };
 
     addStudent(course.id, payload).then(response => {
@@ -65,7 +65,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
             </div>
 
             <div className="mt-4">
-              <Field type="checkbox" name="paid" className="form-checkbox" />
+              <Field type="checkbox" name="is_paid" className="form-checkbox" />
               <label className="ml-2">
                 Is this student already paid for this course
               </label>
