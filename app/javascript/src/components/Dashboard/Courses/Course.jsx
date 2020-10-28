@@ -6,6 +6,7 @@ import { getCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
+import Students from "../Students";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -13,6 +14,7 @@ export default function Course(props) {
   const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showstudents, setShowStudents] = useState(false);
 
   useEffect(() => {
     fetchSingleCourse();
@@ -53,7 +55,12 @@ export default function Course(props) {
               {course.description}
             </p>
             <div className="flex items-center justify-end w-full">
-              <Button label="Students" />
+              <Button
+                label="Students"
+                onClick={() => {
+                  setShowStudents(true);
+                }}
+              />
               <Button
                 label="Edit Course"
                 className="ml-4"
@@ -90,6 +97,7 @@ export default function Course(props) {
             chapter=""
             fetchSingleCourse={fetchSingleCourse}
           />
+          <Students showPane={showstudents} setShowPane={setShowStudents} />
         </>
       ) : (
         <PageLoader />

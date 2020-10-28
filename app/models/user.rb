@@ -31,6 +31,9 @@ class User < ApplicationRecord
     false
   end
 
+  def name
+    "#{first_name} #{last_name}"
+  end
   private
 
     def ensure_authentication_token_is_present
