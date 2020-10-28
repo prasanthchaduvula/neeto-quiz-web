@@ -19,3 +19,7 @@ export const updateCourse = (id, payload) => {
 export const deleteCourse = id => {
   return axios.delete(`/api/v1/courses/${id}`);
 };
+
+export const addStudent = (id, payload) => {
+  return axios.post(`/api/v1/courses/${id}/add_students`, payload);
+};

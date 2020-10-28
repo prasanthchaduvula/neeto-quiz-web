@@ -102,7 +102,10 @@ export default function Course(props) {
           <Students
             showPane={showstudents}
             setShowPane={setShowStudents}
+            isCreateForm={false}
             students={students}
+            course={course}
+            fetchSingleCourse={fetchSingleCourse}
           />
         </>
       ) : (

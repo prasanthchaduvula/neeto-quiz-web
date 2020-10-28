@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { Button } from "nitroui";
 import StudentPane from "./Pane";
 
-export default function ListStudents({ students }) {
+export default function ListStudents({
+  onClose,
+  students,
+  course,
+  fetchSingleCourse,
+}) {
   const [studentPane, setStudentPane] = useState(false);
 
   const Students = () => {
@@ -47,13 +52,25 @@ export default function ListStudents({ students }) {
         {students.length ? Students() : noResourceMessage()}
         <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
           <Button
+            onClick={onClose}
+            label="Cancel"
+            size="large"
+            style="secondary"
+          />
+          <Button
             label="Add Student"
+            className="ml-2"
             onClick={() => {
               setStudentPane(true);
             }}
           />
 
-          <StudentPane showPane={studentPane} setShowPane={setStudentPane} />
+          <StudentPane
+            showPane={studentPane}
+            setShowPane={setStudentPane}
+            course={course}
+            fetchSingleCourse={fetchSingleCourse}
+          />
         </div>
       </>
     );
