@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "nitroui";
+import StudentPane from "./Pane";
 
 export default function ListStudents({ students }) {
+  const [studentPane, setStudentPane] = useState(false);
+
   const Students = () => {
     return (
       <div className="bg-gray">
@@ -38,7 +42,21 @@ export default function ListStudents({ students }) {
   };
 
   const display = () => {
-    return students.length ? Students() : noResourceMessage();
+    return (
+      <>
+        {students.length ? Students() : noResourceMessage()}
+        <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
+          <Button
+            label="Add Student"
+            onClick={() => {
+              setStudentPane(true);
+            }}
+          />
+
+          <StudentPane showPane={studentPane} setShowPane={setStudentPane} />
+        </div>
+      </>
+    );
   };
 
   return display();

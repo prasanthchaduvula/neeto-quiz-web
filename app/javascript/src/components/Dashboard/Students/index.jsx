@@ -1,5 +1,5 @@
 import React from "react";
-import { Pane, Button } from "nitroui";
+import { Pane } from "nitroui";
 import ListStudents from "./ListStudents";
 
 export default function Students({ setShowPane, showPane, students }) {
@@ -8,9 +8,6 @@ export default function Students({ setShowPane, showPane, students }) {
     <Pane title="Students" isOpen={showPane} onClose={onClose}>
       <div className="px-6">
         <ListStudents students={students} />
-      </div>
-      <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
-        <Button label="Add" />
       </div>
     </Pane>
   );
