@@ -14,6 +14,7 @@ export default function Course(props) {
   const [coursePane, setCoursePane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [students, setStudents] = useState([]);
   const [showstudents, setShowStudents] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function Course(props) {
     getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
+      setStudents(response.data.students);
       setIsLoading(false);
     });
   };
@@ -97,7 +99,11 @@ export default function Course(props) {
             chapter=""
             fetchSingleCourse={fetchSingleCourse}
           />
-          <Students showPane={showstudents} setShowPane={setShowStudents} />
+          <Students
+            showPane={showstudents}
+            setShowPane={setShowStudents}
+            students={students}
+          />
         </>
       ) : (
         <PageLoader />
