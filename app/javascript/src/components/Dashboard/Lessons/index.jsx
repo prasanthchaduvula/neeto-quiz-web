@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
 import { showToastr } from "common/index";
-import { updateLesson, deleteLesson } from "apis/lessons";
+import { publishLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
@@ -18,11 +18,14 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     );
   };
 
-  const publishLesson = lesson => {
-    const formData = new FormData();
-    formData.append("lesson[is_published]", !lesson.is_published);
+  const publishSingleLesson = lesson => {
+    const payload = {
+      lesson: {
+        is_published: !lesson.is_published,
+      },
+    };
 
-    updateLesson(chapter.id, formData, lesson.id).then(response => {
+    publishLesson(chapter.id, payload, lesson.id).then(response => {
       showToastr(
         "success",
         `Lesson ${
@@ -69,7 +72,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                     lesson.is_published ? "ri-toggle-fill" : "ri-toggle-line"
                   }
                   className="hover:text-indigo-500 mr-6 text-indigo-500"
-                  onClick={() => publishLesson(lesson)}
+                  onClick={() => publishSingleLesson(lesson)}
                 />
                 <Button
                   style="icon"
