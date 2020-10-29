@@ -5,10 +5,12 @@ import ReactPlayer from "react-player";
 import { Document, Page, pdfjs } from "react-pdf";
 import Viewer from "react-viewer";
 import { getChapter } from "apis/chapters";
+import PreviousButton from "./PreviousButton";
+import NextButton from "./NextButton";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function Lesson({ lesson, content, courseId, getLesson }) {
+function Lesson({ lesson, content, courseId, getLesson, chapters }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
   const [numPages, setNumPages] = useState(null);
@@ -34,12 +36,39 @@ function Lesson({ lesson, content, courseId, getLesson }) {
     }
   };
 
+  const handleNextChapterButton = chapterId => {
+    const currentChapterIndex = getChapterIndex(chapterId);
+    const nextChapterObject = chapters[currentChapterIndex + 1];
+    getLesson(nextChapterObject.chapter.id, nextChapterObject.lessons[0].id);
+  };
+
   const handlePreviousButton = lessonId => {
     if (lessonIds.includes(lessonId)) {
       const index = lessonIds.indexOf(lessonId);
       const previousLessonId = lessonIds[index - 1];
       getLesson(lesson.chapter_id, previousLessonId);
     }
+  };
+
+  const handlePreviousChapterButton = chapterId => {
+    const currentChapterIndex = getChapterIndex(chapterId);
+    const previousChapterObject = chapters[currentChapterIndex - 1];
+    getLesson(
+      previousChapterObject.chapter.id,
+      previousChapterObject.lessons[previousChapterObject.lessons.length - 1].id
+    );
+  };
+
+  const isFirstChapter = chapterId => {
+    return getChapterIndex(chapterId) === 0;
+  };
+
+  const isLastChapter = chapterId => {
+    return getChapterIndex(chapterId) === chapters.length - 1;
+  };
+
+  const getChapterIndex = chapterId => {
+    return chapters.findIndex(obj => obj.chapter.id == chapterId);
   };
 
   function onDocumentLoadSuccess({ numPages }) {
@@ -88,22 +117,20 @@ function Lesson({ lesson, content, courseId, getLesson }) {
       </div>
 
       <div className="flex justify-center mb-0">
-        {lessonIds && lessonIds[0] != lesson.id && (
-          <Button
-            className="mx-2"
-            label="Previous"
-            onClick={() => {
-              handlePreviousButton(lesson.id);
-            }}
-          />
-        )}
-        {lessonIds && lessonIds[lessonIds.length - 1] != lesson.id && (
-          <Button
-            className="mx-2"
-            label="Next"
-            onClick={() => handleNextButton(lesson.id)}
-          />
-        )}
+        <PreviousButton
+          lesson={lesson}
+          lessonIds={lessonIds}
+          handlePreviousButton={handlePreviousButton}
+          handlePreviousChapterButton={handlePreviousChapterButton}
+          isFirstChapter={isFirstChapter(lesson.chapter_id)}
+        />
+        <NextButton
+          lesson={lesson}
+          lessonIds={lessonIds}
+          handleNextButton={handleNextButton}
+          handleNextChapterButton={handleNextChapterButton}
+          isLastChapter={isLastChapter(lesson.chapter_id)}
+        />
       </div>
     </div>
   );

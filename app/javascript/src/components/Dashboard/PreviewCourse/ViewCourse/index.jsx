@@ -45,6 +45,7 @@ export default function ViewCourse(props) {
         lesson={lesson}
         content={lesson.lessonAttachment}
         courseId={course.id}
+        chapters={chapters}
         getLesson={getLesson}
       />
     </div>
