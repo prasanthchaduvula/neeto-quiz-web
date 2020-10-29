@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
+import { showToastr } from "common/index";
+import { publishLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
@@ -16,6 +18,30 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     );
   };
 
+  const publishSingleLesson = lesson => {
+    const payload = {
+      lesson: {
+        is_published: !lesson.is_published,
+      },
+    };
+
+    publishLesson(chapter.id, payload, lesson.id).then(response => {
+      showToastr(
+        "success",
+        `Lesson ${
+          response.data.lesson.is_published ? "Published" : "Unpublished"
+        } successfully`
+      );
+      fetchSingleCourse();
+    });
+  };
+
+  const deleteSingleLesson = lesson => {
+    deleteLesson(chapter.id, lesson.id).then(() => {
+      showToastr("success", "Lesson Deleted Successfully");
+      fetchSingleCourse();
+    });
+  };
   return (
     <>
       <tbody>
@@ -36,19 +62,23 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   >
                     {lesson.name}
                   </p>
-                  <div>{showDraftStatus(lesson.isPublished)}</div>
+                  <div>{showDraftStatus(lesson.is_published)}</div>
                 </div>
               </td>
               <td className="flex justify-end items-center py-2 mr-4">
                 <Button
                   style="icon"
-                  icon="ri-toggle-line"
-                  className="hover:text-indigo-500 mr-6"
+                  icon={
+                    lesson.is_published ? "ri-toggle-fill" : "ri-toggle-line"
+                  }
+                  className="hover:text-indigo-500 mr-6 text-indigo-500"
+                  onClick={() => publishSingleLesson(lesson)}
                 />
                 <Button
                   style="icon"
                   icon="ri-delete-bin-line"
                   className="hover:text-red-500"
+                  onClick={() => deleteSingleLesson(lesson)}
                 />
               </td>
             </tr>

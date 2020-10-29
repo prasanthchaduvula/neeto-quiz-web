@@ -37,12 +37,13 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
     );
   };
 
-  const deleteSingleChapter = chapterId => {
-    deleteChapter(course.id, chapterId).then(() => {
-      showToastr("success", "Deleted successfully");
+  const deleteSingleChapter = chapter => {
+    deleteChapter(course.id, chapter.id).then(() => {
+      showToastr("success", "Chapter Deleted successfully");
       fetchSingleCourse();
     });
   };
+
   const chaptersList = () => {
     return chapters.map(({ chapter, lessons }) => {
       return (
@@ -73,7 +74,7 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
                     icon="ri-delete-bin-line"
                     className="hover:text-red-500"
                     onClick={() => {
-                      deleteSingleChapter(chapter.id);
+                      deleteSingleChapter(chapter);
                     }}
                   />
                 </th>

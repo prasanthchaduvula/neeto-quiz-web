@@ -19,3 +19,14 @@ export const updateLesson = (chapterId, payload, lessonId) => {
     }
   );
 };
+
+export const deleteLesson = (chapterId, lessonId) => {
+  return axios.delete(`/api/v1/chapters/${chapterId}/lessons/${lessonId}`);
+};
+
+export const publishLesson = (chapterId, payload, lessonId) => {
+  return axios.patch(
+    `/api/v1/chapters/${chapterId}/lessons/${lessonId}`,
+    payload
+  );
+};
