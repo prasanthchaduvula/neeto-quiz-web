@@ -36,7 +36,7 @@ const Students = ({ students }) => {
                   1}. `}</span>
                 <div className="ml-1">
                   <p className="text-sm font-medium">
-                    {student.name ? student.name : "Name not added"}
+                    {student.name.length > 1 ? student.name : "Name not added"}
                   </p>
                   <p className="mt-1 text-gray-600">{student.phone_number}</p>
                 </div>
