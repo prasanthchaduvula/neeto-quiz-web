@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
+import { showToastr } from "common/index";
+import { updateLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
@@ -14,6 +16,21 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     ) : (
       ""
     );
+  };
+
+  const publishLesson = lesson => {
+    const formData = new FormData();
+    formData.append("lesson[is_published]", !lesson.is_published);
+
+    updateLesson(chapter.id, formData, lesson.id).then(response => {
+      showToastr(
+        "success",
+        `Lesson ${
+          response.data.lesson.is_published ? "Published" : "Unpublished"
+        } successfully`
+      );
+      fetchSingleCourse();
+    });
   };
 
   return (
@@ -36,14 +53,17 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   >
                     {lesson.name}
                   </p>
-                  <div>{showDraftStatus(lesson.isPublished)}</div>
+                  <div>{showDraftStatus(lesson.is_published)}</div>
                 </div>
               </td>
               <td className="flex justify-end items-center py-2 mr-4">
                 <Button
                   style="icon"
-                  icon="ri-toggle-line"
-                  className="hover:text-indigo-500 mr-6"
+                  icon={
+                    lesson.is_published ? "ri-toggle-fill" : "ri-toggle-line"
+                  }
+                  className="hover:text-indigo-500 mr-6 text-indigo-500"
+                  onClick={() => publishLesson(lesson)}
                 />
                 <Button
                   style="icon"
