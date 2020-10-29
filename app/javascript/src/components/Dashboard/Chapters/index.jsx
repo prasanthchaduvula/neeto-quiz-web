@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import { showToastr, showSweetAlert } from "common";
+import { showToastr } from "common";
 import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
 import LessonPane from "../Lessons/Pane";
@@ -38,13 +38,9 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
   };
 
   const deleteSingleChapter = chapter => {
-    showSweetAlert(chapter.name, "chapter").then(result => {
-      if (result.value) {
-        deleteChapter(course.id, chapter.id).then(() => {
-          showToastr("success", "Chapter Deleted successfully");
-          fetchSingleCourse();
-        });
-      }
+    deleteChapter(course.id, chapter.id).then(() => {
+      showToastr("success", "Chapter Deleted successfully");
+      fetchSingleCourse();
     });
   };
 

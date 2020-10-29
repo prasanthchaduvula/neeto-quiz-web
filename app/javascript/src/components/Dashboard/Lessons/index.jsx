@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import { showToastr, showSweetAlert } from "common/index";
+import { showToastr } from "common/index";
 import { updateLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
@@ -34,13 +34,9 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
   };
 
   const deleteSingleLesson = lesson => {
-    showSweetAlert(lesson.name, "lesson").then(result => {
-      if (result.value) {
-        deleteLesson(chapter.id, lesson.id).then(() => {
-          showToastr("success", "Lesson Deleted Successfully");
-          fetchSingleCourse();
-        });
-      }
+    deleteLesson(chapter.id, lesson.id).then(() => {
+      showToastr("success", "Lesson Deleted Successfully");
+      fetchSingleCourse();
     });
   };
   return (
