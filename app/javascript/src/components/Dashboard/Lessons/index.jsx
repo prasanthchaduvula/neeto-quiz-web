@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
 import { showToastr } from "common/index";
-import { updateLesson } from "apis/lessons";
+import { updateLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
@@ -33,6 +33,12 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     });
   };
 
+  const deleteSingleLesson = lessonId => {
+    deleteLesson(chapter.id, lessonId).then(() => {
+      showToastr("success", "Lesson Deleted Successfully");
+      fetchSingleCourse();
+    });
+  };
   return (
     <>
       <tbody>
@@ -69,6 +75,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                   style="icon"
                   icon="ri-delete-bin-line"
                   className="hover:text-red-500"
+                  onClick={() => deleteSingleLesson(lesson.id)}
                 />
               </td>
             </tr>
