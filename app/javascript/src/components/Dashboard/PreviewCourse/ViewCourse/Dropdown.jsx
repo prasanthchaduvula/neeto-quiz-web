@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { Button } from "nitroui";
 import classNames from "classnames";
 
-function Dropdown({ options, onOptionSelect, chapter, lessonId }) {
+function Dropdown({ options, onOptionSelect, chapter, lesson }) {
   const [isActive, setActive] = useState(false);
 
   const isLessonSelected = lesson_id => {
     return classNames({
-      "text-blue-800": lesson_id == lessonId,
-      "text-dark": lesson_id != lessonId,
+      "text-blue-800": lesson_id == lesson.id,
+      "text-dark": lesson_id != lesson.id,
+    });
+  };
+
+  const isChapterSelected = chapter_id => {
+    return classNames({
+      "font-semibold": chapter_id == lesson.chapter_id,
+      "font-normal": chapter_id != lesson.chapter_id,
     });
   };
 
@@ -19,7 +26,9 @@ function Dropdown({ options, onOptionSelect, chapter, lessonId }) {
         onClick={() => setActive(!isActive)}
       >
         <Button
-          className="text-gray-800 bg-gray-100 border-none shadow-none text-xl p-2font-semibold"
+          className={`text-gray-800 bg-gray-100 border-none shadow-none text-xl p-2font-semibold ${isChapterSelected(
+            chapter.id
+          )}`}
           onClick={() => setActive(!isActive)}
           label={chapter.name}
         />

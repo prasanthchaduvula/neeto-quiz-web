@@ -39,7 +39,7 @@ export default function ViewCourse(props) {
         chapters={chapters}
         setShowPane={setShowPane}
         getLesson={getLesson}
-        lessonId={lesson.id}
+        lesson={lesson}
       />
       <Lesson
         lesson={lesson}

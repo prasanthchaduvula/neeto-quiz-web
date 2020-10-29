@@ -8,7 +8,7 @@ export default function SidePanel({
   chapters,
   course,
   getLesson,
-  lessonId,
+  lesson,
 }) {
   return showPanel ? (
     <div className="w-auto h-screen ml-0 top-0 left-0 w-9/12 ">
@@ -35,7 +35,7 @@ export default function SidePanel({
               chapter={chapter.chapter}
               courseId={course.id}
               onOptionSelect={getLesson}
-              lessonId={lessonId}
+              lesson={lesson}
             />
           </div>
         );
