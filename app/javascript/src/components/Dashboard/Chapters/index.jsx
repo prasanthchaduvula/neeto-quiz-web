@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "nitroui";
-import { showToastr } from "common";
+import { showToastr, showSweetAlert } from "common";
 import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
 import LessonPane from "../Lessons/Pane";
@@ -37,12 +37,17 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
     );
   };
 
-  const deleteSingleChapter = chapterId => {
-    deleteChapter(course.id, chapterId).then(() => {
-      showToastr("success", "Deleted successfully");
-      fetchSingleCourse();
+  const deleteSingleChapter = chapter => {
+    showSweetAlert(chapter.name, "chapter").then(result => {
+      if (result.value) {
+        deleteChapter(course.id, chapter.id).then(() => {
+          showToastr("success", "Chapter Deleted successfully");
+          fetchSingleCourse();
+        });
+      }
     });
   };
+
   const chaptersList = () => {
     return chapters.map(({ chapter, lessons }) => {
       return (
@@ -73,7 +78,7 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
                     icon="ri-delete-bin-line"
                     className="hover:text-red-500"
                     onClick={() => {
-                      deleteSingleChapter(chapter.id);
+                      deleteSingleChapter(chapter);
                     }}
                   />
                 </th>
