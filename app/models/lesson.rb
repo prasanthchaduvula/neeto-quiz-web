@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
+  default_scope { order(created_at: :asc) }
+
   VALID_FILE_TYPE = %w[image/jpeg image/jpg image/gif image/png application/pdf]
 
   enum lesson_type: { youtube: 0, pdf: 1, image: 2 }
