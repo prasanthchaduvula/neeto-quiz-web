@@ -3,7 +3,6 @@ import { PageLoader, Button } from "nitroui";
 import { Link } from "react-router-dom";
 import { PageHeading } from "nitroui/layouts";
 import { getCourse } from "apis/courses";
-import Axios from "axios";
 import { showToastr } from "common/index";
 
 function TableOfContents(props) {
@@ -19,18 +18,17 @@ function TableOfContents(props) {
   const loadCourseDetails = () => {
     getCourse(props.match.params.course_id)
       .then(response => {
-        Axios.get(`/api/v1/users/${response.data.course.user_id}`).then(res => {
-          setUserName(
-            fullName(res.data.user.first_name, res.data.user.last_name)
-          );
-          setCourse(response.data.course);
-          setChapters(response.data.chapters);
-        });
+        setCourse(response.data.course);
+        setChapters(response.data.chapters);
+        setUserName(
+          fullName(response.data.user.first_name, response.data.user.last_name)
+        );
       })
       .catch(error => {
         showToastr("error", error);
       });
   };
+
   return (
     <div>
       {course && userName ? (
@@ -106,4 +104,5 @@ function TableOfContents(props) {
     </div>
   );
 }
+
 export default TableOfContents;

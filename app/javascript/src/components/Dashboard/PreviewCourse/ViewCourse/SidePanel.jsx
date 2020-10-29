@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 export default function SidePanel({
   showPanel,
-  setSidepanel,
+  setShowPane,
   chapters,
   course,
   getLesson,
@@ -20,7 +20,7 @@ export default function SidePanel({
 
         <Button
           onClick={() => {
-            setSidepanel(false);
+            setShowPane(false);
           }}
           className=" sm:pr-2 pb-0 text-xl"
           icon="ri-close-line"
@@ -46,7 +46,7 @@ export default function SidePanel({
       <Button
         className="p-2 text-xl pb-0"
         onClick={() => {
-          setSidepanel(true);
+          setShowPane(true);
         }}
         icon="ri-menu-line"
       />

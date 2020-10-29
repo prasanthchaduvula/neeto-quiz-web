@@ -6,13 +6,13 @@ import { Document, Page, pdfjs } from "react-pdf";
 import Viewer from "react-viewer";
 import { getChapter } from "apis/chapters";
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 function Lesson({ lesson, content, courseId, getLesson }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber] = useState(1);
-
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
   useEffect(() => {
     loadChapter(lesson.chapter_id);
@@ -68,7 +68,7 @@ function Lesson({ lesson, content, courseId, getLesson }) {
             </p>
           </>
         ) : (
-          <div>
+          <>
             <Button
               className="my-2"
               label="See Image"
@@ -83,12 +83,12 @@ function Lesson({ lesson, content, courseId, getLesson }) {
               }}
               images={[{ src: `${content}`, alt: "Image" }]}
             />
-          </div>
+          </>
         )}
       </div>
 
       <div className="flex justify-center mb-0">
-        {lessonIds && lessonIds[0] != lesson.id ? (
+        {lessonIds && lessonIds[0] != lesson.id && (
           <Button
             className="mx-2"
             label="Previous"
@@ -96,14 +96,14 @@ function Lesson({ lesson, content, courseId, getLesson }) {
               handlePreviousButton(lesson.id);
             }}
           />
-        ) : null}
-        {lessonIds && lessonIds[lessonIds.length - 1] != lesson.id ? (
+        )}
+        {lessonIds && lessonIds[lessonIds.length - 1] != lesson.id && (
           <Button
             className="mx-2"
             label="Next"
             onClick={() => handleNextButton(lesson.id)}
           />
-        ) : null}
+        )}
       </div>
     </div>
   );

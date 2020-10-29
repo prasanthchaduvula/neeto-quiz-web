@@ -5,7 +5,7 @@ import SidePanel from "./SidePanel";
 import Lesson from "./Lesson";
 
 export default function ViewCourse(props) {
-  const [sidepaneVisible, setSidepaneVisible] = useState(false);
+  const [showPane, setShowPane] = useState(false);
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
@@ -34,10 +34,10 @@ export default function ViewCourse(props) {
   return (
     <div className="flex">
       <SidePanel
-        showPanel={sidepaneVisible}
+        showPanel={showPane}
         course={course}
         chapters={chapters}
-        setSidepanel={setSidepaneVisible}
+        setShowPane={setShowPane}
         getLesson={getLesson}
         lessonId={lesson.id}
       />
