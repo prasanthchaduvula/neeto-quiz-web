@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
-import { showToastr } from "common";
+import { showToastr, showSweetAlert } from "common";
 import { getCourse, updateCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
@@ -31,9 +31,13 @@ export default function Course(props) {
   };
 
   const deleteSingleCourse = () => {
-    deleteCourse(props.match.params.course_id).then(() => {
-      showToastr("success", "Deleted successfully");
-      props.history.push("/courses");
+    showSweetAlert(course.name, "course").then(result => {
+      if (result.value) {
+        deleteCourse(course.id).then(() => {
+          showToastr("success", "Deleted successfully");
+          props.history.push("/courses");
+        });
+      }
     });
   };
 
