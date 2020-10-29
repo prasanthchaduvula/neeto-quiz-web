@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 import classNames from "classnames";
 
 function Dropdown({ options, onOptionSelect, chapter, lesson }) {
-  const [isActive, setActive] = useState(false);
+  useEffect(() => {
+    if (chapter.id == lesson.chapter_id) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [lesson.chapter_id]);
 
+  const [isActive, setActive] = useState(true);
   const isLessonSelected = lesson_id => {
     return classNames({
       "text-blue-800": lesson_id == lesson.id,
