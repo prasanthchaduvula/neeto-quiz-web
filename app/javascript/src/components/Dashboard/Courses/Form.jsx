@@ -43,7 +43,7 @@ export default function CourseForm({
       if (isCreateForm) {
         fetchCourses();
       } else {
-        setCourse(response.data.course_details);
+        setCourse(response.data.course);
       }
       onClose();
     });

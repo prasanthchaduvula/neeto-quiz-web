@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import { showToastr } from "common";
-import { getCourse, deleteCourse } from "apis/courses";
+import { getCourse, updateCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
@@ -36,6 +36,24 @@ export default function Course(props) {
       props.history.push("/courses");
     });
   };
+
+  const publishCourse = () => {
+    const payload = {
+      course: {
+        published: !course.published,
+      },
+    };
+    updateCourse(course.id, payload).then(response => {
+      showToastr(
+        "success",
+        `Course ${
+          response.data.course.published ? "Published" : "Unpublished"
+        } successfully`
+      );
+      setCourse(response.data.course);
+    });
+  };
+
   return (
     <div className="">
       {!isLoading ? (
@@ -71,7 +89,11 @@ export default function Course(props) {
                 }}
               />
               <Button label="Preview Course" className="ml-4" />
-              <Button label="Publish Course" className="ml-4" />
+              <Button
+                label={course.published ? "Unpublish Course" : "Publish Course"}
+                className="ml-4"
+                onClick={publishCourse}
+              />
               <Button
                 label="Delete Course"
                 className="ml-4"
