@@ -33,6 +33,9 @@ gem "devise", "~> 4.7"
 # Error tracking
 gem "honeybadger"
 
+# support for Cross-Origin Resource Sharing
+gem "rack-cors"
+
 # Fonts
 gem "font-awesome-sass", "~> 4.3.0"
 

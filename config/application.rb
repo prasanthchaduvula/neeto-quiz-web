@@ -21,6 +21,8 @@ module NitroAcademy
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
+
+    routes.default_url_options[:host] = Rails.application.secrets.host
     
     config.i18n.available_locales = [:en]
     config.i18n.default_locale = :en
