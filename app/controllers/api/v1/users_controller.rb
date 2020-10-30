@@ -22,6 +22,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
 
     def load_user
+      puts "prams#{params[:id]}"
       @user = User.find_by!(id: params[:id])
     end
 end
