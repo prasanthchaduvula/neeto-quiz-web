@@ -3,8 +3,16 @@ import { Tab, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import GeneralSettings from "./Form";
 import { TABS } from "./constants";
+
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("profile");
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("authPhone");
+    localStorage.removeItem("user_id");
+    window.location.href = "/";
+  };
 
   return (
     <>
@@ -15,6 +23,7 @@ export default function Profile() {
             style="secondary"
             label="Logout"
             icon="ri-logout-box-r-line"
+            onClick={handleLogout}
           />
         )}
       />
