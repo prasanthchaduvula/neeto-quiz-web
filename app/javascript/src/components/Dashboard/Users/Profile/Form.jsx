@@ -4,7 +4,7 @@ import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common";
-import { getUser } from "apis/users";
+import { getUser, updateUser } from "apis/users";
 
 export default function GeneralSettings() {
   const [loading, setLoading] = useState(false);
@@ -28,10 +28,18 @@ export default function GeneralSettings() {
     last_name: yup.string().required("Required *"),
   });
 
-  // const onSubmit = values => {
-
-  //   showToastr("success", "got it");
-  // };
+  const handleSubmit = values => {
+    const payload = {
+      user: {
+        first_name: values.first_name,
+        last_name: values.last_name,
+      },
+    };
+    updateUser(values.id, payload).then(() => {
+      showToastr("success", "Profile updated successfully");
+      loadProfile();
+    });
+  };
 
   const onReset = () => showToastr("success", "Form has been reset.");
 
@@ -43,7 +51,7 @@ export default function GeneralSettings() {
         enableReinitialize
         initialValues={initialValues}
         onReset={onReset}
-        // onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         {({ handleReset, handleSubmit }) => {
