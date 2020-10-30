@@ -10,5 +10,5 @@ json.students @course.joined_students.map do |student|
   json.name student.name
   json.phone_number student.phone_number
   json.id student.id
-  
+
 end

@@ -38,9 +38,9 @@ def delete_all_records_from_all_tables
 end
 
 def create_sample_data!
-  create_user! 
+  create_user!
 end
 
 def create_user!
-  User.create!(first_name:"Sam", last_name:"Smith", phone_number: "+917680918423")
+  User.create!(first_name: "Sam", last_name: "Smith", phone_number: "+917680918423")
 end
