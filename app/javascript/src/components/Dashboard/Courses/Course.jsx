@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
+import { Link } from "react-router-dom";
 import { showToastr } from "common";
 import { getCourse, updateCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
@@ -55,9 +56,9 @@ export default function Course(props) {
   };
 
   return (
-    <div className="">
+    <>
       {!isLoading ? (
-        <>
+        <div>
           <PageHeading
             title={`${course.name}`}
             rightButton={() => (
@@ -88,7 +89,13 @@ export default function Course(props) {
                   setCoursePane(true);
                 }}
               />
-              <Button label="Preview Course" className="ml-4" />
+              <Link
+                className="ml-4"
+                to={`/courses/${props.match.params.course_id}/preview`}
+              >
+                <Button label="Preview Course" />
+              </Link>
+
               <Button
                 label={course.published ? "Unpublish Course" : "Publish Course"}
                 className="ml-4"
@@ -129,10 +136,10 @@ export default function Course(props) {
             course={course}
             fetchSingleCourse={fetchSingleCourse}
           />
-        </>
+        </div>
       ) : (
         <PageLoader />
       )}
-    </div>
+    </>
   );
 }

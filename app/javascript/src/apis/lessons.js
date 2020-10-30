@@ -1,5 +1,13 @@
 import axios from "axios";
 
+export const fetchChapterLessons = chapterId => {
+  return axios.get(`api/v1/chapters/${chapterId}/lessons`);
+};
+
+export const showLesson = (chapterId, lessonId) => {
+  return axios.get(`/api/v1/chapters/${chapterId}/lessons/${lessonId}`);
+};
+
 export const createLesson = (chapterId, payload) => {
   return axios.post(`/api/v1/chapters/${chapterId}/lessons`, payload, {
     headers: {
