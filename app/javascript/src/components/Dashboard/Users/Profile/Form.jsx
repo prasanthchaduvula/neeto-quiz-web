@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PageLoader, Button } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
-// import * as yup from "yup";
+import * as yup from "yup";
 import { showToastr } from "common";
 import { getUser } from "apis/users";
 
@@ -23,10 +23,10 @@ export default function GeneralSettings() {
     });
   };
 
-  // const validationSchema = yup.object().shape({
-  //   first_name: yup.string().required("Required *"),
-  //   last_name: yup.string().required("Required *"),
-  // });
+  const validationSchema = yup.object().shape({
+    first_name: yup.string().required("Required *"),
+    last_name: yup.string().required("Required *"),
+  });
 
   // const onSubmit = values => {
 
@@ -44,7 +44,7 @@ export default function GeneralSettings() {
         initialValues={initialValues}
         onReset={onReset}
         // onSubmit={onSubmit}
-        // validationSchema={profileSchema}
+        validationSchema={validationSchema}
       >
         {({ handleReset, handleSubmit }) => {
           return (
