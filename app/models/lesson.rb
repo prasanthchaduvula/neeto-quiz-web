@@ -16,4 +16,14 @@ class Lesson < ApplicationRecord
   validates :content, presence: true, if: -> { lesson_type == "youtube" }
   validates :file, content_type: { in: VALID_FILE_TYPE, message: "must be a valid image or pdf format" },
       presence: true, if: -> { lesson_type == "image" || lesson_type == "pdf" }
+
+  def file_url
+    return unless file.present?
+
+    if Rails.env.production?
+      file.service_url
+    else
+      Rails.application.routes.url_helpers.polymorphic_path(file)
+    end
+  end
 end
