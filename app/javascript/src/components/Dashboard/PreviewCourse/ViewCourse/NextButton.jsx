@@ -14,7 +14,8 @@ const NextButton = ({
   const isLastLesson = lessonIds[lessonIds.length - 1] == lesson.id;
   const isLastPublishedLesson =
     publishedLessonIds[publishedLessonIds.length - 1] == lesson.id;
-  const navigationForStudent = () => {
+
+  const nextButtonForStudent = () => {
     if (isLastChapterWithPublishedLessons && isLastPublishedLesson) {
       return null;
     }
@@ -39,7 +40,8 @@ const NextButton = ({
       />
     );
   };
-  const navigationForTeacher = () => {
+
+  const nextButtonforTeacher = () => {
     if (isLastChapter && isLastLesson) {
       return null;
     }
@@ -64,10 +66,11 @@ const NextButton = ({
       />
     );
   };
+
   if (isStudent) {
-    return navigationForStudent();
+    return nextButtonForStudent();
   } else {
-    return navigationForTeacher();
+    return nextButtonforTeacher();
   }
 };
 

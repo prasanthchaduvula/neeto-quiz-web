@@ -13,7 +13,8 @@ const PreviousButton = ({
 }) => {
   const isFirstLesson = lessonIds[0] == lesson.id;
   const isFirstPublishedLesson = publishedLessonIds[0] == lesson.id;
-  const navigationForStudent = () => {
+
+  const previousButtonForStudent = () => {
     if (isFirstChapterWithPublishedLessons && isFirstPublishedLesson) {
       return null;
     }
@@ -39,7 +40,7 @@ const PreviousButton = ({
     );
   };
 
-  const navigationForTeacher = () => {
+  const previousButtonForTeacher = () => {
     if (isFirstChapter && isFirstLesson) {
       return null;
     }
@@ -64,10 +65,11 @@ const PreviousButton = ({
       />
     );
   };
+
   if (isStudent) {
-    return navigationForStudent();
+    return previousButtonForStudent();
   } else {
-    return navigationForTeacher();
+    return previousButtonForTeacher();
   }
 };
 

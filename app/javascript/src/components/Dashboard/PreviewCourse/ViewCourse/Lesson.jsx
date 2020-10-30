@@ -179,7 +179,7 @@ function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
         {lesson.content != null ? (
           <ReactPlayer url={lesson.content} controls={true} width={`100%`} />
         ) : lesson.lesson_type == "pdf" ? (
-          <div className="teext-center">
+          <div className="text-center">
             <Document file={content} onLoadSuccess={onDocumentLoadSuccess}>
               <Page pageNumber={pageNumber} />
             </Document>

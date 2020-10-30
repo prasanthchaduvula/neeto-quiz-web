@@ -40,10 +40,6 @@ export default function Course(props) {
     const [chapterPane, setChapterPane] = useState(false);
     const [showstudents, setShowStudents] = useState(false);
 
-    // useEffect(() => {
-    //   fetchSingleCourse();
-    // }, [coursePane]);
-
     const deleteSingleCourse = () => {
       deleteCourse(course.id).then(() => {
         showToastr("success", "Deleted successfully");
@@ -162,7 +158,7 @@ export default function Course(props) {
   if (isLoading) {
     return <PageLoader />;
   } else {
-    if (String(course.user_id) == JSON.parse(localStorage.user_id)) {
+    if (course.user_id == localStorage.user_id) {
       return (
         <CourseDisplayForCreator
           course={course}

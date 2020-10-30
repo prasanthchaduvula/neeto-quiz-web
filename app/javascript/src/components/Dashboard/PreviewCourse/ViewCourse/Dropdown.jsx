@@ -3,6 +3,8 @@ import { Button } from "nitroui";
 import classNames from "classnames";
 
 function Dropdown({ options, onOptionSelect, chapter, lesson, isStudent }) {
+  const [isActive, setActive] = useState(true);
+
   useEffect(() => {
     if (chapter.id == lesson.chapter_id) {
       setActive(true);
@@ -11,7 +13,6 @@ function Dropdown({ options, onOptionSelect, chapter, lesson, isStudent }) {
     }
   }, [lesson.chapter_id]);
 
-  const [isActive, setActive] = useState(true);
   const isLessonSelected = lesson_id => {
     return classNames({
       "text-blue-800": lesson_id == lesson.id,
@@ -24,6 +25,21 @@ function Dropdown({ options, onOptionSelect, chapter, lesson, isStudent }) {
       "font-semibold": chapter_id == lesson.chapter_id,
       "font-normal": chapter_id != lesson.chapter_id,
     });
+  };
+
+  const showOption = (chapterId, lesson) => {
+    return (
+      <div
+        key={lesson.id}
+        style={{ cursor: "pointer" }}
+        className={`${isLessonSelected(
+          lesson.id
+        )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
+        onClick={() => onOptionSelect(chapterId, lesson.id)}
+      >
+        {lesson.name}
+      </div>
+    );
   };
 
   return (
@@ -51,32 +67,10 @@ function Dropdown({ options, onOptionSelect, chapter, lesson, isStudent }) {
         })}
       >
         {!isStudent
-          ? options.map(option => (
-              <div
-                key={option.id}
-                style={{ cursor: "pointer" }}
-                className={`${isLessonSelected(
-                  option.id
-                )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
-                onClick={() => onOptionSelect(chapter.id, option.id)}
-              >
-                {option.name}
-              </div>
-            ))
+          ? options.map(lesson => showOption(chapter.id, lesson))
           : options
               .filter(option => option.is_published)
-              .map(lesson => (
-                <div
-                  key={lesson.id}
-                  style={{ cursor: "pointer" }}
-                  className={`${isLessonSelected(
-                    lesson.id
-                  )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
-                  onClick={() => onOptionSelect(chapter.id, lesson.id)}
-                >
-                  {lesson.name}
-                </div>
-              ))}
+              .map(lesson => showOption(chapter.id, lesson))}
       </div>
     </div>
   );
