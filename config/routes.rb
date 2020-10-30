@@ -3,8 +3,7 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  default_url_options protocol: Rails.env.development? ? :http : :https
-  
+   
   devise_for :users, only: []
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
