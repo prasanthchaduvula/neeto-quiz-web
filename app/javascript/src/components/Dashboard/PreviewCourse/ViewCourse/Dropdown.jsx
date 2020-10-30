@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "nitroui";
 import classNames from "classnames";
 
-function Dropdown({ options, onOptionSelect, chapter, lesson }) {
+function Dropdown({ options, onOptionSelect, chapter, lesson, isStudent }) {
   useEffect(() => {
     if (chapter.id == lesson.chapter_id) {
       setActive(true);
@@ -50,18 +50,33 @@ function Dropdown({ options, onOptionSelect, chapter, lesson }) {
           hidden: !isActive,
         })}
       >
-        {options.map(option => (
-          <div
-            key={option.id}
-            style={{ cursor: "pointer" }}
-            className={`${isLessonSelected(
-              option.id
-            )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
-            onClick={() => onOptionSelect(chapter.id, option.id)}
-          >
-            {option.name}
-          </div>
-        ))}
+        {!isStudent
+          ? options.map(option => (
+              <div
+                key={option.id}
+                style={{ cursor: "pointer" }}
+                className={`${isLessonSelected(
+                  option.id
+                )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
+                onClick={() => onOptionSelect(chapter.id, option.id)}
+              >
+                {option.name}
+              </div>
+            ))
+          : options
+              .filter(option => option.is_published)
+              .map(lesson => (
+                <div
+                  key={lesson.id}
+                  style={{ cursor: "pointer" }}
+                  className={`${isLessonSelected(
+                    lesson.id
+                  )} p-3 bg-white mb-2 rounded-md shadow-sm text-lg`}
+                  onClick={() => onOptionSelect(chapter.id, lesson.id)}
+                >
+                  {lesson.name}
+                </div>
+              ))}
       </div>
     </div>
   );

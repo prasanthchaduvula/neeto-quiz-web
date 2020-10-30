@@ -9,6 +9,7 @@ const NextButton = ({
   isLastChapter,
 }) => {
   const isLastLesson = lessonIds[lessonIds.length - 1] == lesson.id;
+  // console.log(isLastChapter, isLastLesson);
   if (isLastChapter && isLastLesson) {
     return null;
   }

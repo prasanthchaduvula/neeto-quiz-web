@@ -14,7 +14,7 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     loadChapter(lesson.chapter_id);
@@ -74,6 +74,8 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
+  const goToPrevPage = () => setPageNumber(pageNumber - 1);
+  const goToNextPage = () => setPageNumber(pageNumber + 1);
 
   return (
     <div className="p-2 w-full ml-2  p-4 ">
@@ -88,21 +90,32 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
         {lesson.content != null ? (
           <ReactPlayer url={lesson.content} controls={true} width={`100%`} />
         ) : lesson.lesson_type == "pdf" ? (
-          <>
+          <div className="teext-center">
             <Document file={content} onLoadSuccess={onDocumentLoadSuccess}>
               <Page pageNumber={pageNumber} />
             </Document>
-            <p className="text-center">
-              Page {pageNumber} of {numPages}
-            </p>
-          </>
+
+            <nav className="flex justify-center content-center">
+              {pageNumber != 1 && (
+                <Button
+                  onClick={() => goToPrevPage()}
+                  icon="ri-arrow-left-line"
+                />
+              )}
+              <p className="text-center mx-2">
+                Page {pageNumber} of {numPages}
+              </p>
+              {pageNumber != numPages && (
+                <Button
+                  onClick={() => goToNextPage()}
+                  icon="ri-arrow-right-line"
+                />
+              )}
+            </nav>
+          </div>
         ) : (
           <>
-            <Button
-              className="my-2"
-              label="See Image"
-              onClick={() => setVisible(true)}
-            />
+            <img src={content} onClick={() => setVisible(true)} />
             <Viewer
               width="45%"
               height="55%"

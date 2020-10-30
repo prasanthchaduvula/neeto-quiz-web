@@ -7,7 +7,7 @@ import CoursePane from "./Pane";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState({});
 
   useEffect(() => {
     fetchCourses();
@@ -29,7 +29,14 @@ export default function Courses() {
           />
         )}
       />
-      {courses ? <ListCourses courses={courses} /> : <PageLoader />}
+      {courses ? (
+        <ListCourses
+          courses={courses.courses_created}
+          joinedCourses={courses.courses_joined}
+        />
+      ) : (
+        <PageLoader />
+      )}
       <CoursePane
         showPane={coursePane}
         setShowPane={setCoursePane}
