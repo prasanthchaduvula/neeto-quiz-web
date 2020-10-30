@@ -54,7 +54,7 @@ export default function GeneralSettings() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleReset, handleSubmit }) => {
+        {({ handleReset, handleSubmit, dirty, isSubmitting }) => {
           return (
             <Form>
               <div className="mt-10">
@@ -83,6 +83,7 @@ export default function GeneralSettings() {
                   type="button"
                   style="secondary"
                   label="Reset changes"
+                  disabled={!dirty || isSubmitting}
                   onClick={handleReset}
                   dataTestId="reset-changes-button"
                 />
