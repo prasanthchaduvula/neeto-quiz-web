@@ -5,7 +5,9 @@ export default function ListCourses(props) {
   return (
     <div className="bg-gray">
       <ul>
-        <h3>Created Courses</h3>
+        {props.course && (
+          <h3 className="m-2 font-lg font-semibold">Created Courses</h3>
+        )}
         {props.courses &&
           props.courses.map(course => {
             return (
@@ -23,7 +25,9 @@ export default function ListCourses(props) {
               </li>
             );
           })}
-        <h3>Joined Courses</h3>
+        {props.joinedCourses && (
+          <h3 className="m-2 font-lg font-semibold">Joined Courses</h3>
+        )}
         {props.joinedCourses &&
           props.joinedCourses.map(course => {
             return (

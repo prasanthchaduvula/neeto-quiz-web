@@ -10,11 +10,20 @@ import NextButton from "./NextButton";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function Lesson({ lesson, content, courseId, getLesson, chapters }) {
+function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
   const [lessonIds, setLessonIds] = useState([]);
+  const [publishedLessonIds, setPublishedLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+
+  function loadChaptersWithPublishedlessons() {
+    return chapters.filter(chapter => {
+      if (chapter.lessons.filter(lesson => lesson.is_published).length > 0) {
+        return chapter;
+      }
+    });
+  }
 
   useEffect(() => {
     loadChapter(lesson.chapter_id);
@@ -24,12 +33,21 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
     if (lesson.chapter_id) {
       getChapter(courseId, chapterId).then(response => {
         const lessonIds = response.data.lessons.map(lesson => lesson.id);
+        const publishedLessonIds = response.data.lessons
+          .filter(lesson => lesson.is_published)
+          .map(lesson => lesson.id);
         setLessonIds(lessonIds);
+        setPublishedLessonIds(publishedLessonIds);
       });
     }
   }
+
   const handleNextButton = lessonId => {
-    if (lessonIds.includes(lessonId)) {
+    if (isStudent == true) {
+      const index = publishedLessonIds.indexOf(lessonId);
+      const nextLessonId = publishedLessonIds[index + 1];
+      getLesson(lesson.chapter_id, nextLessonId);
+    } else {
       const index = lessonIds.indexOf(lessonId);
       const nextLessonId = lessonIds[index + 1];
       getLesson(lesson.chapter_id, nextLessonId);
@@ -37,13 +55,53 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
   };
 
   const handleNextChapterButton = chapterId => {
-    const currentChapterIndex = getChapterIndex(chapterId);
-    const nextChapterObject = chapters[currentChapterIndex + 1];
-    getLesson(nextChapterObject.chapter.id, nextChapterObject.lessons[0].id);
+    if (isStudent == true) {
+      const currentChapterIndex = loadChaptersWithPublishedlessons().findIndex(
+        obj => obj.chapter.id == chapterId
+      );
+      const nextChapterObject = loadChaptersWithPublishedlessons()[
+        currentChapterIndex + 1
+      ];
+      getLessonForNextChapter(nextChapterObject);
+    } else {
+      const currentChapterIndex = getChapterIndex(chapterId);
+      const nextChapterObject = chapters[currentChapterIndex + 1];
+      if (nextChapterObject.lessons.length > 0) {
+        getLesson(
+          nextChapterObject.chapter.id,
+          nextChapterObject.lessons[0].id
+        );
+      }
+    }
+  };
+
+  const getLessonForNextChapter = ChapterObject => {
+    const publishedLessons = ChapterObject.lessons.filter(
+      lesson => lesson.is_published
+    );
+    if (ChapterObject.lessons.length > 0) {
+      getLesson(ChapterObject.chapter.id, publishedLessons[0].id);
+    }
+  };
+
+  const getLessonForPreviousChapter = ChapterObject => {
+    const publishedLessons = ChapterObject.lessons.filter(
+      lesson => lesson.is_published
+    );
+    if (ChapterObject.lessons.length > 0) {
+      getLesson(
+        ChapterObject.chapter.id,
+        publishedLessons[publishedLessons.length - 1].id
+      );
+    }
   };
 
   const handlePreviousButton = lessonId => {
-    if (lessonIds.includes(lessonId)) {
+    if (isStudent == true) {
+      const index = publishedLessonIds.indexOf(lessonId);
+      const previousLessonId = publishedLessonIds[index - 1];
+      getLesson(lesson.chapter_id, previousLessonId);
+    } else {
       const index = lessonIds.indexOf(lessonId);
       const previousLessonId = lessonIds[index - 1];
       getLesson(lesson.chapter_id, previousLessonId);
@@ -51,12 +109,26 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
   };
 
   const handlePreviousChapterButton = chapterId => {
-    const currentChapterIndex = getChapterIndex(chapterId);
-    const previousChapterObject = chapters[currentChapterIndex - 1];
-    getLesson(
-      previousChapterObject.chapter.id,
-      previousChapterObject.lessons[previousChapterObject.lessons.length - 1].id
-    );
+    if (isStudent == true) {
+      const currentChapterIndex = loadChaptersWithPublishedlessons().findIndex(
+        obj => obj.chapter.id == chapterId
+      );
+      const previousChapterObject = loadChaptersWithPublishedlessons()[
+        currentChapterIndex - 1
+      ];
+      getLessonForPreviousChapter(previousChapterObject);
+    } else {
+      const currentChapterIndex = getChapterIndex(chapterId);
+      const previousChapterObject = chapters[currentChapterIndex - 1];
+      if (previousChapterObject.lessons.length > 0) {
+        getLesson(
+          previousChapterObject.chapter.id,
+          previousChapterObject.lessons[
+            previousChapterObject.lessons.length - 1
+          ].id
+        );
+      }
+    }
   };
 
   const isFirstChapter = chapterId => {
@@ -65,6 +137,23 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
 
   const isLastChapter = chapterId => {
     return getChapterIndex(chapterId) === chapters.length - 1;
+  };
+
+  const isLastChapterWithPublishedLessons = chapterId => {
+    return (
+      loadChaptersWithPublishedlessons().findIndex(
+        obj => obj.chapter.id == chapterId
+      ) ===
+      loadChaptersWithPublishedlessons().length - 1
+    );
+  };
+
+  const isFirstChapterWithPublishedLessons = chapterId => {
+    return (
+      loadChaptersWithPublishedlessons().findIndex(
+        obj => obj.chapter.id == chapterId
+      ) === 0
+    );
   };
 
   const getChapterIndex = chapterId => {
@@ -133,16 +222,26 @@ function Lesson({ lesson, content, courseId, getLesson, chapters }) {
         <PreviousButton
           lesson={lesson}
           lessonIds={lessonIds}
+          publishedLessonIds={publishedLessonIds}
+          isStudent={isStudent}
           handlePreviousButton={handlePreviousButton}
           handlePreviousChapterButton={handlePreviousChapterButton}
           isFirstChapter={isFirstChapter(lesson.chapter_id)}
+          isFirstChapterWithPublishedLessons={isFirstChapterWithPublishedLessons(
+            lesson.chapter_id
+          )}
         />
         <NextButton
           lesson={lesson}
           lessonIds={lessonIds}
+          publishedLessonIds={publishedLessonIds}
+          isStudent={isStudent}
           handleNextButton={handleNextButton}
           handleNextChapterButton={handleNextChapterButton}
           isLastChapter={isLastChapter(lesson.chapter_id)}
+          isLastChapterWithPublishedLessons={isLastChapterWithPublishedLessons(
+            lesson.chapter_id
+          )}
         />
       </div>
     </div>
