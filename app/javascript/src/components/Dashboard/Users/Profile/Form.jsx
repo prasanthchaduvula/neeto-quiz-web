@@ -7,7 +7,7 @@ import { showToastr } from "common";
 import { getUser, updateUser } from "apis/users";
 
 export default function GeneralSettings() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
@@ -37,7 +37,6 @@ export default function GeneralSettings() {
     };
     updateUser(values.id, payload).then(() => {
       showToastr("success", "Profile updated successfully");
-      loadProfile();
     });
   };
 
@@ -71,7 +70,6 @@ export default function GeneralSettings() {
               </div>
               <div className="flex flex-row items-center justify-start mt-8">
                 <Button
-                  type="button"
                   style="primary"
                   label="Save Changes"
                   icon="ri-save-3-fill"
@@ -80,7 +78,6 @@ export default function GeneralSettings() {
                   dataTestId="save-changes-button"
                 />
                 <Button
-                  type="button"
                   style="secondary"
                   label="Reset changes"
                   disabled={!dirty || isSubmitting}
