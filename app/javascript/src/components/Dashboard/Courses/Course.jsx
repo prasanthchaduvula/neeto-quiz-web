@@ -100,7 +100,7 @@ export default function Course(props) {
                 />
                 <Link
                   className="ml-4"
-                  to={`/courses/${props.match.params.course_id}/preview`} //
+                  to={`/courses/${props.match.params.course_id}/preview`}
                 >
                   <Button label="Preview Course" />
                 </Link>
