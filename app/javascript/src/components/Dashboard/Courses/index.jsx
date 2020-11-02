@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { PageHeading } from "nitroui/layouts";
-import { Button, PageLoader } from "nitroui";
+import { Button, PageLoader, Tab } from "nitroui";
 import { getCourses } from "apis/courses";
-import ListCourses from "./ListCourses";
 import CoursePane from "./Pane";
+import { TABS } from "./constants";
+import ListCourses from "./ListCourses";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
   const [courses, setCourses] = useState({});
+  const [activeTab, setActiveTab] = useState("createdCourses");
 
   useEffect(() => {
     fetchCourses();
@@ -30,13 +32,46 @@ export default function Courses() {
         )}
       />
       {courses ? (
-        <ListCourses
-          courses={courses.courses_created}
-          joinedCourses={courses.courses_joined}
-        />
+        <>
+          <Tab className="px-6 -mx-4 border-b border-gray-200">
+            <Tab.Item
+              icon="ri-pencil-line"
+              onClick={() => {
+                if (activeTab !== TABS.CREATED_COURSES) {
+                  setActiveTab(TABS.CREATED_COURSES);
+                }
+              }}
+              active={activeTab === TABS.CREATED_COURSES}
+            >
+              Created Courses
+            </Tab.Item>
+            <Tab.Item
+              icon="ri-home-line"
+              onClick={() => {
+                if (activeTab !== TABS.JOINED_COURSES) {
+                  setActiveTab(TABS.JOINED_COURSES);
+                }
+              }}
+              active={activeTab === TABS.JOINED_COURSES}
+            >
+              Joined Courses
+            </Tab.Item>
+          </Tab>
+          <div className="my-5">
+            <div>
+              {activeTab === TABS.CREATED_COURSES && (
+                <ListCourses courses={courses.courses_created} create={true} />
+              )}
+              {activeTab === TABS.JOINED_COURSES && (
+                <ListCourses courses={courses.courses_joined} create={false} />
+              )}
+            </div>
+          </div>
+        </>
       ) : (
         <PageLoader />
       )}
+
       <CoursePane
         showPane={coursePane}
         setShowPane={setCoursePane}

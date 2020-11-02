@@ -84,7 +84,7 @@ export default function Course(props) {
               <p className="text-gray-600 text-base leading-tight leading-5">
                 {course.description}
               </p>
-              <div className="flex items-center justify-end w-full">
+              <div className="flex items-center justify-end w-full mt-4">
                 <Button
                   label="Students"
                   onClick={() => {

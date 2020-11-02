@@ -31,7 +31,7 @@ const Students = ({ students }) => {
         {students.map((student, index) => {
           return (
             <li key={student.id}>
-              <div className="flex">
+              <div className="flex my-4">
                 <span className="text-base text-gray-600 font-medium">{`${index +
                   1}. `}</span>
                 <div className="ml-1">
