@@ -4,8 +4,7 @@ import { Button, PageLoader, Tab } from "nitroui";
 import { getCourses } from "apis/courses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";
-import CreatedCourses from "./CreatedCourses";
-import JoinedCourses from "./JoinedCourses";
+import ListCourses from "./ListCourses";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
@@ -61,10 +60,10 @@ export default function Courses() {
           <div className="my-5">
             <div className="flex justify-center w-full h-full">
               {activeTab === TABS.createdCourses && (
-                <CreatedCourses courses={courses.courses_created} />
+                <ListCourses courses={courses.courses_created} create={true} />
               )}
-              {activeTab === TABS.createdCourses && (
-                <JoinedCourses joinedCourses={courses.courses_joined} />
+              {activeTab === TABS.joinedCourses && (
+                <ListCourses courses={courses.courses_joined} create={false} />
               )}
             </div>
           </div>

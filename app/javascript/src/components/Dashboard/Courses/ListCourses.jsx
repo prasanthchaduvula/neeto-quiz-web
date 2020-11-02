@@ -1,10 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function CreatedCourses({ courses }) {
+export default function ListCourses({ courses, create }) {
+  const NoResourceMessage = () => {
+    return (
+      <div className="text-center mt-5 mb-5">
+        <h4>
+          {create
+            ? " We do not have created courses to show here. Please add courses"
+            : "We do not have joined courses to show here. Please join courses"}
+        </h4>
+      </div>
+    );
+  };
+
   return (
     <ul>
-      {courses &&
+      {courses && courses.length ? (
         courses.map(course => {
           return (
             <li
@@ -19,7 +31,10 @@ export default function CreatedCourses({ courses }) {
               </Link>
             </li>
           );
-        })}
+        })
+      ) : (
+        <NoResourceMessage />
+      )}
     </ul>
   );
 }
