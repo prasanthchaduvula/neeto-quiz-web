@@ -1,0 +1,8 @@
+.course-card {
+  border-radius: 0.5rem;
+  margin: 3rem 0;
+  cursor: pointer;
+  &:hover {
+    background: #f4fcfe;
+  }
+}

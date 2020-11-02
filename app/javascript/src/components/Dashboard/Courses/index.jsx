@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { PageHeading } from "nitroui/layouts";
 import { Button, PageLoader, Tab } from "nitroui";
 import { getCourses } from "apis/courses";
-import ListCourses from "./ListCourses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";
+import CreatedCourses from "./CreatedCourses";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
@@ -46,13 +46,10 @@ export default function Courses() {
               Created Courses
             </Tab.Item>
           </Tab>
-          <div className="flex flex-row items-start justify-center flex-grow">
-            <div className="w-full h-full md:w-140">
+          <div className="my-5">
+            <div className="flex justify-center w-full h-full">
               {activeTab === TABS.createdCourses && (
-                <ListCourses
-                  courses={courses.courses_created}
-                  joinedCourses={courses.courses_joined}
-                />
+                <CreatedCourses courses={courses.courses_created} />
               )}
             </div>
           </div>
