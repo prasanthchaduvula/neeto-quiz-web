@@ -15,7 +15,7 @@ export default function GeneralSettings() {
   }, []);
 
   const loadProfile = () => {
-    const user_id = JSON.parse(localStorage.getItem("user_id"));
+    const user_id = localStorage.getItem("user_id");
 
     getUser(user_id).then(response => {
       setInitialValues(response.data.user);
