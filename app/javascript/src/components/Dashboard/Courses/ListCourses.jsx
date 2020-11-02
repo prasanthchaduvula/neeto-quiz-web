@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function ListCourses({ courses, create }) {
-  const NoResourceMessage = () => {
+  const NoData = () => {
     return (
       <div className="text-center mt-5 mb-5">
         <h4>
@@ -33,7 +33,7 @@ export default function ListCourses({ courses, create }) {
           );
         })
       ) : (
-        <NoResourceMessage />
+        <NoData />
       )}
     </ul>
   );
