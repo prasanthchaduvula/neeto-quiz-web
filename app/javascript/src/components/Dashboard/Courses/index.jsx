@@ -5,6 +5,7 @@ import { getCourses } from "apis/courses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";
 import CreatedCourses from "./CreatedCourses";
+import JoinedCourses from "./JoinedCourses";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
@@ -35,7 +36,7 @@ export default function Courses() {
         <>
           <Tab className="px-6 -mx-4 border-b border-gray-200">
             <Tab.Item
-              icon="ri-user-line"
+              icon="ri-pencil-line"
               onClick={() => {
                 if (activeTab !== TABS.createdCourses) {
                   setActiveTab(TABS.createdCourses);
@@ -45,11 +46,25 @@ export default function Courses() {
             >
               Created Courses
             </Tab.Item>
+            <Tab.Item
+              icon="ri-home-line"
+              onClick={() => {
+                if (activeTab !== TABS.joinedCourses) {
+                  setActiveTab(TABS.joinedCourses);
+                }
+              }}
+              active={activeTab === TABS.joinedCourses}
+            >
+              Joined Courses
+            </Tab.Item>
           </Tab>
           <div className="my-5">
             <div className="flex justify-center w-full h-full">
               {activeTab === TABS.createdCourses && (
                 <CreatedCourses courses={courses.courses_created} />
+              )}
+              {activeTab === TABS.createdCourses && (
+                <JoinedCourses joinedCourses={courses.courses_joined} />
               )}
             </div>
           </div>

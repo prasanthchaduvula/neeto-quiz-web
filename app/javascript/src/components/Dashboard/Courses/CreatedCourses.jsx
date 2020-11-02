@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function CreatedCourses(props) {
+export default function CreatedCourses({ courses }) {
   return (
     <ul>
-      {props.courses &&
-        props.courses.map(course => {
+      {courses &&
+        courses.map(course => {
           return (
             <li
               className="max-w-6xl course-card px-6 py-4 shadow-md"

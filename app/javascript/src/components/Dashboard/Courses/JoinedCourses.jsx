@@ -1,27 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function JoinedCourses(props) {
+export default function JoinedCourses({ joinedCourses }) {
   return (
-    <div>
-      <h3 className="m-2 font-lg font-semibold">Joined Courses</h3>
-      {props.joinedCourses &&
-        props.joinedCourses.map(course => {
+    <ul>
+      {joinedCourses &&
+        joinedCourses.map(course => {
           return (
-            <li key={course.id}>
-              <div className="max-w-sm rounded overflow-hidden shadow-lg">
-                <div className="px-6 py-4">
-                  <div className="text-xl mb-2">
-                    <Link to={`/courses/${course.id}`}>{course.name}</Link>
-                  </div>
-                  <p className="text-gray-700 text-base">
-                    {course.description}
-                  </p>
-                </div>
-              </div>
+            <li
+              className="max-w-6xl course-card px-6 py-4 shadow-md"
+              key={course.id}
+            >
+              <Link to={`/courses/${course.id}`} className="no-underline">
+                <p className="text-xl mb-2">{course.name}</p>
+                <p className="text-gray-500 text-base leading-normal">
+                  {course.description}
+                </p>
+              </Link>
             </li>
           );
         })}
-    </div>
+    </ul>
   );
 }
