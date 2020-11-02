@@ -58,7 +58,7 @@ export default function Courses() {
             </Tab.Item>
           </Tab>
           <div className="my-5">
-            <div className="flex justify-center w-full h-full">
+            <div>
               {activeTab === TABS.CREATED_COURSES && (
                 <ListCourses courses={courses.courses_created} create={true} />
               )}

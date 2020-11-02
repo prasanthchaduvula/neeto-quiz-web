@@ -15,26 +15,38 @@ export default function ListCourses({ courses, create }) {
   };
 
   return (
-    <ul>
-      {courses && courses.length ? (
-        courses.map(course => {
-          return (
-            <li
-              className="max-w-6xl course-card px-6 py-4 shadow-md"
-              key={course.id}
-            >
-              <Link to={`/courses/${course.id}`} className="no-underline">
-                <p className="text-xl mb-2">{course.name}</p>
-                <p className="text-gray-500 text-base leading-normal">
-                  {course.description}
-                </p>
-              </Link>
-            </li>
-          );
-        })
-      ) : (
-        <NoData />
-      )}
-    </ul>
+    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul>
+        {courses && courses.length ? (
+          courses.map(course => {
+            return (
+              <li key={course.id} className="border-t border-gray-200">
+                <Link
+                  to={`/courses/${course.id}`}
+                  className="block hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out no-underline"
+                >
+                  <div className="px-4 py-4 sm:px-6">
+                    <div className="min-w-0 ">
+                      <div>
+                        <div className="leading-5 font-medium text-indigo-600 truncate text-base">
+                          {course.name}
+                        </div>
+                        <div className="mt-2">
+                          <div className="text-sm leading-5 text-gray-500">
+                            <span>{course.description}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            );
+          })
+        ) : (
+          <NoData />
+        )}
+      </ul>
+    </div>
   );
 }
