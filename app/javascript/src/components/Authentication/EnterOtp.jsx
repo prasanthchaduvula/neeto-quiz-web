@@ -16,7 +16,7 @@ function EnterOtp(props) {
         "authPhone",
         JSON.stringify(response.data.user.phone_number)
       );
-      localStorage.setItem("user_id", JSON.stringify(response.data.user.id));
+      localStorage.setItem("user_id", response.data.user.id);
       if (response.data.user.first_name || response.data.user.last_name) {
         window.location.href = "/";
       } else {

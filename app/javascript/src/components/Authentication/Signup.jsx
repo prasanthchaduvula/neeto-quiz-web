@@ -68,7 +68,7 @@ function Signup() {
                   setUserPage={setUserPage}
                 />
               ) : (
-                <UpdateUser id={JSON.parse(localStorage.getItem("user_id"))} />
+                <UpdateUser id={localStorage.getItem("user_id")} />
               )}
             </div>
           </div>
