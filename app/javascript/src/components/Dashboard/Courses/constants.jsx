@@ -1,4 +1,4 @@
 export const TABS = {
-  createdCourses: "createdCourses",
-  joinedCourses: "joinedCourses",
+  CREATED_COURSES: "createdCourses",
+  JOINED_COURSES: "joinedCourses",
 };
