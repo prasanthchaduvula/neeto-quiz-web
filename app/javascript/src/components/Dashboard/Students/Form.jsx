@@ -24,7 +24,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
 
     addStudent(course.id, payload).then(response => {
       showToastr("success", response.data.notice);
-      fetchSingleCourse();
+      fetchSingleCourse(true);
       onClose();
     });
   };
