@@ -2,7 +2,7 @@
 
 class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
-  before_action :ensure_published, only: [:update]
+  before_action :ensure_course_published, only: [:update]
   before_action :check_published_course, only: :destroy
 
   def index
@@ -53,7 +53,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
       end
     end
 
-    def ensure_published
+    def ensure_course_published
       if @course.published && @course.joined_students.present?
         unless params[:course][:published]
           render status: :unprocessable_entity, json: { errors: ["You cannot unpublish course"] }

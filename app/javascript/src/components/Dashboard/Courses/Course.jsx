@@ -88,7 +88,12 @@ export default function Course(props) {
                 <Button
                   label="Students"
                   onClick={() => {
-                    setShowStudents(true);
+                    course.published
+                      ? setShowStudents(true)
+                      : showToastr(
+                          "error",
+                          "You cannot add students without publishing course"
+                        );
                   }}
                 />
                 <Button
