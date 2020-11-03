@@ -107,10 +107,21 @@ export default function Course(props) {
 
                 <Button
                   label={
-                    course.published ? "Unpublish Course" : "Publish Course"
+                    course.published
+                      ? students.length
+                        ? "Published Course"
+                        : "Unpublish Course"
+                      : "Publish Course"
                   }
                   className="ml-4"
-                  onClick={publishCourse}
+                  onClick={() =>
+                    students.length
+                      ? showToastr(
+                          "error",
+                          "Students are present. You cannot unpublish course"
+                        )
+                      : publishCourse()
+                  }
                 />
                 <Button
                   label="Delete Course"
