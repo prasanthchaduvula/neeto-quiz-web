@@ -15,17 +15,19 @@ export default function Course(props) {
   const [chapters, setChapters] = useState({});
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showstudents, setShowStudents] = useState(false);
 
   useEffect(() => {
     fetchSingleCourse();
   }, []);
 
-  const fetchSingleCourse = () => {
+  const fetchSingleCourse = (studentspane = false) => {
     getCourse(props.match.params.course_id).then(response => {
       setCourse(response.data.course);
       setChapters(response.data.chapters);
       setStudents(response.data.students);
       setIsLoading(false);
+      setShowStudents(studentspane);
     });
   };
 
@@ -38,7 +40,6 @@ export default function Course(props) {
   }) {
     const [coursePane, setCoursePane] = useState(false);
     const [chapterPane, setChapterPane] = useState(false);
-    const [showstudents, setShowStudents] = useState(false);
 
     const deleteSingleCourse = () => {
       deleteCourse(course.id).then(() => {
@@ -63,7 +64,6 @@ export default function Course(props) {
         setCourse(response.data.course);
       });
     };
-
     return (
       <>
         {!isLoading ? (
