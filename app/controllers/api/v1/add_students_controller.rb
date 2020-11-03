@@ -3,6 +3,7 @@
 class Api::V1::AddStudentsController < Api::V1::BaseController
   before_action :find_course, only: :create
   before_action :ensure_course_admin, only: :create
+  before_action :ensure_course_published, only: :create
   before_action :load_user, only: :create
   before_action :ensure_not_course_student, only: :create
 
@@ -52,5 +53,11 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
 
     def create_user
       @user = User.create!(phone_number: params[:phone_number])
+    end
+
+    def ensure_course_published
+      unless @course.published
+        render status: :unprocessable_entity, json: { errors: ["You cannot add students without publishing course"] }
+      end
     end
 end
