@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       resources :chapters, except: [:new, :edit] do
         resources :lessons, except: [:new, :edit]
       end
+
+      resource :payment_details, only: [:create, :show]
     end
   end
 

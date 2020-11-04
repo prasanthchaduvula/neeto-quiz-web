@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_21_121655) do
+ActiveRecord::Schema.define(version: 2020_10_30_121035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -77,6 +77,20 @@ ActiveRecord::Schema.define(version: 2020_10_21_121655) do
     t.index ["name", "chapter_id"], name: "index_lessons_on_name_and_chapter_id", unique: true
   end
 
+  create_table "payment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "razorpay_account_id", null: false
+    t.string "ifsc", limit: 11, null: false
+    t.bigint "account_number", null: false
+    t.integer "account_type", default: 0, null: false
+    t.string "business_name", null: false
+    t.string "email_id", null: false
+    t.uuid "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["razorpay_account_id"], name: "index_payment_details_on_razorpay_account_id", unique: true
+    t.index ["user_id"], name: "index_payment_details_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -98,4 +112,5 @@ ActiveRecord::Schema.define(version: 2020_10_21_121655) do
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
+  add_foreign_key "payment_details", "users", on_delete: :cascade
 end
