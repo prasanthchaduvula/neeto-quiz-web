@@ -23,7 +23,14 @@ Rails.application.routes.draw do
         resources :lessons, except: [:new, :edit]
       end
 
+      resources :orders, only: [:index, :create, :show]
       resource :payment_details, only: [:create, :show]
+    end
+  end
+
+  namespace :webhooks, defaults: { format: :json } do
+    namespace :razorpay do
+      post '/verify', to: 'payment#verify'
     end
   end
 

@@ -79,6 +79,12 @@ gem 'active_storage_validations'
 # I18n Internationalization
 gem "rails-i18n"
 
+# for interacting with the Razorpay API
+gem "razorpay"
+
+# JSON implementaion for Ruby
+gem "json"
+
 # Preview email in browser
 gem "letter_opener", group: :development
 
@@ -98,12 +104,6 @@ group :development do
 
   # reports N+1 queries
   gem "bullet"
-
-  # for interacting with the Razorpay API
-  gem "razorpay"
-
-  # JSON implementaion for Ruby
-  gem "json"
 
   # A Ruby static code analyzer, based on the community Ruby style guide
   gem "rubocop", "~> 0.82.0", require: false

@@ -31,7 +31,7 @@ class PaymentDetailsService
 
     def add_payment_details_to_user
       PaymentDetail.transaction do
-        @payment_details = PaymentDetail.create(
+        @payment_details = PaymentDetail.create!(
           razorpay_account_id: razorpay_response["id"],
           ifsc: options[:ifsc],
           account_number: options[:account_number],
@@ -52,7 +52,7 @@ class PaymentDetailsService
     end
 
     def set_errors_and_status(message, status)
-      errors << message
+      errors.concat(message)
       @status = status
     end
 

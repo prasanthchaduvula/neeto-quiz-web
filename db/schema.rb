@@ -77,6 +77,22 @@ ActiveRecord::Schema.define(version: 2020_10_30_121035) do
     t.index ["name", "chapter_id"], name: "index_lessons_on_name_and_chapter_id", unique: true
   end
 
+  create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "razorpay_order_id", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "amount", null: false
+    t.string "currency", default: "INR", null: false
+    t.string "merchant_name", null: false
+    t.uuid "course_id"
+    t.uuid "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id", "user_id"], name: "index_orders_on_course_id_and_user_id", unique: true
+    t.index ["course_id"], name: "index_orders_on_course_id"
+    t.index ["razorpay_order_id"], name: "index_orders_on_razorpay_order_id", unique: true
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "payment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "razorpay_account_id", null: false
     t.string "ifsc", limit: 11, null: false
@@ -112,5 +128,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_121035) do
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
+  add_foreign_key "orders", "courses", on_delete: :cascade
+  add_foreign_key "orders", "users", on_delete: :cascade
   add_foreign_key "payment_details", "users", on_delete: :cascade
 end
