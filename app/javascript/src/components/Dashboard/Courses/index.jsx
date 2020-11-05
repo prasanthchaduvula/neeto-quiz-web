@@ -37,9 +37,7 @@ export default function Courses() {
             <Tab.Item
               icon="ri-pencil-line"
               onClick={() => {
-                if (activeTab !== TABS.CREATED_COURSES) {
-                  setActiveTab(TABS.CREATED_COURSES);
-                }
+                setActiveTab(TABS.CREATED_COURSES);
               }}
               active={activeTab === TABS.CREATED_COURSES}
             >
@@ -48,24 +46,21 @@ export default function Courses() {
             <Tab.Item
               icon="ri-home-line"
               onClick={() => {
-                if (activeTab !== TABS.JOINED_COURSES) {
-                  setActiveTab(TABS.JOINED_COURSES);
-                }
+                setActiveTab(TABS.JOINED_COURSES);
               }}
               active={activeTab === TABS.JOINED_COURSES}
             >
               Joined Courses
             </Tab.Item>
           </Tab>
+
           <div className="my-5">
-            <div>
-              {activeTab === TABS.CREATED_COURSES && (
-                <ListCourses courses={courses.courses_created} create={true} />
-              )}
-              {activeTab === TABS.JOINED_COURSES && (
-                <ListCourses courses={courses.courses_joined} create={false} />
-              )}
-            </div>
+            {activeTab === TABS.CREATED_COURSES && (
+              <ListCourses courses={courses.courses_created} create={true} />
+            )}
+            {activeTab === TABS.JOINED_COURSES && (
+              <ListCourses courses={courses.courses_joined} create={false} />
+            )}
           </div>
         </>
       ) : (

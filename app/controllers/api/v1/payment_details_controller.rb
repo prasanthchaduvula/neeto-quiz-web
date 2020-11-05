@@ -22,7 +22,7 @@ class Api::V1::PaymentDetailsController < Api::V1::BaseController
     if payment_details
       render json: { payment_details: payment_details }, status: :ok
     else
-      render json: { errors: "Payment details not found" }, status: :not_found
+      render json: { errors: ["Payment details not found"] }, status: :not_found
     end
   end
 

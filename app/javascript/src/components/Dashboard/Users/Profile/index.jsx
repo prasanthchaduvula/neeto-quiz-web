@@ -3,6 +3,7 @@ import { Tab, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import GeneralSettings from "./Form";
 import { TABS } from "./constants";
+import BankAccount from "./BankAccount";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -31,19 +32,26 @@ export default function Profile() {
         <Tab.Item
           icon="ri-user-line"
           onClick={() => {
-            if (activeTab !== TABS.profile) {
-              setActiveTab(TABS.profile);
-            }
+            setActiveTab(TABS.PROFILE);
           }}
-          active={activeTab === TABS.profile}
+          active={activeTab === TABS.PROFILE}
         >
           Profile
         </Tab.Item>
+        <Tab.Item
+          icon="ri-lock-unlock-line"
+          onClick={() => {
+            setActiveTab(TABS.BANK_ACCOUNT);
+          }}
+          active={activeTab === TABS.BANK_ACCOUNT}
+        >
+          Bank Account
+        </Tab.Item>
       </Tab>
+
       <div className="flex flex-row items-start justify-center flex-grow">
-        <div className="w-full h-full md:w-140">
-          {activeTab === TABS.profile && <GeneralSettings />}
-        </div>
+        {activeTab === TABS.PROFILE && <GeneralSettings />}
+        {activeTab === TABS.BANK_ACCOUNT && <BankAccount />}
       </div>
     </>
   );

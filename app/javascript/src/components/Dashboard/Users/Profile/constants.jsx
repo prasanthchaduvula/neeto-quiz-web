@@ -1,3 +1,4 @@
 export const TABS = {
-  profile: "profile",
+  PROFILE: "profile",
+  BANK_ACCOUNT: "bank-account",
 };

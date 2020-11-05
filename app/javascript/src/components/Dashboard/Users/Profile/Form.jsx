@@ -55,37 +55,39 @@ export default function GeneralSettings() {
       >
         {({ handleReset, handleSubmit, dirty, isSubmitting }) => {
           return (
-            <Form>
-              <div className="mt-10">
-                <div className="grid grid-cols-2 gap-6 mb-6">
-                  <Input label="First Name" name="first_name" autoFocus />
-                  <Input label="Last Name" name="last_name" />
+            <div className="h-full w-2/5">
+              <Form>
+                <div className="mt-10">
+                  <div className="grid grid-cols-2 gap-6 mb-6">
+                    <Input label="First Name" name="first_name" autoFocus />
+                    <Input label="Last Name" name="last_name" />
+                  </div>
+                  <Input
+                    label="Phone Number"
+                    name="phone_number"
+                    disabled
+                    className="mb-6"
+                  />
                 </div>
-                <Input
-                  label="Phone Number"
-                  name="phone_number"
-                  disabled
-                  className="mb-6"
-                />
-              </div>
-              <div className="flex flex-row items-center justify-start mt-8">
-                <Button
-                  style="primary"
-                  label="Save Changes"
-                  icon="ri-save-3-fill"
-                  className="mr-4"
-                  onClick={handleSubmit}
-                  dataTestId="save-changes-button"
-                />
-                <Button
-                  style="secondary"
-                  label="Reset changes"
-                  disabled={!dirty || isSubmitting}
-                  onClick={handleReset}
-                  dataTestId="reset-changes-button"
-                />
-              </div>
-            </Form>
+                <div className="flex flex-row items-center justify-start mt-8">
+                  <Button
+                    style="primary"
+                    label="Save Changes"
+                    icon="ri-save-3-fill"
+                    className="mr-4"
+                    onClick={handleSubmit}
+                    dataTestId="save-changes-button"
+                  />
+                  <Button
+                    style="secondary"
+                    label="Reset changes"
+                    disabled={!dirty || isSubmitting}
+                    onClick={handleReset}
+                    dataTestId="reset-changes-button"
+                  />
+                </div>
+              </Form>
+            </div>
           );
         }}
       </Formik>
