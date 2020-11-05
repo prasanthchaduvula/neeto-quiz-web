@@ -23,3 +23,7 @@ export const deleteCourse = id => {
 export const addStudent = (id, payload) => {
   return axios.post(`/api/v1/courses/${id}/add_students`, payload);
 };
+
+export const publishCourse = (id, payload) => {
+  return axios.patch(`/api/v1/publish/${id}`, payload);
+};

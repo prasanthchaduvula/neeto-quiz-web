@@ -3,7 +3,7 @@ import { PageLoader, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import { Link } from "react-router-dom";
 import { showToastr } from "common";
-import { getCourse, updateCourse, deleteCourse } from "apis/courses";
+import { getCourse, publishCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
@@ -48,13 +48,13 @@ export default function Course(props) {
       });
     };
 
-    const publishCourse = () => {
+    const publishSingleCourse = () => {
       const payload = {
         course: {
           published: !course.published,
         },
       };
-      updateCourse(course.id, payload).then(response => {
+      publishCourse(course.id, payload).then(response => {
         showToastr(
           "success",
           `Course ${
@@ -125,7 +125,7 @@ export default function Course(props) {
                           "error",
                           "Students are present. You cannot unpublish course"
                         )
-                      : publishCourse()
+                      : publishSingleCourse()
                   }
                 />
                 <Button

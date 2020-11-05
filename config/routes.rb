@@ -23,6 +23,8 @@ Rails.application.routes.draw do
         resources :lessons, except: [:new, :edit]
       end
 
+      resources :publish,  only: [:update]
+      
       resources :orders, only: [:index, :create, :show]
       resource :payment_details, only: [:create, :show]
     end

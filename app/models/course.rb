@@ -12,4 +12,8 @@ class Course < ApplicationRecord
   belongs_to :user
 
   validates :name, :description, :user, presence: true
+
+  def unpublishable?
+    published && joined_students.present?
+  end
 end

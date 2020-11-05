@@ -25,4 +25,18 @@ class CourseTest < ActiveSupport::TestCase
     @course.user_id = "   "
     assert_not @course.valid?
   end
+
+  test "course is publishable" do
+    @course.published = true
+    @course.save
+    assert @course.valid?
+  end
+
+  test "unpublish course" do
+    @course.published = true
+    @course.save
+    @course.published = false
+    @course.save
+    assert @course.valid?
+  end
 end

@@ -38,3 +38,14 @@ class ActiveSupport::TestCase
 end
 
 
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+end
+
+def headers(user, options = {})
+  {
+    "X-Auth-Phone" => user.phone_number,
+    "X-Auth-Token" => user.authentication_token,
+  }.merge(options)
+end
+
