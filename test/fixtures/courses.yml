@@ -2,10 +2,12 @@ ruby_on_rails:
   name: Ruby On Rails
   description: Description on ruby-on-rails
   published: false
+  invitation_code: 25Xy
   user: oliver
 
 react_js:
   name: Learn ReactJS
   description: Description on react js
   published: false
+  invitation_code: az52
   user: oliver
