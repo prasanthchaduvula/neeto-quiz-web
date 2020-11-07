@@ -24,6 +24,6 @@ class ApplicationController < ActionController::Base
     end
 
     def record_not_found
-      render status: :not_found, json: { errors: I18n.t("not_found") }
+      render status: :not_found, json: { errors: I18n.t(["not_found"]) }
     end
 end

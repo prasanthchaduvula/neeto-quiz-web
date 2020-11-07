@@ -11,7 +11,6 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
         resources :chapters, only: [:create, :update, :show, :destroy]
-        resources :course_students, only: [:create]
         resources :add_students, only: [:create]
       end
 
@@ -27,6 +26,8 @@ Rails.application.routes.draw do
       
       resources :orders, only: [:index, :create, :show]
       resource :payment_details, only: [:create, :show]
+
+      resources :join_courses, only: [:show], param: :invitation_code
     end
   end
 

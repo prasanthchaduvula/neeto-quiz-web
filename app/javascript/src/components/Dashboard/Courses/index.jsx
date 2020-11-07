@@ -5,11 +5,13 @@ import { getCourses } from "apis/courses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";
 import ListCourses from "./ListCourses";
+import JoinCoursePane from "./JoinCoursePane";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
   const [courses, setCourses] = useState({});
   const [activeTab, setActiveTab] = useState("createdCourses");
+  const [joinCoursePane, setJoinCoursePane] = useState(false);
 
   useEffect(() => {
     fetchCourses();
@@ -24,11 +26,19 @@ export default function Courses() {
       <PageHeading
         title="Courses"
         rightButton={() => (
-          <Button
-            onClick={() => setCoursePane(true)}
-            label="Add new course"
-            icon="ri-add-line"
-          />
+          <>
+            <Button
+              style="secondary mr-2"
+              label="Add new course"
+              icon="ri-add-line"
+              onClick={() => setCoursePane(true)}
+            />
+            <Button
+              label="Join course"
+              icon="ri-send-plane-line"
+              onClick={() => setJoinCoursePane(true)}
+            />
+          </>
         )}
       />
       {courses ? (
@@ -66,6 +76,10 @@ export default function Courses() {
       ) : (
         <PageLoader />
       )}
+      <JoinCoursePane
+        showPane={joinCoursePane}
+        setShowPane={setJoinCoursePane}
+      />
 
       <CoursePane
         showPane={coursePane}

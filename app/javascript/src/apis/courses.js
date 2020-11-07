@@ -27,3 +27,7 @@ export const addStudent = (id, payload) => {
 export const publishCourse = (id, payload) => {
   return axios.patch(`/api/v1/publish/${id}`, payload);
 };
+
+export const getJoinCourse = invitation_code => {
+  return axios.get(`/api/v1/join_courses/${invitation_code}`);
+};
