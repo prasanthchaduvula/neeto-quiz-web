@@ -5,7 +5,7 @@ import { getCourses } from "apis/courses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";
 import ListCourses from "./ListCourses";
-import JoinCoursePane from "./JoinCoursePane";
+import JoinCoursePane from "./Join";
 
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);

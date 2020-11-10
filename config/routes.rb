@@ -12,10 +12,7 @@ Rails.application.routes.draw do
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
         resources :chapters, only: [:create, :update, :show, :destroy]
         resources :add_students, only: [:create]
-      end
-
-      resources :chapters, except: [:new, :edit] do
-        resources :lessons, except: [:new, :edit]
+        resources :join_courses, only: [:create]
       end
 
       resources :chapters, except: [:new, :edit] do
