@@ -7,23 +7,23 @@ class Api::V1::CoursesController < Api::V1::BaseController
   def index
     courses_created = current_user.courses
     courses_joined = current_user.joined_courses
-    render status: :ok, json: { courses_created: courses_created, courses_joined: courses_joined }
+    render json: { courses_created: courses_created, courses_joined: courses_joined }, status: :ok
   end
 
   def create
     course = current_user.courses.new(course_params)
     if course.save
-      render status: :ok, json: { notice: "Course created succesfully", course: course }
+      render json: { notice: "Course created succesfully", course: course }, status: :ok
     else
-      render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
+      render json: { errors: course.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
     if @course.update(course_params)
-      render status: :ok, json: { notice: "Course updated successfully", course: @course, chapters: @course.chapters, joined_students: @course.joined_students }
+      render json: { notice: "Course updated successfully", course: @course, chapters: @course.chapters, joined_students: @course.joined_students }, status: :ok
     else
-      render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
+      render json: { errors: @course.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -35,9 +35,9 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   def destroy
     if @course.destroy
-      render status: :ok, json: @course
+      render json: @course, status: :ok
     else
-      render status: :unprocessable_entity, json: { errors: @course.errors.full_messages }
+      render json: { errors: @course.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
