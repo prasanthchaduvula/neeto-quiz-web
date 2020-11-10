@@ -3,7 +3,7 @@
 require "razorpay"
 require "json"
 
-class OrdersService
+class CreateOrderService
   attr_reader :course, :student, :razorpay_response, :order
   attr_accessor :errors, :status, :response
 
@@ -53,7 +53,7 @@ class OrdersService
     end
 
     def set_errors_and_status(message, status)
-      errors.concat(message)
+      errors << message
       @status = status
     end
 

@@ -50,7 +50,7 @@ class OrderTest < ActiveSupport::TestCase
     order.update course_id: nil
     assert_nil order[:course_id]
     assert_not order.valid?
-    assert_includes order.errors[:course_id], "can't be blank"
+    assert_includes order.errors[:course], "must exist"
   end
 
   test "user_should_be_present" do
@@ -58,14 +58,5 @@ class OrderTest < ActiveSupport::TestCase
     assert_nil order[:user_id]
     assert_not order.valid?
     assert_includes order.errors[:user], "must exist"
-  end
-
-  test "course_should_not_have_been_taken_by_the_student_user" do
-    duplicate_order = order.dup
-    duplicate_order.update razorpay_order_id: "order_Fx286i1UXL7FgA"
-
-    assert_not_same order[:razorpay_order_id], duplicate_order[:razorpay_order_id]
-    assert_not duplicate_order.valid?
-    assert_includes duplicate_order.errors[:course_id], "has already been taken"
   end
 end

@@ -10,7 +10,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def create
-    orders_service = OrdersService.new(@course, current_user)
+    orders_service = CreateOrderService.new(@course, current_user)
     orders_service.process
 
     if orders_service.errors.present?

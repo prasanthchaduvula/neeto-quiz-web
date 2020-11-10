@@ -7,10 +7,8 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string :currency, default: "INR", null: false
       t.string :merchant_name, null: false
 
-      t.references :course, type: :uuid, foreign_key: { on_delete: :cascade }
+      t.references :course, type: :uuid, foreign_key: true
       t.references :user, type: :uuid, foreign_key: { on_delete: :cascade }
-
-      t.index [:course_id, :user_id], unique: true
 
       t.timestamps
     end

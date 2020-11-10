@@ -8,7 +8,8 @@ class Order < ApplicationRecord
     payment_captured: 1,
     payment_failed: 2,
     transfer_initiated: 3,
-    transfer_processed: 4
+    transfer_processed: 4,
+    transfer_settled: 5
   }
 
   belongs_to :user
@@ -17,6 +18,4 @@ class Order < ApplicationRecord
   validates :razorpay_order_id, presence: true, uniqueness: true
   validates :amount, presence: true
   validates :merchant_name, presence: true
-
-  validates :course_id, presence: true, uniqueness: { scope: :user_id }
 end

@@ -52,7 +52,7 @@ class PaymentDetailsService
     end
 
     def set_errors_and_status(message, status)
-      errors.concat(message)
+      errors << message
       @status = status
     end
 

@@ -7,7 +7,7 @@ class Course < ApplicationRecord
   has_many :course_students, dependent: :destroy
   has_many :joined_students, through: :course_students,  source: :user
 
-  has_many :orders, dependent: :destroy
+  has_many :orders
 
   belongs_to :user
 

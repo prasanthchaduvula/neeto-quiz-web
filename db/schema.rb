@@ -88,7 +88,6 @@ ActiveRecord::Schema.define(version: 2020_11_06_023242) do
     t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["course_id", "user_id"], name: "index_orders_on_course_id_and_user_id", unique: true
     t.index ["course_id"], name: "index_orders_on_course_id"
     t.index ["razorpay_order_id"], name: "index_orders_on_razorpay_order_id", unique: true
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -129,7 +128,7 @@ ActiveRecord::Schema.define(version: 2020_11_06_023242) do
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
-  add_foreign_key "orders", "courses", on_delete: :cascade
+  add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade
   add_foreign_key "payment_details", "users", on_delete: :cascade
 end

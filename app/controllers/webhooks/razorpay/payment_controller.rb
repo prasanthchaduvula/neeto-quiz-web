@@ -5,44 +5,62 @@ require 'razorpay'
 module Webhooks::Razorpay
   class PaymentController < ApplicationController
     def verify
-      load_order
-
-      if @order
-        update_order_status
-        send_response_to_razorpay
-      end
+      update_order_status
+      send_response_to_razorpay
     end
 
     private
 
       def event
-        params["event"]
+        params.dig("event")
       end
 
-      def razorpay_order_id
-        params["payload"]["payment"]["entity"]["order_id"]
+      def load_payment_id
+        @payment_id = params.dig("payload", "payment", "entity", "id")
+      end
+
+      def load_razorpay_order_id_from_payments_entity
+        @razorpay_order_id = params.dig("payload", "payment", "entity", "order_id")
+      end
+
+      def load_razorpay_order_id_from_transfers_entity
+        @razorpay_order_id = params.dig("payload", "transfer", "entity", "notes", "razorpay_order_id")
       end
 
       def load_order
-        @order = Order.find_by(razorpay_order_id: razorpay_order_id)
+        @order = Order.find_by!(razorpay_order_id: @razorpay_order_id)
       end
 
       def update_order_status
         case event
         when "payment.captured"
+          load_payment_id
+          load_razorpay_order_id_from_payments_entity
+          load_order
+
           @order.payment_captured!
-          # TODO: Initiate fund transfer to the razporpay_account_id associated with course creator
-          # Issue: https://github.com/bigbinary/nitroacademy-web/issues/54
-          # TODO: Add the order's user to join the order's course and send a text for confirmation
-          # Issue: https://github.com/bigbinary/nitroacademy-web/issues/43
+          Razorpay::TransferService.new(@order, @payment_id).transfer_funds_to_merchant
+          # TODO: Add course student (https://github.com/bigbinary/nitroacademy-web/issues/43)
         when "payment.failed"
-          # TODO: Send a text notifying the failure of payment
+          load_razorpay_order_id_from_payments_entity
+          load_order
+
           @order.payment_failed!
+        when "transfer.processed"
+          load_razorpay_order_id_from_transfers_entity
+          load_order
+
+          @order.transfer_processed!
+        when "transfer.processed.settled"
+          load_razorpay_order_id_from_transfers_entity
+          load_order
+
+          @order.transfer_settled!
         end
       end
 
       def send_response_to_razorpay
-        render status: :ok
+        render status: :ok, json: { status: "success" }
       end
   end
 end

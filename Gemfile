@@ -79,7 +79,7 @@ gem 'active_storage_validations'
 # I18n Internationalization
 gem "rails-i18n"
 
-# for interacting with the Razorpay API
+# For interacting with the Razorpay API
 gem "razorpay"
 
 # JSON implementaion for Ruby
@@ -119,6 +119,12 @@ end
 group :test do
   # Complete suite of testing facilities
   gem "minitest"
+
+  # To mock and stub objects in tests
+  gem "mocha"
+
+  # For stubbing and setting expectations on HTTP requests
+  gem "webmock"
 
   # for test coverage report
   gem "simplecov", require: false

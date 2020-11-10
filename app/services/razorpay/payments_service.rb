@@ -5,20 +5,17 @@ require "json"
 
 module Razorpay
   class PaymentsService
-    attr_accessor :account_id, :amount, :currency, :notes
+    attr_accessor :transfers_payload, :payment_id
 
-    def initialize(razorpay_account_id, amount, currency, notes = {})
-      @account_id = razorpay_account_id
-      @amount = amount
-      @currency = currency
-      @notes = notes
-
+    def initialize(transfers_payload = {}, payment_id = "")
+      @transfers_payload = transfers_payload
+      @payment_id = payment_id
       setup_razorpay
       set_razorpay_headers
     end
 
     def create_transfers
-      request.post("/#{account_id}/transfers", transfers_payload.to_json)
+      request.post(url, transfers_payload.to_json)
     end
 
 
@@ -26,6 +23,10 @@ module Razorpay
 
       def request
         Razorpay::Request.new('payments')
+      end
+
+      def url
+        "#{payment_id}/transfers"
       end
 
       def setup_razorpay
@@ -38,20 +39,6 @@ module Razorpay
 
       def custom_header
         { "Content-type": "application/json" }
-      end
-
-      def transfers_payload
-        {
-          "transfers": [
-            {
-              "account": account_id,
-              "amount": amount,
-              "currency": currency,
-              "notes": notes,
-              "on_hold": false
-            }
-          ]
-        }
       end
   end
 end

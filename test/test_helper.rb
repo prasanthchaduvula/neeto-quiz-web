@@ -24,6 +24,14 @@ ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "minitest/ci"
+require "mocha/minitest"
+require "webmock/minitest"
+
+WebMock.disable_net_connect!(allow_localhost: true)
+
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+end
 
 Minitest::Ci.report_dir = "reports" if ENV["CI"]
 
@@ -37,7 +45,6 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
-
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 end
@@ -49,3 +56,8 @@ def headers(user, options = {})
   }.merge(options)
 end
 
+def stub_post(url, request_body, response_body = {})
+  stub_request(:post, url)
+    .with(body: request_body, headers: { 'Content-Type'=>'application/json' })
+    .to_return(status: 200, body: response_body.to_json, headers: { 'Content-Type'=>'application/json' })
+end
