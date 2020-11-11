@@ -11,7 +11,9 @@ class Webhooks::Razorpay::PaymentControllerTest < ActionDispatch::IntegrationTes
   end
 
   test "payment captured event" do
+    stub_get(msg_91_url, { 'Expect'=>'' })
     stub_post(transfer_url, transfer_payload)
+
     post webhooks_razorpay_verify_url, params: payment_captured_event
 
     assert_response :ok
@@ -104,6 +106,10 @@ class Webhooks::Razorpay::PaymentControllerTest < ActionDispatch::IntegrationTes
 
     def transfer_url
       "https://api.razorpay.com/v1/payments/#{payment_id}/transfers"
+    end
+
+    def msg_91_url
+      "https://api.msg91.com/api/sendhttp.php?authkey=344320ADzUdaWyKVf5f8684dbP1&message=Welcome%20to%20NeetoAcademy,%20you%20have%20joined%20Learn%20ReactJS%20successfully&mobiles=%20917680918424&route=4&sender=NITROA"
     end
 
     def transfer_payload

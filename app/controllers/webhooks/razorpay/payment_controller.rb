@@ -39,13 +39,14 @@ module Webhooks::Razorpay
           load_order
 
           @order.payment_captured!
+          AddStudentService.new(@order.course, @order.user, @order.user.phone_number).add_student
           Razorpay::TransferService.new(@order, @payment_id).transfer_funds_to_merchant
-          # TODO: Add course student (https://github.com/bigbinary/nitroacademy-web/issues/43)
         when "payment.failed"
           load_razorpay_order_id_from_payments_entity
           load_order
 
           @order.payment_failed!
+          # TODO: Send notification (https://github.com/bigbinary/neeto-academy-web/issues/62)
         when "transfer.processed"
           load_razorpay_order_id_from_transfers_entity
           load_order

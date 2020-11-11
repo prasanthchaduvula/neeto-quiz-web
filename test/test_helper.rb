@@ -56,8 +56,18 @@ def headers(user, options = {})
   }.merge(options)
 end
 
+def stub_get(url, request_headers = {})
+  stub_request(:get, url)
+    .with(headers: request_headers)
+    .to_return(status: 200, body: "", headers: {})
+end
+
 def stub_post(url, request_body, response_body = {})
   stub_request(:post, url)
     .with(body: request_body, headers: { 'Content-Type'=>'application/json' })
-    .to_return(status: 200, body: response_body.to_json, headers: { 'Content-Type'=>'application/json' })
+    .to_return(
+      status: 200,
+      body: response_body.to_json,
+      headers: { 'Content-Type'=>'application/json' }
+    )
 end
