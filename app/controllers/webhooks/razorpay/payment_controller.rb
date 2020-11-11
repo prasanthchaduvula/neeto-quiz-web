@@ -46,7 +46,7 @@ module Webhooks::Razorpay
           load_order
 
           @order.payment_failed!
-          # TODO: Send notification (https://github.com/bigbinary/neeto-academy-web/issues/62)
+          Msg91MessageService.new.send_sms(@order.user.phone_number, payment_failure_text_notification)
         when "transfer.processed"
           load_razorpay_order_id_from_transfers_entity
           load_order
@@ -62,6 +62,10 @@ module Webhooks::Razorpay
 
       def send_response_to_razorpay
         render status: :ok, json: { status: "success" }
+      end
+
+      def payment_failure_text_notification
+        "Your payment of Rs. #{@order.amount} for order number #{@order.id} has failed. Please check the order detail on your NitroAcademy app for more information."
       end
   end
 end
