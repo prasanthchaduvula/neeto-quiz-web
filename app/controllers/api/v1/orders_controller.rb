@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::OrdersController < Api::V1::BaseController
-  before_action :load_orders, only: :index
+  before_action :load_paid_orders, only: :index
   before_action :find_course, only: :create
-  before_action :load_order, only: :show
+  before_action :load_order, only: [:show, :update]
 
   def index
     render json: { orders: @orders }, status: :ok
@@ -30,17 +30,22 @@ class Api::V1::OrdersController < Api::V1::BaseController
     end
   end
 
+  def update
+    @order.update!(order_params)
+    render json: { notice: "Order updated successfully" }, status: :ok
+  end
+
   private
 
     def order_params
-      params.require(:order).permit(:id)
+      params.require(:order).permit(:status)
     end
 
-    def load_orders
-      @orders = current_user.orders
+    def load_paid_orders
+      @orders = current_user.orders.paid
     end
 
     def load_order
-      @order = Order.find_by(id: order_params[:id])
+      @order = Order.find_by(id: params[:id])
     end
 end

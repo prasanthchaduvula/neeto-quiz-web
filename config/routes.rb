@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
       resources :publish,  only: [:update]
       
-      resources :orders, only: [:index, :create, :show]
+      resources :orders, only: [:index, :create, :show, :update]
       resource :payment_details, only: [:create, :show]
 
       resources :join_courses, only: [:show], param: :invitation_code
