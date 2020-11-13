@@ -1,23 +1,32 @@
-import React, { useState } from "react";
-import { verifyOtp } from "../../apis/authentication";
-import { showToastr } from "../../common";
+import React from "react";
+import { Button } from "nitroui";
+import { Input } from "nitroui/formik";
+import { Formik, Form } from "formik";
+import * as yup from "yup";
+import { showToastr } from "common";
+import { verifyOtp } from "apis/authentication";
 
 function EnterOtp(props) {
-  const [otp, setOtp] = useState("");
+  const initialValues = {
+    otp: "",
+  };
 
   const verifyRegistration = otpPayload => {
     verifyOtp(otpPayload).then(response => {
-      showToastr("success", "Success");
-      localStorage.setItem(
-        "authToken",
-        JSON.stringify(response.data.user.authentication_token)
-      );
-      localStorage.setItem(
-        "authPhone",
-        JSON.stringify(response.data.user.phone_number)
-      );
-      localStorage.setItem("user_id", response.data.user.id);
-      if (response.data.user.first_name || response.data.user.last_name) {
+      const {
+        id,
+        first_name,
+        last_name,
+        phone_number,
+        authentication_token,
+      } = {
+        ...response.data.user,
+      };
+      showToastr("success", "Verification successfull");
+      localStorage.setItem("authToken", JSON.stringify(authentication_token));
+      localStorage.setItem("authPhone", JSON.stringify(phone_number));
+      localStorage.setItem("user_id", id);
+      if (first_name || last_name) {
         window.location.href = "/";
       } else {
         props.setUserPage(true);
@@ -25,60 +34,67 @@ function EnterOtp(props) {
     });
   };
 
-  const addIndianCallingCode = phoneNumber => "+91".concat(phoneNumber);
+  const validationSchema = yup.object().shape({
+    otp: yup
+      .string()
+      .required("Required *")
+      .length(4, "OTP must be 4 digits"),
+  });
 
-  const handleOtpSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = values => {
     const otpPayload = {
       user: {
-        phone_number: addIndianCallingCode(props.phoneNumber),
-        otp,
+        phone_number: `+91${props.phoneNumber}`,
+        otp: values.otp,
       },
     };
     verifyRegistration(otpPayload);
   };
 
   return (
-    <form
-      className="w-full px-10 py-8 bg-white border rounded-lg shadow-sm simple_form"
-      onSubmit={handleOtpSubmit}
+    <Formik
+      validateOnBlur={false}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
-      <div className="form-control text-lg">
-        <label className="mr-2" htmlFor="otp">
-          Enter OTP
-        </label>
-        <input
-          className="mb-4 form-group  required user_"
-          type="text"
-          name="otp"
-          onChange={e => setOtp(e.target.value)}
-          value={otp}
-          placeholder="Enter your otp"
-        />
-      </div>
-      <div className="flex">
-        <button
-          className="bg-purple-500 font-bold mr-2 text-white rounded mb-4 p-2"
-          onClick={() => props.setPhonePage(true)}
-        >
-          Edit phone number
-        </button>
-        <button
-          className="bg-purple-500 font-bold text-white rounded mb-4 p-2"
-          onClick={e => props.handlePhoneSubmit(e)}
-        >
-          Resend OTP
-        </button>
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4"
-          type="submit"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+      {({ handleSubmit }) => {
+        return (
+          <Form>
+            <Input
+              label="OTP"
+              type="number"
+              name="otp"
+              placeholder="Enter otp"
+            />
+            <div className="flex justify-between items-center mt-6">
+              <Button
+                label="Edit Phone Number"
+                style="secondary"
+                icon="ri-pencil-line"
+                className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
+                onClick={() => props.setPhonePage(true)}
+              />
+              <Button
+                label="Resend OTP"
+                style="secondary"
+                icon="ri-send-plane-line"
+                className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
+                onClick={() => props.handlePhoneSubmit(props.phoneNumber)}
+              />
+            </div>
+            <Button
+              label="Submit"
+              size="large"
+              style="primary"
+              fullWidth
+              className="mt-6 text-center text-base font-medium"
+              onClick={handleSubmit}
+            />
+          </Form>
+        );
+      }}
+    </Formik>
   );
 }
 export default EnterOtp;

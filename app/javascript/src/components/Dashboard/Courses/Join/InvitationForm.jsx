@@ -36,6 +36,7 @@ export default function InvitationForm({
 
   return (
     <Formik
+      validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -45,13 +46,13 @@ export default function InvitationForm({
         return (
           <div className="px-6">
             <Form>
-              <div className="mb-4">
-                <Input
-                  label="Enter the course invitation code"
-                  name="invitation_code"
-                  autoFocus
-                />
-              </div>
+              <Input
+                label="Enter the course invitation code"
+                name="invitation_code"
+                autoFocus
+                required
+                className="mb-6"
+              />
 
               <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
                 <Button

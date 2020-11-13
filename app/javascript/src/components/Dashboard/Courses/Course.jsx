@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader, Button } from "nitroui";
-import { PageHeading } from "nitroui/layouts";
 import { Link } from "react-router-dom";
+import { PageLoader, Button, Badge, Label, Alert } from "nitroui";
+import { PageHeading } from "nitroui/layouts";
 import { showToastr } from "common";
 import { getCourse, publishCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
 import Students from "../Students";
-import TableOfContents from "../PreviewCourse/TableOfContents";
+import CourseTemplate from "../Template";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -16,6 +16,7 @@ export default function Course(props) {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showstudents, setShowStudents] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     fetchSingleCourse();
@@ -71,13 +72,24 @@ export default function Course(props) {
             <PageHeading
               title={`${course.name}`}
               rightButton={() => (
-                <Button
-                  label="Add Chapter"
-                  icon="ri-add-line"
-                  onClick={() => {
-                    setChapterPane(true);
-                  }}
-                />
+                <>
+                  <Badge
+                    color={course.published ? "green" : "yellow"}
+                    className="mr-4 text-base"
+                  >
+                    {course.published
+                      ? "Published course"
+                      : "Unpublished course"}
+                  </Badge>
+
+                  <Button
+                    label="Add Chapter"
+                    icon="ri-add-line"
+                    onClick={() => {
+                      setChapterPane(true);
+                    }}
+                  />
+                </>
               )}
             />
             <nav className="bg-gray-100 p-3 rounded-md">
@@ -85,8 +97,13 @@ export default function Course(props) {
                 {course.description}
               </p>
               <div className="flex items-center justify-end w-full mt-4">
+                <Label className="text-base text-indigo-500 ">
+                  Invitation code: &nbsp;
+                  <span className="font-bold">{course.invitation_code}</span>
+                </Label>
                 <Button
                   label="Students"
+                  className="ml-4"
                   onClick={() => {
                     course.published
                       ? setShowStudents(true)
@@ -131,7 +148,14 @@ export default function Course(props) {
                 <Button
                   label="Delete Course"
                   className="ml-4"
-                  onClick={deleteSingleCourse}
+                  onClick={() => {
+                    course.published
+                      ? showToastr(
+                          "error",
+                          "You can not delete a published course"
+                        )
+                      : setShowAlert(true);
+                  }}
                 />
               </div>
             </nav>
@@ -163,6 +187,13 @@ export default function Course(props) {
               course={course}
               fetchSingleCourse={fetchSingleCourse}
             />
+            <Alert
+              isOpen={showAlert}
+              title="Delete Course"
+              message="You are permanently deleting the course. This cannot be undone."
+              confirmAction={deleteSingleCourse}
+              cancelAction={() => setShowAlert(false)}
+            />
           </div>
         ) : (
           <PageLoader />
@@ -186,7 +217,7 @@ export default function Course(props) {
       );
     } else {
       return (
-        <TableOfContents
+        <CourseTemplate
           isStudent={true}
           courseId={props.match.params.course_id}
         />

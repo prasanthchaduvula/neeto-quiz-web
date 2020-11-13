@@ -10,6 +10,7 @@ function ViewCourse(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
+  const [isStudent, setIsStudent] = useState("");
   const [
     chaptersWithPublishedLessons,
     setChaptersWithPublishedLessons,
@@ -22,6 +23,7 @@ function ViewCourse(props) {
       setChaptersWithPublishedLessons(
         loadChaptersWithPublishedLessons(response.data.chapters)
       );
+      setIsStudent(response.data.user.id != localStorage.user_id);
     });
   };
 
@@ -51,21 +53,21 @@ function ViewCourse(props) {
     <div className="flex">
       <SidePanel
         showPanel={showPane}
+        setShowPane={setShowPane}
         course={course}
         chapters={chapters}
-        setShowPane={setShowPane}
         getLesson={getLesson}
         lesson={lesson}
-        isStudent={props.isStudent}
+        isStudent={isStudent}
         chaptersWithPublishedLessons={chaptersWithPublishedLessons}
       />
       <Lesson
         lesson={lesson}
-        content={lesson.lessonAttachment}
         courseId={course.id}
         chapters={chapters}
         getLesson={getLesson}
-        isStudent={props.isStudent}
+        isStudent={isStudent}
+        setShowPane={setShowPane}
       />
     </div>
   );

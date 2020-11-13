@@ -1,36 +1,59 @@
 import React from "react";
+import { Button } from "nitroui";
+import { Input } from "nitroui/formik";
+import { Formik, Form } from "formik";
+import * as yup from "yup";
 
 function EnterPhoneNumber(props) {
+  const initialValues = {
+    phone_number: props.phoneNumber,
+  };
+
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+  const validationSchema = yup.object().shape({
+    phone_number: yup
+      .string()
+      .required("Required *")
+      .matches(phoneRegExp, "Phone number is not valid")
+      .length(10, "Phone number must be 10 digits"),
+  });
+
+  const handleSubmit = values => {
+    props.handlePhoneSubmit(values.phone_number);
+  };
+
   return (
-    <form
-      className="w-full px-9 py-8 bg-white border rounded-lg shadow-sm simple_form"
-      onSubmit={e => props.handlePhoneSubmit(e)}
+    <Formik
+      validateOnBlur={false}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
-      <div className="form-control text-lg">
-        <div className="md:flex items-center">
-          <label className="mr-2" htmlFor="phoneNumber">
-            Phone Number
-          </label>
-          <span className="text-gray-400 mr-1">+91</span>
-          <input
-            className="form-group  required user_"
-            type="number"
-            name="phoneNumber"
-            onChange={e => props.setPhoneNumber(e.target.value)}
-            value={props.phoneNumber}
-            placeholder="Enter phone number"
-          />
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4"
-          type="submit"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+      {({ handleSubmit }) => {
+        return (
+          <Form>
+            <Input
+              label="Phone Number"
+              type="number"
+              name="phone_number"
+              autoFocus
+              prefix="+91"
+              placeholder="Enter phone number"
+            />
+
+            <Button
+              label="Submit"
+              size="large"
+              style="primary"
+              fullWidth
+              className="mt-6 text-center text-base font-medium"
+              onClick={handleSubmit}
+            />
+          </Form>
+        );
+      }}
+    </Formik>
   );
 }
 

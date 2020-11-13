@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "nitroui";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Input, Radio, Textarea } from "nitroui/formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common/index";
 import { createLesson, updateLesson } from "apis/lessons";
@@ -17,30 +18,53 @@ export default function LessonForm({
     description: lesson.description || "",
     lesson_type: lesson.lesson_type || "youtube",
     content: lesson.content || "",
-    file: lesson.file || "",
+    pdf: lesson.file || "",
+    image: lesson.file || "",
   };
+
+  const IMAGE_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Required *"),
     lesson_type: yup.string().required("Required *"),
+    content: yup.string().when("lesson_type", {
+      is: "youtube",
+      then: yup.string().required("Must enter youtube video url"),
+    }),
+    image: yup.mixed().when("lesson_type", {
+      is: "image",
+      then: yup
+        .mixed()
+        .required("A image file is required")
+        .test(
+          "fileFormat",
+          "Unsupported Format (Must be png/jpg/jpeg/gif)",
+          value => value && IMAGE_FORMATS.includes(value.type)
+        ),
+    }),
+    pdf: yup.mixed().when("lesson_type", {
+      is: "pdf",
+      then: yup
+        .mixed()
+        .required("A pdf file is required")
+        .test(
+          "fileFormat",
+          "Unsupported Format (Must be pdf)",
+          value => value && ["application/pdf"].includes(value.type)
+        ),
+    }),
   });
-
-  const validateContent = value => {
-    let error;
-    if (!value) {
-      error = "Required";
-    }
-    return error;
-  };
 
   const handleSubmit = values => {
     const formData = new FormData();
-    if (values.file && values.file.name) {
-      formData.append("lesson[file]", values.file);
-    }
     if (values.lesson_type == "youtube") {
       formData.append("lesson[content]", values.content);
+    } else if (values.lesson_type == "pdf") {
+      formData.append("lesson[file]", values.pdf);
+    } else {
+      formData.append("lesson[file]", values.image);
     }
+
     formData.append("lesson[name]", values.name);
     formData.append("lesson[lesson_type]", values.lesson_type);
     formData.append("lesson[description]", values.description);
@@ -60,6 +84,7 @@ export default function LessonForm({
 
   return (
     <Formik
+      validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -69,101 +94,80 @@ export default function LessonForm({
         return (
           <Form>
             <label
-              className="block text-gray-700 text-sm font-bold mb-4"
+              className="block text-gray-700 text-sm font-bold"
               htmlor="name"
             >
               Chapter Name: {chapter.name}
             </label>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="name"
-              >
-                Name of the lesson
-              </label>
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-600"
+            <Input
+              label="Name of the lesson"
+              required
+              name="name"
+              className="mt-6"
+            />
+            <Textarea label="Description" name="description" className="mt-6" />
+            <Radio
+              className="mt-6"
+              label="Choose lesson type:"
+              required
+              name="lesson_type"
+              options={[
+                {
+                  label: "Youtube",
+                  value: "youtube",
+                },
+                {
+                  label: "Pdf",
+                  value: "pdf",
+                },
+                {
+                  label: "Image",
+                  value: "image",
+                },
+              ]}
+            />
+            {values.lesson_type == "youtube" && (
+              <Input
+                name="content"
+                className="mt-6"
+                placeholder="Enter youtube video url"
               />
-              <Field
-                type="text"
-                id="name"
-                name="name"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="description"
-              >
-                Description
-              </label>
-              <Field
-                as="textarea"
-                id="description"
-                name="description"
-                rows="5"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-              <ErrorMessage name="description" />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="lesson_type"
-              >
-                Choose lesson type:
-              </label>
-              <Field name="lesson_type" as="select">
-                <option value="youtube">Youtube</option>
-                <option value="pdf">Pdf</option>
-                <option value="image">Image</option>
-              </Field>
-              <ErrorMessage
-                name="lesson_type"
-                component="div"
-                className="text-red-600"
-              />
-            </div>
-
-            {values.lesson_type == "youtube" ? (
-              <div className="mb-4">
-                <Field
-                  type="text"
-                  id="content"
-                  name="content"
-                  validate={validateContent}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-                />
-                <ErrorMessage
-                  name="content"
-                  component="div"
-                  className="text-red-600"
-                />
-              </div>
-            ) : (
-              <div className="mb-4">
+            )}
+            {values.lesson_type == "pdf" && (
+              <>
                 <input
-                  id="file"
-                  name="file"
+                  name="pdf"
                   type="file"
+                  className="mt-6"
                   onChange={event => {
-                    setFieldValue("file", event.currentTarget.files[0]);
+                    setFieldValue("pdf", event.currentTarget.files[0]);
                   }}
                 />
                 <ErrorMessage
-                  name="file"
+                  name="pdf"
                   component="div"
-                  className="text-red-600"
+                  className="text-red-600 mt-2"
                 />
-              </div>
+              </>
             )}
 
+            {values.lesson_type == "image" && (
+              <>
+                <input
+                  name="image"
+                  type="file"
+                  className="mt-6"
+                  onChange={event => {
+                    setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                />
+                <ErrorMessage
+                  name="image"
+                  component="div"
+                  className="text-red-600 mt-2"
+                />
+              </>
+            )}
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button
                 onClick={onClose}

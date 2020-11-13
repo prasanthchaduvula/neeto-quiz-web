@@ -12,8 +12,14 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
     is_paid: false,
   };
 
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const validationSchema = yup.object().shape({
-    phone_number: yup.string().required("Required *"),
+    phone_number: yup
+      .string()
+      .required("Required *")
+      .matches(phoneRegExp, "Phone number is not valid")
+      .length(10, "Phone number must be 10 digits"),
   });
 
   const handleSubmit = values => {
@@ -31,6 +37,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
 
   return (
     <Formik
+      validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -39,21 +46,17 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
       {({ handleSubmit }) => {
         return (
           <Form>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="phone_number"
-              >
-                Enter the Student Phone Number you want to add
-              </label>
-              <Input
-                type="number"
-                id="phone_number"
-                name="phone_number"
-                prefix="+91"
-                placeholder="Enter phone number"
-              />
-            </div>
+            <Input
+              label="Enter the Student Phone Number you want to add"
+              type="number"
+              id="phone_number"
+              name="phone_number"
+              prefix="+91"
+              placeholder="Enter phone number"
+              required
+              autoFocus
+              className="mt-6"
+            />
 
             <div className="mt-4">
               <Field type="checkbox" name="is_paid" className="form-checkbox" />

@@ -40,6 +40,7 @@
     "core-js": "3",
     "formik": "^2.2.1",
     "js-logger": "^1.6.0",
+    "moment": "^2.29.1",
     "nitroui": "https://github.com/bigbinary/nitroui.git",
     "postcss-cssnext": "^3.1.0",
     "prop-types": "^15.7.2",

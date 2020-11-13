@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "nitroui";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Input, Textarea } from "nitroui/formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common";
 import { createCourse, updateCourse } from "apis/courses";
@@ -15,12 +16,16 @@ export default function CourseForm({
   const initialValues = {
     name: course.name || "",
     description: course.description || "",
-    price: course.price,
+    price: course.price || "",
   };
 
   const validationSchema = yup.object().shape({
     name: yup.string().required("Required *"),
     description: yup.string().required("Required *"),
+    price: yup
+      .number()
+      .lessThan(100000, "must be less than 100000")
+      .moreThan(-1, "Price should not be a negative number"),
   });
 
   const handleSubmit = values => {
@@ -51,69 +56,34 @@ export default function CourseForm({
 
   return (
     <Formik
+      validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ values, handleSubmit }) => {
+      {({ handleSubmit }) => {
         return (
           <Form>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="name"
-              >
-                Name of the course
-              </label>
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-600"
-              />
-              <Field
-                type="text"
-                id="name"
-                name="name"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="description"
-              >
-                Description
-              </label>
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-red-600"
-              />
-              <Field
-                as="textarea"
-                id="description"
-                name="description"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="price"
-              >
-                Price of the course in rupees
-              </label>
-              <Field
-                type="number"
-                id="price"
-                name="price"
-                value={values.price || ""}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-            </div>
+            <Input
+              label="Name of the course"
+              name="name"
+              autoFocus
+              required
+              className="mb-6"
+            />
+            <Textarea
+              label="Description"
+              name="description"
+              required
+              className="mb-6"
+            />
+            <Input
+              label="Price of the course in rupees"
+              type="number"
+              name="price"
+              className="mb-6"
+            />
 
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button
@@ -122,7 +92,6 @@ export default function CourseForm({
                 size="large"
                 style="secondary"
               />
-
               <Button
                 label="Submit"
                 size="large"

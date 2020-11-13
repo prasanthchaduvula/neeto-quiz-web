@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "nitroui";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Input } from "nitroui/formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common";
 import { createChapter, updateChapter } from "apis/chapters";
@@ -41,6 +42,7 @@ export default function ChapterForm({
 
   return (
     <Formik
+      validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -49,25 +51,13 @@ export default function ChapterForm({
       {({ handleSubmit }) => {
         return (
           <Form>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlor="name"
-              >
-                Name of the chapter
-              </label>
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-600"
-              />
-              <Field
-                type="text"
-                id="name"
-                name="name"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2"
-              />
-            </div>
+            <Input
+              label="Name of the chapter"
+              name="name"
+              autoFocus
+              required
+              className="mb-6"
+            />
 
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button

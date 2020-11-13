@@ -7,10 +7,18 @@ import Viewer from "react-viewer";
 import { getChapter } from "apis/chapters";
 import PreviousButton from "./PreviousButton";
 import NextButton from "./NextButton";
+import { Link } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
+function Lesson({
+  lesson,
+  courseId,
+  getLesson,
+  chapters,
+  isStudent,
+  setShowPane,
+}) {
   const [lessonIds, setLessonIds] = useState([]);
   const [publishedLessonIds, setPublishedLessonIds] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -167,26 +175,54 @@ function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
   const goToNextPage = () => setPageNumber(pageNumber + 1);
 
   return (
-    <div className="p-2 w-full ml-2  p-4 ">
+    <div className="w-full">
       <PageHeading
         title={lesson.name}
-        customClass="border-none font-semibold text-2xl"
+        breadcrumbLinks={
+          <Button
+            className="text-xl font-bold mr-6"
+            onClick={() => {
+              setShowPane(true);
+            }}
+            icon="ri-menu-line"
+          />
+        }
+        rightButton={() => (
+          <Link to={`/courses/${courseId}`} className="no-underline">
+            <Button
+              style="secondary"
+              label="Go to course"
+              icon="ri-arrow-left-line"
+            />
+          </Link>
+        )}
       />
-      <div className="p-3 mt-3 rounded-md text-lg p-2">
-        <p className="text-gray-600 ">{lesson.description}</p>
+      <div className="p-3 mt-3">
+        <p className="text-black text-base leading-normal">
+          {lesson.description}
+        </p>
       </div>
-      <div className="my-3 p-3">
-        {lesson.content != null ? (
-          <ReactPlayer url={lesson.content} controls={true} width={`100%`} />
-        ) : lesson.lesson_type == "pdf" ? (
+      <div className="my-3 p-3 flex justify-center items-center">
+        {lesson.lesson_type == "youtube" && (
+          <ReactPlayer
+            url={lesson.content}
+            controls={true}
+            width={`60%`}
+            height={`60vh`}
+          />
+        )}
+        {lesson.lesson_type == "pdf" && (
           <div className="text-center">
-            <Document file={content} onLoadSuccess={onDocumentLoadSuccess}>
+            <Document
+              file={lesson.lessonAttachment}
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
               <Page pageNumber={pageNumber} />
             </Document>
-
-            <nav className="flex justify-center content-center">
+            <nav className="flex justify-center items-center mt-4">
               {pageNumber != 1 && (
                 <Button
+                  style="secondary"
                   onClick={() => goToPrevPage()}
                   icon="ri-arrow-left-line"
                 />
@@ -196,15 +232,20 @@ function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
               </p>
               {pageNumber != numPages && (
                 <Button
+                  style="secondary"
                   onClick={() => goToNextPage()}
                   icon="ri-arrow-right-line"
                 />
               )}
             </nav>
           </div>
-        ) : (
+        )}
+        {lesson.lesson_type == "image" && (
           <>
-            <img src={content} onClick={() => setVisible(true)} />
+            <img
+              src={lesson.lessonAttachment}
+              onClick={() => setVisible(true)}
+            />
             <Viewer
               width="45%"
               height="55%"
@@ -212,7 +253,7 @@ function Lesson({ lesson, content, courseId, getLesson, chapters, isStudent }) {
               onClose={() => {
                 setVisible(false);
               }}
-              images={[{ src: `${content}`, alt: "Image" }]}
+              images={[{ src: `${lesson.lessonAttachment}`, alt: "Image" }]}
             />
           </>
         )}

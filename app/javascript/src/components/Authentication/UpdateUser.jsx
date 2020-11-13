@@ -1,58 +1,60 @@
-import Axios from "axios";
-import React, { useState } from "react";
+import React from "react";
+import { Button } from "nitroui";
+import { Input } from "nitroui/formik";
+import { Formik, Form } from "formik";
+import * as yup from "yup";
+import { showToastr } from "common";
+import { updateUser } from "apis/users";
 
 function UpdateUser(props) {
-  const [name, setName] = useState({ first_name: "", last_name: "" });
-  const handleSubmit = event => {
-    event.preventDefault();
-    let { first_name, last_name } = name;
-    Axios.patch(`/api/v1/users/${props.id}`, {
+  const initialValues = {
+    first_name: "",
+    last_name: "",
+  };
+
+  const validationSchema = yup.object().shape({
+    first_name: yup.string().required("Required *"),
+    last_name: yup.string().required("Required *"),
+  });
+
+  const handleSubmit = values => {
+    const payload = {
       user: {
-        first_name,
-        last_name,
+        first_name: values.first_name,
+        last_name: values.last_name,
       },
-    }).then(() => {
+    };
+
+    updateUser(props.id, payload).then(() => {
+      showToastr("success", "Profile updated successfully");
       window.location.href = "/dashboard";
     });
   };
+
   return (
-    <form
-      className="w-full px-10 py-8 bg-white border rounded-lg shadow-sm simple_form"
+    <Formik
+      validateOnBlur={false}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
-      <div className="form-control text-lg">
-        <label className="mr-2" htmlFor="phoneNumber">
-          First Name
-        </label>
-        <input
-          className="mb-4 form-group email required user_email"
-          type="text"
-          name="first_name"
-          onChange={e => setName({ ...name, first_name: e.target.value })}
-          value={name.first_name}
-          placeholder="Enter your First name"
-        />
-      </div>
-      <div className="form-control text-lg">
-        <label className="mr-2" htmlFor="phoneNumber">
-          Last Name
-        </label>
-        <input
-          className="mb-4 form-group email required user_email"
-          type="text"
-          name="last_name"
-          onChange={e => setName({ ...name, last_name: e.target.value })}
-          value={name.last_name}
-          placeholder="Enter your Last name"
-        />
-      </div>
-      <button
-        className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-        type="submit"
-      >
-        Submit
-      </button>
-    </form>
+      {({ handleSubmit }) => {
+        return (
+          <Form>
+            <Input label="First Name" name="first_name" />
+            <Input label="Last Name" name="last_name" className="mt-6" />
+            <Button
+              label="Submit"
+              size="large"
+              style="primary"
+              fullWidth
+              className="mt-6 text-center text-base font-medium"
+              onClick={handleSubmit}
+            />
+          </Form>
+        );
+      }}
+    </Formik>
   );
 }
 export default UpdateUser;

@@ -48,6 +48,7 @@ export default function GeneralSettings() {
     return (
       <Formik
         enableReinitialize
+        validateOnBlur={false}
         initialValues={initialValues}
         onReset={onReset}
         onSubmit={handleSubmit}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "nitroui";
+import { Button, Switch, Alert } from "nitroui";
 import { showToastr } from "common/index";
 import { publishLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
@@ -7,6 +7,7 @@ import LessonPane from "./Pane";
 export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
   const [lessonPane, setLessonPane] = useState(false);
   const [lesson, setLesson] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
 
   const showDraftStatus = isPublished => {
     return !isPublished ? (
@@ -36,7 +37,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     });
   };
 
-  const deleteSingleLesson = lesson => {
+  const deleteSingleLesson = () => {
     deleteLesson(chapter.id, lesson.id).then(() => {
       showToastr("success", "Lesson Deleted Successfully");
       fetchSingleCourse();
@@ -66,19 +67,18 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
                 </div>
               </td>
               <td className="flex justify-end items-center py-2 mr-4">
-                <Button
-                  style="icon"
-                  icon={
-                    lesson.is_published ? "ri-toggle-fill" : "ri-toggle-line"
-                  }
-                  className="hover:text-indigo-500 mr-6 text-indigo-500"
-                  onClick={() => publishSingleLesson(lesson)}
+                <Switch
+                  checked={lesson.is_published}
+                  onChange={() => publishSingleLesson(lesson)}
                 />
                 <Button
                   style="icon"
                   icon="ri-delete-bin-line"
-                  className="hover:text-red-500"
-                  onClick={() => deleteSingleLesson(lesson)}
+                  className="hover:text-red-500 ml-6"
+                  onClick={() => {
+                    setShowAlert(true);
+                    setLesson(lesson);
+                  }}
                 />
               </td>
             </tr>
@@ -92,6 +92,13 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
         chapter={chapter}
         lesson={lesson}
         fetchSingleCourse={fetchSingleCourse}
+      />
+      <Alert
+        isOpen={showAlert}
+        title="Delete Lesson"
+        message="You are permanently deleting the lesson. This cannot be undone."
+        confirmAction={deleteSingleLesson}
+        cancelAction={() => setShowAlert(false)}
       />
     </>
   );

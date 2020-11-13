@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "nitroui";
+import { Button, Alert } from "nitroui";
 import { showToastr } from "common";
 import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
@@ -10,47 +10,19 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
   const [lessonPane, setLessonPane] = useState(false);
   const [chapterPane, setChapterPane] = useState(false);
   const [chapter, setChapter] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
 
-  const display = () => {
-    return chapters.length ? (
-      <>
-        {chaptersList()}
-        <LessonPane
-          showPane={lessonPane}
-          setShowPane={setLessonPane}
-          isCreateForm={true}
-          chapter={chapter}
-          lesson=""
-          fetchSingleCourse={fetchSingleCourse}
-        />
-        <ChapterPane
-          showPane={chapterPane}
-          setShowPane={setChapterPane}
-          isCreateForm={false}
-          chapter={chapter}
-          course={course}
-          fetchSingleCourse={fetchSingleCourse}
-        />
-      </>
-    ) : (
-      noResourceMessage()
-    );
-  };
-
-  const deleteSingleChapter = chapter => {
+  const deleteSingleChapter = () => {
     deleteChapter(course.id, chapter.id).then(() => {
       showToastr("success", "Chapter Deleted successfully");
       fetchSingleCourse();
     });
   };
 
-  const chaptersList = () => {
-    return chapters.map(({ chapter, lessons }) => {
-      return (
-        <div
-          className="w-full border rounded mx-auto my-10 bg-white rounded-lg"
-          key={chapter.id}
-        >
+  const ChaptersList = () => {
+    return chapters.map(({ chapter, lessons }) => (
+      <div key={chapter.id}>
+        <div className="w-full border rounded mx-auto my-10 bg-white rounded-lg">
           <table className="w-full table-fixed mx-auto mb-4 bg-white">
             <thead className="bg-gray-100">
               <tr className="w-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out border-t border-b">
@@ -74,7 +46,8 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
                     icon="ri-delete-bin-line"
                     className="hover:text-red-500"
                     onClick={() => {
-                      deleteSingleChapter(chapter);
+                      setShowAlert(true);
+                      setChapter(chapter);
                     }}
                   />
                 </th>
@@ -97,19 +70,48 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
             />
           </div>
         </div>
-      );
-    });
+        <Alert
+          isOpen={showAlert}
+          title="Delete Chapter"
+          message="You are permanently deleting the chapter. This cannot be undone."
+          confirmAction={deleteSingleChapter}
+          cancelAction={() => setShowAlert(false)}
+        />
+      </div>
+    ));
   };
 
-  const noResourceMessage = () => {
+  const NoChapters = () => {
     return (
-      <div className="text-center mt-5 mb-5">
-        <h4>
-          We do not have anything to show here. Please create new resources.
+      <div className="flex items-center justify-center min-h-screen">
+        <h4 className="text-xl ">
+          We do not have anything to show here. Please add chapters.
         </h4>
       </div>
     );
   };
 
-  return <div className="mt-15">{display()}</div>;
+  return chapters.length ? (
+    <>
+      <ChaptersList />
+      <LessonPane
+        showPane={lessonPane}
+        setShowPane={setLessonPane}
+        isCreateForm={true}
+        chapter={chapter}
+        lesson=""
+        fetchSingleCourse={fetchSingleCourse}
+      />
+      <ChapterPane
+        showPane={chapterPane}
+        setShowPane={setChapterPane}
+        isCreateForm={false}
+        chapter={chapter}
+        course={course}
+        fetchSingleCourse={fetchSingleCourse}
+      />
+    </>
+  ) : (
+    <NoChapters />
+  );
 }

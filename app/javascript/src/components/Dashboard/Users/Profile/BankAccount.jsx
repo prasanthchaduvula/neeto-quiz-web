@@ -63,6 +63,7 @@ export default function BankAccount() {
     return (
       <Formik
         enableReinitialize
+        validateOnBlur={false}
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -76,12 +77,14 @@ export default function BankAccount() {
               <Form>
                 <Input
                   label="IFSC code"
+                  required
                   name="ifsc"
                   className="mb-6"
                   disabled={disabled}
                 />
                 <Input
                   label="Account Number"
+                  required
                   type="number"
                   name="account_number"
                   className="mb-6"
@@ -90,6 +93,7 @@ export default function BankAccount() {
                 <Radio
                   className="mb-6"
                   label="Account Type"
+                  required
                   name="account_type"
                   disabled={disabled}
                   options={[
@@ -105,17 +109,22 @@ export default function BankAccount() {
                 />
                 <Input
                   label="Business Name"
+                  required
                   name="business_name"
                   className="mb-6"
                   disabled={disabled}
                 />
                 <Input
                   label="Email"
+                  required
                   type="email"
                   name="email_id"
-                  className="mb-6"
                   disabled={disabled}
                 />
+                <p className="mt-2 mb-4 text-sm leading-relaxed text-gray-500">
+                  The email address will be used for registering the account on
+                  Razorpay.
+                </p>
                 {!initialValues.account_number && (
                   <div className="flex flex-row items-center justify-start mt-8">
                     <Button

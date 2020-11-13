@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-
+import { showToastr } from "common";
 import { createOtp } from "apis/authentication";
 import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";
 import EnterPhoneNumber from "./EnterPhoneNumber";
-import { showToastr } from "../../common";
 
 function Signup() {
   const [userPage, setUserPage] = useState(false);
@@ -12,25 +11,17 @@ function Signup() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const newRegistration = phonePayload => {
-    if (phoneNumber && phoneNumber.length == 10) {
-      createOtp(phonePayload).then(() => {
-        showToastr("success", "OTP sent successfully");
-        setTimeout(() => {
-          setPhonePage(false);
-        }, 1000);
-      });
-    } else {
-      showToastr("error", "Please enter a valid phone number");
-    }
+    createOtp(phonePayload).then(() => {
+      showToastr("success", "OTP sent successfully");
+      setPhonePage(false);
+    });
   };
 
-  const addIndianCallingCode = phoneNumber => "+91".concat(phoneNumber);
-
-  const handlePhoneSubmit = event => {
-    event.preventDefault();
+  const handlePhoneSubmit = number => {
+    setPhoneNumber(number);
     const phonePayload = {
       user: {
-        phone_number: addIndianCallingCode(phoneNumber),
+        phone_number: `+91${number}`,
       },
     };
     newRegistration(phonePayload);
@@ -38,39 +29,40 @@ function Signup() {
 
   return (
     <>
-      <div className="py-12">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 ">
-          <div className="lg:text-center">
-            <h3 className="mt-2 text-2xl leading-8 font-bold text-black-300 tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
-              NitroAcademy
-            </h3>
-            <p className="my-4 max-w-2xl text-xl leading-7 text-gray-500 lg:mx-auto">
-              Start learning in your own time and space
-            </p>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <img
+            className="mx-auto h-12 w-auto"
+            src="https://tailwindui.com/img/logos/v1/workflow-mark-on-white.svg"
+            alt="Workflow"
+          />
+          <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+            Welcome to NeetoAcademy
+          </h2>
+          <p className="mt-2 text-center text-sm leading-5 font-medium text-indigo-600 max-w">
+            Start learning in your own time and space
+          </p>
         </div>
 
-        <div className="flex flex-grow wrapper">
-          <div className="container flex-col px-4 mx-auto">
-            <div className="flex flex-col items-center justify-center flex-grow w-full h-full py-5 mx-auto lg:w-5/12">
-              {phonePage ? (
-                <EnterPhoneNumber
-                  setPhonePage={setPhonePage}
-                  handlePhoneSubmit={handlePhoneSubmit}
-                  setPhoneNumber={setPhoneNumber}
-                  phoneNumber={phoneNumber}
-                />
-              ) : !userPage ? (
-                <EnterOtp
-                  handlePhoneSubmit={handlePhoneSubmit}
-                  setPhonePage={setPhonePage}
-                  phoneNumber={phoneNumber}
-                  setUserPage={setUserPage}
-                />
-              ) : (
-                <UpdateUser id={localStorage.getItem("user_id")} />
-              )}
-            </div>
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            {phonePage ? (
+              <EnterPhoneNumber
+                setPhonePage={setPhonePage}
+                handlePhoneSubmit={handlePhoneSubmit}
+                setPhoneNumber={setPhoneNumber}
+                phoneNumber={phoneNumber}
+              />
+            ) : !userPage ? (
+              <EnterOtp
+                handlePhoneSubmit={handlePhoneSubmit}
+                setPhonePage={setPhonePage}
+                phoneNumber={phoneNumber}
+                setUserPage={setUserPage}
+              />
+            ) : (
+              <UpdateUser id={localStorage.getItem("user_id")} />
+            )}
           </div>
         </div>
       </div>
