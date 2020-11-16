@@ -7,7 +7,8 @@ class Api::V1::CoursesController < Api::V1::BaseController
   def index
     courses_created = current_user.courses
     courses_joined = current_user.joined_courses
-    render json: { courses_created: courses_created, courses_joined: courses_joined }, status: :ok
+    my_courses = current_user.my_courses
+    render json: { my_courses: my_courses, courses_created: courses_created, courses_joined: courses_joined }, status: :ok
   end
 
   def create

@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function ListCourses({ courses, create }) {
+export default function ListCourses({ courses }) {
   const NoData = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <h4 className="text-xl ">
-          {create
-            ? " We do not have created courses to show here. Please add courses"
-            : "We do not have joined courses to show here. Please join courses"}
+          We do not have any created or joined courses by you to show here.
+          Please add or join courses
         </h4>
       </div>
     );

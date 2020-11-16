@@ -10,7 +10,7 @@ import JoinCoursePane from "./Join";
 export default function Courses() {
   const [coursePane, setCoursePane] = useState(false);
   const [courses, setCourses] = useState({});
-  const [activeTab, setActiveTab] = useState("createdCourses");
+  const [activeTab, setActiveTab] = useState("myCourses");
   const [joinCoursePane, setJoinCoursePane] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function Courses() {
   return (
     <div>
       <PageHeading
-        title="Courses"
+        title="My Courses"
         rightButton={() => (
           <>
             <Button
@@ -45,6 +45,15 @@ export default function Courses() {
         <>
           <Tab className="px-6 -mx-4 border-b border-gray-200">
             <Tab.Item
+              icon="ri-home-line"
+              onClick={() => {
+                setActiveTab(TABS.MY_COURSES);
+              }}
+              active={activeTab === TABS.MY_COURSES}
+            >
+              My Courses
+            </Tab.Item>
+            <Tab.Item
               icon="ri-pencil-line"
               onClick={() => {
                 setActiveTab(TABS.CREATED_COURSES);
@@ -54,7 +63,7 @@ export default function Courses() {
               Created Courses
             </Tab.Item>
             <Tab.Item
-              icon="ri-home-line"
+              icon="ri-send-plane-line"
               onClick={() => {
                 setActiveTab(TABS.JOINED_COURSES);
               }}
@@ -65,11 +74,14 @@ export default function Courses() {
           </Tab>
 
           <div className="my-5">
+            {activeTab === TABS.MY_COURSES && (
+              <ListCourses courses={courses.my_courses} />
+            )}
             {activeTab === TABS.CREATED_COURSES && (
-              <ListCourses courses={courses.courses_created} create={true} />
+              <ListCourses courses={courses.courses_created} />
             )}
             {activeTab === TABS.JOINED_COURSES && (
-              <ListCourses courses={courses.courses_joined} create={false} />
+              <ListCourses courses={courses.courses_joined} />
             )}
           </div>
         </>

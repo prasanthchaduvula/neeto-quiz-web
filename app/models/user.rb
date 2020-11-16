@@ -36,6 +36,10 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def my_courses
+    self.courses + self.joined_courses
+  end
+
   private
 
     def ensure_authentication_token_is_present
