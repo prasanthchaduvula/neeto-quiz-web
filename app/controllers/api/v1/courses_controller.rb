@@ -2,6 +2,7 @@
 
 class Api::V1::CoursesController < Api::V1::BaseController
   before_action :find_course, only: [:show, :destroy, :update]
+  before_action :ensure_course_admin, only: [:update, :destroy]
   before_action :check_published_course, only: :destroy
 
   def index
@@ -50,6 +51,12 @@ class Api::V1::CoursesController < Api::V1::BaseController
     def check_published_course
       if @course.published
         render status: :unprocessable_entity, json: { errors: ["You cannot delete a published course"] }
+      end
+    end
+
+    def ensure_course_admin
+      if current_user != @course.user
+        render json: { notice: "You are not the creator of course" }, status: :unprocessable_entity
       end
     end
 end

@@ -9,6 +9,7 @@ import ChapterPane from "../Chapters/Pane";
 import CoursePane from "./Pane";
 import Students from "../Students";
 import CourseTemplate from "../Template";
+import PageNotFound from "../../shared/PageNotFound";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -17,6 +18,9 @@ export default function Course(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [showstudents, setShowStudents] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+  const [isMember, setIsMember] = useState(true);
 
   useEffect(() => {
     fetchSingleCourse();
@@ -24,9 +28,20 @@ export default function Course(props) {
 
   const fetchSingleCourse = (studentspane = false) => {
     getCourse(props.match.params.course_id).then(response => {
-      setCourse(response.data.course);
-      setChapters(response.data.chapters);
-      setStudents(response.data.students);
+      const {
+        isCreator,
+        isStudent,
+        isMember,
+        course,
+        chapters,
+        students,
+      } = response.data;
+      setCourse(course);
+      setChapters(chapters);
+      setStudents(students);
+      setIsCreator(isCreator);
+      setIsStudent(isStudent);
+      setIsMember(isMember);
       setIsLoading(false);
       setShowStudents(studentspane);
     });
@@ -202,11 +217,10 @@ export default function Course(props) {
     );
   }
 
-  if (isLoading) {
-    return <PageLoader />;
-  } else {
-    if (course.user_id == localStorage.user_id) {
-      return (
+  return (
+    <>
+      {isLoading && <PageLoader />}
+      {isCreator && (
         <CourseDisplayForCreator
           course={course}
           chapters={chapters}
@@ -214,14 +228,15 @@ export default function Course(props) {
           isLoading={isLoading}
           students={students}
         />
-      );
-    } else {
-      return (
+      )}
+
+      {isStudent && (
         <CourseTemplate
           isStudent={true}
           courseId={props.match.params.course_id}
         />
-      );
-    }
-  }
+      )}
+      {!isMember && <PageNotFound />}
+    </>
+  );
 }
