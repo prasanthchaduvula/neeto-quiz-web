@@ -15,6 +15,9 @@ gem "uglifier", ">= 2.7.1"
 
 gem "webpacker", "~> 4.0"
 
+# To load environment variables
+gem 'dotenv-rails', groups: [:development, :test]
+
 # React
 gem "react-rails"
 

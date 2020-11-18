@@ -24,6 +24,9 @@
     },
     "LOG_LEVEL": {
       "value": "DEBUG"
+    },
+    "DEFAULT_OTP": {
+      "value": "1947"
     }
   },
   "formation": { },

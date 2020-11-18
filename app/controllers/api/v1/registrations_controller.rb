@@ -8,8 +8,12 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   before_action :load_user, only: [:update]
 
   def create
-    send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
-    render json: { notice: send_otp["type"] }, status: :ok
+    unless ENV["DEFAULT_OTP"].present?
+      send_otp = Msg91MessageService.new.send_otp(params[:user][:phone_number])
+      render json: { notice: send_otp["type"] }, status: :ok
+    else
+      render json: { notice: "Success" }, status: :ok
+    end
   end
 
   def update
@@ -23,7 +27,13 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   private
 
     def verify_otp
-      @response = Msg91MessageService.new.verify_otp(params[:user][:phone_number], params[:user][:otp])
+      if ENV["DEFAULT_OTP"].nil?
+        @response = Msg91MessageService.new.verify_otp(params[:user][:phone_number], params[:user][:otp])
+      elsif ENV["DEFAULT_OTP"].to_i == params[:user][:otp]
+        @response = { "type" => "success" }
+      else
+        @response = { "type" => "failed", message: "Invalid OTP" }
+      end
     end
 
     def register_user
