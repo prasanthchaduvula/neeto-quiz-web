@@ -37,6 +37,7 @@ class CreateOrderService
         @order = Order.create!(
           razorpay_order_id: razorpay_order_id,
           amount: course.price,
+          course_name: course.name,
           merchant_name: merchant_name,
           course_id: course.id,
           user_id: student.id

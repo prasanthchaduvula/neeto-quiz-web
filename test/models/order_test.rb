@@ -68,4 +68,11 @@ class OrderTest < ActiveSupport::TestCase
       order.payment_initiated!
     end
   end
+
+  test "course name should be present" do
+    order.update course_name: nil
+    assert_nil order[:course_name]
+    assert_not order.valid?
+    assert_includes order.errors[:course_name], "can't be blank"
+  end
 end

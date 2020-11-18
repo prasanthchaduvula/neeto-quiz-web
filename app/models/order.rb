@@ -20,6 +20,7 @@ class Order < ApplicationRecord
 
   validates :razorpay_order_id, presence: true, uniqueness: true
   validates :amount, presence: true
+  validates :course_name, presence: true
   validates :merchant_name, presence: true
 
   scope :paid, -> { where.not status: "order_created" }
