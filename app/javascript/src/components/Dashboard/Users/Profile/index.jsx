@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tab, Button } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
-import GeneralSettings from "./Form";
-import { TABS } from "./constants";
-import BankAccount from "./BankAccount";
 
-export default function Profile() {
-  const [activeTab, setActiveTab] = useState("profile");
+import { TABS } from "./constants";
+import GeneralSettings from "./Form";
+import BankAccount from "./BankAccount";
+import Orders from "./Orders";
+
+export default function Profile(props) {
+  const { location } = props;
+
+  const [activeTab, setActiveTab] = useState("");
+
+  const loadTab = () => {
+    if (location.search) {
+      setActiveTab(location.search.substring(1));
+    } else {
+      setActiveTab("profile");
+    }
+  };
+
+  useEffect(() => {
+    loadTab();
+  }, [props]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -47,11 +63,21 @@ export default function Profile() {
         >
           Bank Account
         </Tab.Item>
+        <Tab.Item
+          icon="ri-shopping-bag-line"
+          onClick={() => {
+            setActiveTab(TABS.ORDERS);
+          }}
+          active={activeTab === TABS.ORDERS}
+        >
+          My Orders
+        </Tab.Item>
       </Tab>
 
       <div className="flex flex-row items-start justify-center flex-grow">
         {activeTab === TABS.PROFILE && <GeneralSettings />}
         {activeTab === TABS.BANK_ACCOUNT && <BankAccount />}
+        {activeTab === TABS.ORDERS && <Orders />}
       </div>
     </>
   );

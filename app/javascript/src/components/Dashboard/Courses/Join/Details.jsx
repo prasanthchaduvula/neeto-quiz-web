@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "nitroui";
 import { showToastr } from "common";
 import { joinCourse } from "apis/courses";
+import BuyCourseBtn from "./BuyCourseBtn";
 import TableOfContents from "./TableOfContents";
 import { withRouter } from "react-router-dom";
 
@@ -42,12 +43,7 @@ function Details({ onClose, course, chapters, history }) {
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
         {Math.round(course.price) ? (
-          <Button
-            label={`Buy this course for Rs: ${course.price}`}
-            size="large"
-            fullWidth
-            className="ml-2 text-center text-base font-bold"
-          />
+          <BuyCourseBtn course={course} />
         ) : (
           <Button
             label="Join this course for free"
