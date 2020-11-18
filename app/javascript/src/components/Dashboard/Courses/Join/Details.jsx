@@ -42,7 +42,7 @@ function Details({ onClose, course, chapters, history }) {
         ))}
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
-        {Math.round(course.price) ? (
+        {course.price ? (
           <BuyCourseBtn course={course} />
         ) : (
           <Button

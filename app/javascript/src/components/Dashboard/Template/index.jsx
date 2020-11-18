@@ -7,7 +7,7 @@ import { showToastr } from "common/index";
 function CourseTemplate(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
-  const [userName, setUserName] = useState("");
+  const [creator, setCreator] = useState({});
   const [
     chaptersWithPublishedLessons,
     setChaptersWithPublishedLessons,
@@ -25,18 +25,14 @@ function CourseTemplate(props) {
     });
   }
 
-  const fullName = (firstName, lastName) => firstName + " " + lastName;
-
   const loadCourseDetails = () => {
     getCourse(props.courseId || props.match.params.course_id)
       .then(response => {
         setCourse(response.data.course);
         setChapters(response.data.chapters);
+        setCreator(response.data.creator);
         setChaptersWithPublishedLessons(
           loadChaptersWithPublishedLessons(response.data.chapters)
-        );
-        setUserName(
-          fullName(response.data.user.first_name, response.data.user.last_name)
         );
       })
       .catch(error => {
@@ -46,7 +42,7 @@ function CourseTemplate(props) {
 
   return (
     <div>
-      {course && userName ? (
+      {course ? (
         <>
           <div className="w-full bg-purple-500 mb-12">
             <div className="max-w-5xl m-auto flex items-center h-64 ">
@@ -57,7 +53,7 @@ function CourseTemplate(props) {
                 <p className="text-white text-base leading-tight mt-8">
                   {course.description}
                 </p>
-                <p className="text-white text-base mt-4">{`Teacher: ${userName}`}</p>
+                <p className="text-white text-base mt-4">{`Teacher: ${creator.name}`}</p>
               </div>
             </div>
           </div>

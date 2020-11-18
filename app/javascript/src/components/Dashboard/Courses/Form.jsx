@@ -5,18 +5,20 @@ import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { showToastr } from "common";
 import { createCourse, updateCourse } from "apis/courses";
+import { Link } from "react-router-dom";
 
 export default function CourseForm({
   onClose,
   isCreateForm,
   course,
   fetchCourses,
-  setCourse,
+  creator,
+  fetchSingleCourse,
 }) {
   const initialValues = {
     name: course.name || "",
     description: course.description || "",
-    price: course.price || "",
+    price: course.price || 0,
   };
 
   const validationSchema = yup.object().shape({
@@ -33,7 +35,7 @@ export default function CourseForm({
       course: {
         name: values.name,
         description: values.description,
-        price: values.price,
+        price: values.price || 0,
       },
     };
 
@@ -48,7 +50,7 @@ export default function CourseForm({
       if (isCreateForm) {
         fetchCourses();
       } else {
-        setCourse(response.data.course);
+        fetchSingleCourse();
       }
       onClose();
     });
@@ -83,8 +85,13 @@ export default function CourseForm({
               type="number"
               name="price"
               className="mb-6"
+              disabled={creator && !creator.payment_details ? true : false}
             />
-
+            {creator && !creator.payment_details && (
+              <Link to="/profile?bank-account" className="text-indigo-600">
+                To add price to the course. Please add bank acount details
+              </Link>
+            )}
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
               <Button
                 onClick={onClose}

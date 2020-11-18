@@ -21,6 +21,7 @@ export default function Course(props) {
   const [isCreator, setIsCreator] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isMember, setIsMember] = useState(true);
+  const [creator, setCreator] = useState({});
 
   useEffect(() => {
     fetchSingleCourse();
@@ -33,6 +34,7 @@ export default function Course(props) {
         isStudent,
         isMember,
         course,
+        creator,
         chapters,
         students,
       } = response.data;
@@ -42,6 +44,7 @@ export default function Course(props) {
       setIsCreator(isCreator);
       setIsStudent(isStudent);
       setIsMember(isMember);
+      setCreator(creator);
       setIsLoading(false);
       setShowStudents(studentspane);
     });
@@ -111,67 +114,73 @@ export default function Course(props) {
               <p className="text-gray-600 text-base leading-tight leading-5">
                 {course.description}
               </p>
-              <div className="flex items-center justify-end w-full mt-4">
-                <Label className="text-base text-indigo-500 ">
-                  Invitation code: &nbsp;
-                  <span className="font-bold">{course.invitation_code}</span>
-                </Label>
-                <Button
-                  label="Students"
-                  className="ml-4"
-                  onClick={() => {
-                    course.published
-                      ? setShowStudents(true)
-                      : showToastr(
-                          "error",
-                          "You cannot add students without publishing course"
-                        );
-                  }}
-                />
-                <Button
-                  label="Edit Course"
-                  className="ml-4"
-                  onClick={() => {
-                    setCoursePane(true);
-                  }}
-                />
-                <Link
-                  className="ml-4"
-                  to={`/courses/${props.match.params.course_id}/preview`}
-                >
-                  <Button label="Preview Course" />
-                </Link>
+              <div className="flex items-center justify-between w-full mt-4">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base text-indigo-500 ">
+                    Price: &nbsp;
+                    <span className="font-bold">
+                      {course.price ? `Rs ${course.price}` : "Free"}
+                    </span>
+                  </Label>
+                  <Label className="text-base text-indigo-500 ml-4">
+                    Invitation code: &nbsp;
+                    <span className="font-bold ">{course.invitation_code}</span>
+                  </Label>
+                </div>
+                <div className="flex items-center justify-between">
+                  <Button
+                    label="Students"
+                    onClick={() => {
+                      course.published
+                        ? setShowStudents(true)
+                        : showToastr(
+                            "error",
+                            "You cannot add students without publishing course"
+                          );
+                    }}
+                  />
+                  <Button
+                    label="Edit Course"
+                    className="ml-4"
+                    onClick={() => {
+                      setCoursePane(true);
+                    }}
+                  />
+                  <Link className="ml-4" to={`/courses/${course.id}/preview`}>
+                    <Button label="Preview Course" />
+                  </Link>
 
-                <Button
-                  label={
-                    course.published
-                      ? students.length
-                        ? "Published Course"
-                        : "Unpublish Course"
-                      : "Publish Course"
-                  }
-                  className="ml-4"
-                  onClick={() =>
-                    students.length
-                      ? showToastr(
-                          "error",
-                          "Students are present. You cannot unpublish course"
-                        )
-                      : publishSingleCourse()
-                  }
-                />
-                <Button
-                  label="Delete Course"
-                  className="ml-4"
-                  onClick={() => {
-                    course.published
-                      ? showToastr(
-                          "error",
-                          "You can not delete a published course"
-                        )
-                      : setShowAlert(true);
-                  }}
-                />
+                  <Button
+                    label={
+                      course.published
+                        ? students.length
+                          ? "Published Course"
+                          : "Unpublish Course"
+                        : "Publish Course"
+                    }
+                    className="ml-4"
+                    onClick={() =>
+                      students.length
+                        ? showToastr(
+                            "error",
+                            "Students are present. You cannot unpublish course"
+                          )
+                        : publishSingleCourse()
+                    }
+                  />
+                  <Button
+                    label="Delete Course"
+                    className="ml-4"
+                    onClick={() => {
+                      course.published
+                        ? showToastr(
+                            "error",
+                            "You can not delete a published course"
+                          )
+                        : setShowAlert(true);
+                    }}
+                  />
+                </div>
               </div>
             </nav>
             <Chapters
@@ -184,7 +193,8 @@ export default function Course(props) {
               setShowPane={setCoursePane}
               isCreateForm={false}
               course={course}
-              setCourse={setCourse}
+              creator={creator}
+              fetchSingleCourse={fetchSingleCourse}
             />
             <ChapterPane
               showPane={chapterPane}

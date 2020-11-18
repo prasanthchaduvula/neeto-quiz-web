@@ -8,7 +8,8 @@ export default function CoursePane({
   isCreateForm,
   course,
   fetchCourses,
-  setCourse,
+  creator,
+  fetchSingleCourse,
 }) {
   const onClose = () => setShowPane(false);
 
@@ -24,7 +25,8 @@ export default function CoursePane({
           isCreateForm={isCreateForm}
           course={course}
           fetchCourses={fetchCourses}
-          setCourse={setCourse}
+          creator={creator}
+          fetchSingleCourse={fetchSingleCourse}
         />
       </div>
     </Pane>

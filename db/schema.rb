@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_052639) do
     t.boolean "published", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.decimal "price", precision: 7, scale: 2
+    t.decimal "price", precision: 7, scale: 2, default: "0.0"
     t.uuid "user_id"
     t.string "invitation_code"
   end

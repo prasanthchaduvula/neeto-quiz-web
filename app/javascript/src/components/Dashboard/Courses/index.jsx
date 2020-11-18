@@ -99,7 +99,8 @@ export default function Courses() {
         isCreateForm={true}
         course=""
         fetchCourses={fetchCourses}
-        setCourse={""}
+        setCourse=""
+        creator=""
       />
     </div>
   );
