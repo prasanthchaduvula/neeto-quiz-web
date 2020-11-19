@@ -18,6 +18,7 @@ class Razorpay::OrdersService
 
     def create_service_response
       setup_razorpay
+      set_razorpay_headers
       create_razorpay_order
       serialize_response
     end
@@ -27,7 +28,19 @@ class Razorpay::OrdersService
     end
 
     def create_razorpay_order
-      @response = Razorpay::Order.create order_details
+      @response = request.create order_details.to_json
+    end
+
+    def request
+      Razorpay::Request.new('orders')
+    end
+
+    def set_razorpay_headers
+      Razorpay.headers=custom_header
+    end
+
+    def custom_header
+      { "Content-type": "application/json" }
     end
 
     def serialize_response

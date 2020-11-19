@@ -3,10 +3,11 @@ import { PageLoader, Button, Callout } from "nitroui";
 import { Input, Radio } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
-import { getBankDetails, createBankDetails } from "apis/users";
 
-export default function BankAccount() {
+import { showToastr } from "common";
+import { getPaymentDetails, createPaymentDetails } from "apis/users";
+
+export default function PaymentDetails() {
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const [initialValues, setInitialValues] = useState({
@@ -18,11 +19,11 @@ export default function BankAccount() {
   });
 
   useEffect(() => {
-    loadBankAccount();
+    loadPaymentDetails();
   }, []);
 
-  const loadBankAccount = () => {
-    getBankDetails().then(response => {
+  const loadPaymentDetails = () => {
+    getPaymentDetails().then(response => {
       setInitialValues({ ...initialValues, ...response.data.payment_details });
       setDisabled(true);
     });
@@ -51,9 +52,9 @@ export default function BankAccount() {
       },
     };
 
-    createBankDetails(payload).then(() => {
+    createPaymentDetails(payload).then(() => {
       showToastr("success", "Profile updated successfully");
-      loadBankAccount();
+      loadPaymentDetails();
     });
   };
 

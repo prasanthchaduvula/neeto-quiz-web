@@ -44,7 +44,7 @@ const Orders = () => {
         <div className="w-full bg-white shadow overflow-hidden sm:rounded-md">
           <ul>
             {orders.map(order => (
-              <OrderCard key={order.id} order={order} setLoading={setLoading} />
+              <OrderCard key={order.id} order={order} />
             ))}
           </ul>
         </div>

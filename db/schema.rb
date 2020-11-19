@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_18_052639) do
+ActiveRecord::Schema.define(version: 2020_11_19_071951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_052639) do
     t.integer "status", default: 0, null: false
     t.integer "amount", null: false
     t.string "currency", default: "INR", null: false
-    t.string "merchant_name", null: false
+    t.string "business_name", null: false
     t.uuid "course_id"
     t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false

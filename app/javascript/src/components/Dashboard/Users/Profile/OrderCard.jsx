@@ -1,39 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
-import {
-  showToastr,
-  ORDER_STATUS_COLOR_MAPPING,
-  ORDER_STATUS_STEP_MAPPING,
-} from "common";
-import { getCourse } from "apis/courses";
+import { ORDER_STATUS_COLOR_MAPPING, ORDER_STATUS_STEP_MAPPING } from "common";
 
-const OrderCard = ({ order, setLoading }) => {
+const OrderCard = ({ order }) => {
   const {
     razorpay_order_id,
     amount,
     status,
     created_at,
+    course_name,
     course_id,
-    merchant_name,
+    business_name,
   } = order;
 
   const statusColor = ORDER_STATUS_COLOR_MAPPING[status];
   const orderStep = ORDER_STATUS_STEP_MAPPING[status] || 100;
-
-  const [course, setCourse] = useState({});
-
-  const loadCourse = async () => {
-    setLoading(true);
-    getCourse(course_id)
-      .then(({ data }) => setCourse(data.course))
-      .catch(() => showToastr("error", "Request failed. Please retry."))
-      .finally(setLoading(false));
-  };
-
-  useEffect(() => {
-    loadCourse();
-  }, [razorpay_order_id]);
 
   return (
     <Fragment>
@@ -50,9 +33,12 @@ const OrderCard = ({ order, setLoading }) => {
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-lg leading-5 font-medium text-indigo-600 truncate">
-                {course.name}
-              </div>
+              <Link
+                className="text-lg leading-5 font-medium text-indigo-600 truncate"
+                to={`/courses/${course_id}`}
+              >
+                {course_name}
+              </Link>
               <div className="ml-2 flex-shrink-0 flex">
                 <span className="px-2 inline-flex text-lgleading-5 font-semibold rounded-full bg-blue-500 bg-opacity-20 text-black-800">
                   ₹ {amount}
@@ -62,7 +48,7 @@ const OrderCard = ({ order, setLoading }) => {
             <div className="mt-2 sm:flex sm:justify-between">
               <div className="sm:flex">
                 <div className="text-xs font-light text-gray-500">
-                  {merchant_name}
+                  {business_name}
                 </div>
               </div>
             </div>

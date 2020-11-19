@@ -25,7 +25,7 @@ class OrderTest < ActiveSupport::TestCase
       razorpay_order_id: order[:razorpay_order_id],
       amount: 30,
       course: courses(:react_js),
-      merchant_name: "Oliver Smith",
+      business_name: "Oliver Smith Academy",
       user: users(:oliver),
     )
     assert_not new_order.valid?
@@ -40,10 +40,10 @@ class OrderTest < ActiveSupport::TestCase
   end
 
   test "merchant name should be present" do
-    order.update merchant_name: ""
-    assert_empty order[:merchant_name]
+    order.update business_name: ""
+    assert_empty order[:business_name]
     assert_not order.valid?
-    assert_includes order.errors[:merchant_name], "can't be blank"
+    assert_includes order.errors[:business_name], "can't be blank"
   end
 
   test "course should be present" do

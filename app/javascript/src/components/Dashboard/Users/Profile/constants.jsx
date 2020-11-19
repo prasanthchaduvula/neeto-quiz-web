@@ -1,5 +1,5 @@
 export const TABS = {
   PROFILE: "profile",
-  BANK_ACCOUNT: "bank-account",
+  PAYMENT_DETAILS: "payment-details",
   ORDERS: "orders",
 };

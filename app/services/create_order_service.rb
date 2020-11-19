@@ -38,7 +38,7 @@ class CreateOrderService
           razorpay_order_id: razorpay_order_id,
           amount: course.price,
           course_name: course.name,
-          merchant_name: merchant_name,
+          business_name: business_name,
           course_id: course.id,
           user_id: student.id
         )
@@ -78,7 +78,7 @@ class CreateOrderService
       response["id"]
     end
 
-    def merchant_name
-      course.user.name
+    def business_name
+      course&.user&.payment_details&.business_name
     end
 end

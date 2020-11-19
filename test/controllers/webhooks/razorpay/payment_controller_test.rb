@@ -40,7 +40,6 @@ class Webhooks::Razorpay::PaymentControllerTest < ActionDispatch::IntegrationTes
 
   test "payment failed event" do
     stub_get(msg_91_url_for_payment_failure, { 'Expect'=>'' })
-
     post webhooks_razorpay_verify_url, params: payment_failed_event
 
     assert_response :ok
@@ -115,7 +114,7 @@ class Webhooks::Razorpay::PaymentControllerTest < ActionDispatch::IntegrationTes
     end
 
     def msg_91_url_for_payment_failure
-      "https://api.msg91.com/api/sendhttp.php?authkey=344320ADzUdaWyKVf5f8684dbP1&message=Your%20payment%20of%20Rs.%2020%20for%20order%20number%20aa67c98c-d81f-5a9c-b0bc-26caa0051aea%20has%20failed.%20Please%20check%20the%20order%20detail%20on%20your%20NitroAcademy%20app%20for%20more%20information.&mobiles=%20917680918424&route=4&sender=NITROA"
+      "https://api.msg91.com/api/sendhttp.php?authkey=344320ADzUdaWyKVf5f8684dbP1&message=Your%20payment%20of%20Rs.%2020%20for%20order%20number%20ReactJS%20has%20failed.%20Please%20check%20the%20order%20detail%20on%20your%20NitroAcademy%20app%20for%20more%20information.&mobiles=%20917680918424&route=4&sender=NITROA"
     end
 
     def transfer_payload

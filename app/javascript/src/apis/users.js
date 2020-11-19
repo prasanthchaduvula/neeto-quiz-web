@@ -10,10 +10,10 @@ export const updateUser = (userId, payload) => {
   return axios.patch(`/api/v1/users/${userId}`, payload);
 };
 
-export const getBankDetails = () => {
+export const getPaymentDetails = () => {
   return axios.get("/api/v1/payment_details");
 };
 
-export const createBankDetails = payload => {
+export const createPaymentDetails = payload => {
   return axios.post("/api/v1/payment_details", payload);
 };

@@ -65,7 +65,7 @@ module Webhooks::Razorpay
       end
 
       def payment_failure_text_notification
-        "Your payment of Rs. #{@order.amount} for order number #{@order.id} has failed. Please check the order detail on your NitroAcademy app for more information."
+        "Your payment of Rs. #{@order.amount} for order number #{@order.course_name} has failed. Please check the order detail on your NitroAcademy app for more information."
       end
   end
 end

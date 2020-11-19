@@ -4,7 +4,7 @@ import { PageHeading } from "nitroui/layouts";
 
 import { TABS } from "./constants";
 import GeneralSettings from "./Form";
-import BankAccount from "./BankAccount";
+import PaymentDetails from "./PaymentDetails";
 import Orders from "./Orders";
 
 export default function Profile(props) {
@@ -57,11 +57,11 @@ export default function Profile(props) {
         <Tab.Item
           icon="ri-lock-unlock-line"
           onClick={() => {
-            setActiveTab(TABS.BANK_ACCOUNT);
+            setActiveTab(TABS.PAYMENT_DETAILS);
           }}
-          active={activeTab === TABS.BANK_ACCOUNT}
+          active={activeTab === TABS.PAYMENT_DETAILS}
         >
-          Bank Account
+          Payment Details
         </Tab.Item>
         <Tab.Item
           icon="ri-shopping-bag-line"
@@ -76,7 +76,7 @@ export default function Profile(props) {
 
       <div className="flex flex-row items-start justify-center flex-grow">
         {activeTab === TABS.PROFILE && <GeneralSettings />}
-        {activeTab === TABS.BANK_ACCOUNT && <BankAccount />}
+        {activeTab === TABS.PAYMENT_DETAILS && <PaymentDetails />}
         {activeTab === TABS.ORDERS && <Orders />}
       </div>
     </>

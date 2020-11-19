@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::OrdersController < Api::V1::BaseController
-  before_action :load_paid_orders, only: :index
   before_action :find_course, only: :create
   before_action :load_order, only: [:show, :update]
+  before_action :load_orders, only: :index
 
   def index
     render json: { orders: @orders }, status: :ok
@@ -41,8 +41,8 @@ class Api::V1::OrdersController < Api::V1::BaseController
       params.require(:order).permit(:status)
     end
 
-    def load_paid_orders
-      @orders = current_user.orders.paid
+    def load_orders
+      @orders = current_user.orders
     end
 
     def load_order

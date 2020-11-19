@@ -30,18 +30,20 @@ export const loadRazorpayCheckoutScript = () => {
 };
 
 export const ORDER_STATUS_COLOR_MAPPING = {
-  transfer_settled: "green",
-  transfer_processed: "green",
   order_created: "yellow",
   payment_initiated: "yellow",
-  payment_captured: "yellow",
   payment_failed: "red",
+  payment_captured: "green",
+  transfer_initiated: "green",
+  transfer_settled: "green",
+  transfer_processed: "green",
 };
 
 export const ORDER_STATUS_STEP_MAPPING = {
-  order_created: 20,
-  payment_initiated: 40,
-  payment_captured: 60,
-  transfer_settled: 80,
-  transfer_processed: 100,
+  order_created: 15,
+  payment_initiated: 30,
+  payment_captured: 45,
+  transfer_initiated: 60,
+  transfer_processed: 75,
+  transfer_settled: 100,
 };
