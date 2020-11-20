@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Button, Switch, Alert } from "nitroui";
-import { showToastr } from "common/index";
+import { Button, Switch, Alert, Toastr } from "nitroui";
 import { publishLesson, deleteLesson } from "apis/lessons";
 import LessonPane from "./Pane";
 
@@ -27,8 +26,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
     };
 
     publishLesson(chapter.id, payload, lesson.id).then(response => {
-      showToastr(
-        "success",
+      Toastr.success(
         `Lesson ${
           response.data.lesson.is_published ? "Published" : "Unpublished"
         } successfully`
@@ -39,7 +37,7 @@ export default function Lessons({ lessons, chapter, fetchSingleCourse }) {
 
   const deleteSingleLesson = () => {
     deleteLesson(chapter.id, lesson.id).then(() => {
-      showToastr("success", "Lesson Deleted Successfully");
+      Toastr.success("Lesson Deleted Successfully");
       fetchSingleCourse();
     });
   };

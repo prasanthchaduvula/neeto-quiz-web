@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { addStudent } from "apis/courses";
 
 export default function StudentForm({ onClose, course, fetchSingleCourse }) {
@@ -22,17 +21,16 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
       .length(10, "Phone number must be 10 digits"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       phone_number: "+91" + values.phone_number,
       is_paid: values.is_paid,
     };
 
-    addStudent(course.id, payload).then(response => {
-      showToastr("success", response.data.notice);
-      fetchSingleCourse(true);
-      onClose();
-    });
+    let response = await addStudent(course.id, payload);
+    Toastr.success(response.data.notice);
+    fetchSingleCourse(true);
+    onClose();
   };
 
   return (
@@ -43,7 +41,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <Input
@@ -78,6 +76,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
                 size="large"
                 style="primary"
                 className="ml-2"
+                loading={isSubmitting}
                 onClick={handleSubmit}
               />
             </div>

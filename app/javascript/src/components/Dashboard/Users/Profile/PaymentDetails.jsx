@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader, Button, Callout } from "nitroui";
+import { PageLoader, Button, Callout, Toastr } from "nitroui";
 import { Input, Radio } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-
-import { showToastr } from "common";
 import { getPaymentDetails, createPaymentDetails } from "apis/users";
 
 export default function PaymentDetails() {
@@ -41,7 +39,7 @@ export default function PaymentDetails() {
       .required("Required"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       payment_details: {
         ifsc: values.ifsc,
@@ -52,10 +50,9 @@ export default function PaymentDetails() {
       },
     };
 
-    createPaymentDetails(payload).then(() => {
-      showToastr("success", "Profile updated successfully");
-      loadPaymentDetails();
-    });
+    await createPaymentDetails(payload);
+    Toastr.success("Profile updated successfully");
+    loadPaymentDetails();
   };
 
   if (loading) {
@@ -134,6 +131,7 @@ export default function PaymentDetails() {
                       icon="ri-save-3-fill"
                       className="mr-4"
                       onClick={handleSubmit}
+                      loading={isSubmitting}
                       dataTestId="save-changes-button"
                     />
                     <Button

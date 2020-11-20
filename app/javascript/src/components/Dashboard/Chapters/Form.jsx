@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { createChapter, updateChapter } from "apis/chapters";
 
 export default function ChapterForm({
@@ -21,23 +20,23 @@ export default function ChapterForm({
     name: yup.string().required("Required *"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       chapter: {
         name: values.name,
       },
     };
+
     const sendRequest = payload => {
       return isCreateForm
         ? createChapter(course.id, payload)
         : updateChapter(course.id, chapter.id, payload);
     };
 
-    sendRequest(payload).then(response => {
-      showToastr("success", response.data.notice);
-      fetchSingleCourse();
-      onClose();
-    });
+    let response = await sendRequest(payload);
+    Toastr.success(response.data.notice);
+    fetchSingleCourse();
+    onClose();
   };
 
   return (
@@ -48,7 +47,7 @@ export default function ChapterForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <Input
@@ -72,6 +71,7 @@ export default function ChapterForm({
                 size="large"
                 style="primary"
                 className="ml-2"
+                loading={isSubmitting}
                 onClick={handleSubmit}
               />
             </div>

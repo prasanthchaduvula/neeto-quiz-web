@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 
 import { createOrder } from "apis/orders";
-import { showToastr, loadRazorpayCheckoutScript } from "common";
+import { loadRazorpayCheckoutScript } from "common";
 
 const BuyCourseBtn = ({ course }) => {
   const history = useHistory();
@@ -24,7 +24,7 @@ const BuyCourseBtn = ({ course }) => {
       order_id: order.razorpay_order_id,
       name: order.business_name,
       handler: () => {
-        showToastr("success", "Order placed successfully! 🎉");
+        Toastr.success("Order placed successfully! 🎉");
         history.push("/profile?orders");
       },
     };
@@ -36,7 +36,7 @@ const BuyCourseBtn = ({ course }) => {
     try {
       await loadRazorpayCheckoutScript();
     } catch {
-      showToastr("error", "Request failed. Are you online?");
+      Toastr.error("Request failed. Are you online?");
       disableButtonAndStartLoader(false);
       return;
     }
@@ -50,7 +50,7 @@ const BuyCourseBtn = ({ course }) => {
 
       paymentObject.open();
     } catch (err) {
-      showToastr("error", err);
+      Toastr.error(err);
     } finally {
       disableButtonAndStartLoader(false);
     }

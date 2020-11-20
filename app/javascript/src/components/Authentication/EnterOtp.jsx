@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { verifyOtp } from "apis/authentication";
 
 function EnterOtp(props) {
@@ -22,7 +21,7 @@ function EnterOtp(props) {
       } = {
         ...response.data.user,
       };
-      showToastr("success", "Verification successfull");
+      Toastr.success("Verification successfull");
       localStorage.setItem("authToken", JSON.stringify(authentication_token));
       localStorage.setItem("authPhone", JSON.stringify(phone_number));
       localStorage.setItem("user_id", id);
@@ -66,6 +65,7 @@ function EnterOtp(props) {
               type="number"
               name="otp"
               placeholder="Enter otp"
+              autoFocus
             />
             <div className="flex justify-between items-center mt-6">
               <Button

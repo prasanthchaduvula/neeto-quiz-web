@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { PageLoader, Button } from "nitroui";
+import { PageLoader, Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { getUser, updateUser } from "apis/users";
 
 export default function GeneralSettings() {
@@ -28,19 +27,19 @@ export default function GeneralSettings() {
     last_name: yup.string().required("Required *"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       user: {
         first_name: values.first_name,
         last_name: values.last_name,
       },
     };
-    updateUser(values.id, payload).then(() => {
-      showToastr("success", "Profile updated successfully");
-    });
+
+    await updateUser(values.id, payload);
+    Toastr.success("Profile updated successfully");
   };
 
-  const onReset = () => showToastr("success", "Form has been reset.");
+  const onReset = () => Toastr.success("Form has been reset.");
 
   if (loading) {
     return <PageLoader />;
@@ -77,6 +76,7 @@ export default function GeneralSettings() {
                     icon="ri-save-3-fill"
                     className="mr-4"
                     onClick={handleSubmit}
+                    loading={isSubmitting}
                     dataTestId="save-changes-button"
                   />
                   <Button

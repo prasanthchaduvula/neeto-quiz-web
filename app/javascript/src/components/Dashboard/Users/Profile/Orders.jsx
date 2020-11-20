@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { PageLoader } from "nitroui";
+import { PageLoader, Toastr } from "nitroui";
 
 import { fetchAllOrders } from "apis/orders";
-import { showToastr } from "common";
 import OrderCard from "./OrderCard";
 
 const Orders = () => {
@@ -16,7 +15,7 @@ const Orders = () => {
       let { orders } = response.data;
       setOrders(orders);
     } catch {
-      showToastr("error", "Request failed. Please retry.");
+      Toastr.error("Request failed. Please retry.");
     } finally {
       setLoading(false);
     }

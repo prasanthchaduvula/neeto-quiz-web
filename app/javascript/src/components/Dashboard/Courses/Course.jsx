@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PageLoader, Button, Badge, Label, Alert } from "nitroui";
+import { PageLoader, Button, Badge, Label, Alert, Toastr } from "nitroui";
 import { PageHeading } from "nitroui/layouts";
-import { showToastr } from "common";
 import { getCourse, publishCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";
@@ -62,7 +61,7 @@ export default function Course(props) {
 
     const deleteSingleCourse = () => {
       deleteCourse(course.id).then(() => {
-        showToastr("success", "Deleted successfully");
+        Toastr.success("Deleted successfully");
         props.history.push("/courses");
       });
     };
@@ -73,14 +72,14 @@ export default function Course(props) {
           published: !course.published,
         },
       };
+
       publishCourse(course.id, payload).then(response => {
-        showToastr(
-          "success",
+        Toastr.success(
           `Course ${
             response.data.course.published ? "Published" : "Unpublished"
           } successfully`
         );
-        setCourse(response.data.course);
+        fetchSingleCourse();
       });
     };
     return (
@@ -133,8 +132,7 @@ export default function Course(props) {
                     onClick={() => {
                       course.published
                         ? setShowStudents(true)
-                        : showToastr(
-                            "error",
+                        : Toastr.error(
                             "You cannot add students without publishing course"
                           );
                     }}
@@ -161,8 +159,7 @@ export default function Course(props) {
                     className="ml-4"
                     onClick={() =>
                       students.length
-                        ? showToastr(
-                            "error",
+                        ? Toastr.error(
                             "Students are present. You cannot unpublish course"
                           )
                         : publishSingleCourse()
@@ -173,10 +170,7 @@ export default function Course(props) {
                     className="ml-4"
                     onClick={() => {
                       course.published
-                        ? showToastr(
-                            "error",
-                            "You can not delete a published course"
-                          )
+                        ? Toastr.error("You can not delete a published course")
                         : setShowAlert(true);
                     }}
                   />

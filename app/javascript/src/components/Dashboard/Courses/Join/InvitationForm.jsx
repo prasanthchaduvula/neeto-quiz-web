@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { getJoinCourse } from "apis/courses";
 
 export default function InvitationForm({
@@ -20,18 +19,17 @@ export default function InvitationForm({
     invitation_code: yup.string().required("Required *"),
   });
 
-  const handleSubmit = values => {
-    getJoinCourse(values.invitation_code).then(response => {
-      const { notice, course, chapters } = response.data;
-      if (notice) {
-        showToastr("success", notice);
-        onClose();
-      } else {
-        setInvitationForm(false);
-        setCourse(course);
-        setChapters(chapters);
-      }
-    });
+  const handleSubmit = async values => {
+    let response = await getJoinCourse(values.invitation_code);
+    const { notice, course, chapters } = response.data;
+    if (notice) {
+      Toastr.success(notice);
+      onClose();
+    } else {
+      setInvitationForm(false);
+      setCourse(course);
+      setChapters(chapters);
+    }
   };
 
   return (
@@ -42,7 +40,7 @@ export default function InvitationForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <div className="px-6">
             <Form>
@@ -67,6 +65,7 @@ export default function InvitationForm({
                   size="large"
                   style="primary"
                   className="ml-2"
+                  loading={isSubmitting}
                   onClick={handleSubmit}
                 />
               </div>

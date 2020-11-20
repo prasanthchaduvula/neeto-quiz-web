@@ -1,18 +1,4 @@
-import { Toastr as ToastrComponent } from "nitroui";
-
 const RAZORPAY_CHECKOUT_URL = "https://checkout.razorpay.com/v1/checkout.js";
-
-export const showToastr = (type, ...rest) => {
-  if (type === "error") {
-    ToastrComponent[type](...rest);
-  } else {
-    ToastrComponent[type](
-      ...rest,
-      {},
-      { positionClass: "toast-bottom-center", progressBar: true, timeOut: 2500 }
-    );
-  }
-};
 
 export const loadRazorpayCheckoutScript = () => {
   return new Promise(resolve => {

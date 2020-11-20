@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input, Textarea } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { createCourse, updateCourse } from "apis/courses";
 import { Link } from "react-router-dom";
 
@@ -30,7 +29,7 @@ export default function CourseForm({
       .moreThan(-1, "Price should not be a negative number"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       course: {
         name: values.name,
@@ -45,15 +44,14 @@ export default function CourseForm({
         : updateCourse(course.id, payload);
     };
 
-    sendRequest(payload).then(response => {
-      showToastr("success", response.data.notice);
-      if (isCreateForm) {
-        fetchCourses();
-      } else {
-        fetchSingleCourse();
-      }
-      onClose();
-    });
+    let response = await sendRequest(payload);
+    Toastr.success(response.data.notice);
+    if (isCreateForm) {
+      fetchCourses();
+    } else {
+      fetchSingleCourse();
+    }
+    onClose();
   };
 
   return (
@@ -64,7 +62,7 @@ export default function CourseForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <Input
@@ -88,7 +86,7 @@ export default function CourseForm({
               disabled={creator && !creator.payment_details ? true : false}
             />
             {creator && !creator.payment_details && (
-              <Link to="/profile?bank-account" className="text-indigo-600">
+              <Link to="/profile?payment-details" className="text-indigo-600">
                 To add price to the course. Please add bank acount details
               </Link>
             )}
@@ -104,6 +102,7 @@ export default function CourseForm({
                 size="large"
                 style="primary"
                 className="ml-2"
+                loading={isSubmitting}
                 onClick={handleSubmit}
               />
             </div>

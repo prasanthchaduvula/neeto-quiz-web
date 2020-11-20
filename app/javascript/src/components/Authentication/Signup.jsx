@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { showToastr } from "common";
+import { Toastr } from "nitroui";
 import { createOtp } from "apis/authentication";
 import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";
@@ -12,7 +12,7 @@ function Signup() {
 
   const newRegistration = phonePayload => {
     createOtp(phonePayload).then(() => {
-      showToastr("success", "OTP sent successfully");
+      Toastr.success("OTP sent successfully");
       setPhonePage(false);
     });
   };

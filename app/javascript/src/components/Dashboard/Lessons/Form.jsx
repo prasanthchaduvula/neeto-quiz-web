@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input, Radio, Textarea } from "nitroui/formik";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common/index";
 import { createLesson, updateLesson } from "apis/lessons";
 
 export default function LessonForm({
@@ -55,7 +54,7 @@ export default function LessonForm({
     }),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const formData = new FormData();
     if (values.lesson_type == "youtube") {
       formData.append("lesson[content]", values.content);
@@ -75,11 +74,10 @@ export default function LessonForm({
         : updateLesson(chapter.id, payload, lesson.id);
     };
 
-    sendRequest(formData).then(response => {
-      showToastr("success", response.data.notice);
-      fetchSingleCourse();
-      onClose();
-    });
+    let response = await sendRequest(formData);
+    Toastr.success(response.data.notice);
+    fetchSingleCourse();
+    onClose();
   };
 
   return (
@@ -90,7 +88,7 @@ export default function LessonForm({
       validationSchema={validationSchema}
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
     >
-      {({ values, setFieldValue, handleSubmit }) => {
+      {({ values, setFieldValue, handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <label
@@ -181,6 +179,7 @@ export default function LessonForm({
                 size="large"
                 style="primary"
                 className="ml-2"
+                loading={isSubmitting}
                 onClick={handleSubmit}
               />
             </div>

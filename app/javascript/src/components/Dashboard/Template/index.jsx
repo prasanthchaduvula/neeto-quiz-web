@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader } from "nitroui";
+import { PageLoader, Toastr } from "nitroui";
 import { Link } from "react-router-dom";
 import { getCourse } from "apis/courses";
-import { showToastr } from "common/index";
 
 function CourseTemplate(props) {
   const [course, setCourse] = useState({});
@@ -36,7 +35,7 @@ function CourseTemplate(props) {
         );
       })
       .catch(error => {
-        showToastr("error", error);
+        Toastr.error(error);
       });
   };
 

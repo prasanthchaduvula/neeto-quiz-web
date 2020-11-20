@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button, Toastr } from "nitroui";
 import { Input } from "nitroui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { showToastr } from "common";
 import { updateUser } from "apis/users";
 
 function UpdateUser(props) {
@@ -17,7 +16,7 @@ function UpdateUser(props) {
     last_name: yup.string().required("Required *"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const payload = {
       user: {
         first_name: values.first_name,
@@ -25,10 +24,9 @@ function UpdateUser(props) {
       },
     };
 
-    updateUser(props.id, payload).then(() => {
-      showToastr("success", "Profile updated successfully");
-      window.location.href = "/dashboard";
-    });
+    await updateUser(props.id, payload);
+    Toastr.success("Profile updated successfully");
+    window.location.href = "/dashboard";
   };
 
   return (
@@ -38,7 +36,7 @@ function UpdateUser(props) {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <Input label="First Name" name="first_name" />
@@ -49,6 +47,7 @@ function UpdateUser(props) {
               style="primary"
               fullWidth
               className="mt-6 text-center text-base font-medium"
+              loading={isSubmitting}
               onClick={handleSubmit}
             />
           </Form>

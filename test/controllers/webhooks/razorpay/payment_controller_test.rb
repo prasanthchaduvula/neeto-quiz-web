@@ -86,7 +86,7 @@ class Webhooks::Razorpay::PaymentControllerTest < ActionDispatch::IntegrationTes
       @controller.send(:load_order)
     end
 
-    assert_includes JSON.parse(response.body)["errors"], "Record not found"
+    assert_includes JSON.parse(response.body)["errors"], "Not found"
   end
 
   test "transfer settled event" do

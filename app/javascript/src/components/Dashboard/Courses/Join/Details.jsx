@@ -1,6 +1,5 @@
 import React from "react";
-import { Button } from "nitroui";
-import { showToastr } from "common";
+import { Button, Toastr } from "nitroui";
 import { joinCourse } from "apis/courses";
 import BuyCourseBtn from "./BuyCourseBtn";
 import TableOfContents from "./TableOfContents";
@@ -17,7 +16,7 @@ function Details({ onClose, course, chapters, history }) {
 
   const handleSubmit = () => {
     joinCourse(course.id).then(response => {
-      showToastr("success", response.data.notice);
+      Toastr.success(response.data.notice);
       onClose();
       history.push(`/courses/${course.id}`);
     });
