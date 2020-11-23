@@ -23,7 +23,7 @@ function ViewCourse(props) {
       setChaptersWithPublishedLessons(
         loadChaptersWithPublishedLessons(response.data.chapters)
       );
-      setIsStudent(response.data.user.id != localStorage.user_id);
+      setIsStudent(response.data.creator.id != localStorage.user_id);
     });
   };
 
@@ -47,7 +47,7 @@ function ViewCourse(props) {
   useEffect(() => {
     loadCourse();
     getLesson(props.match.params.chapter_id, props.match.params.lesson_id);
-  }, []);
+  }, [props.match.params.lesson_id]);
 
   return (
     <div className="flex">
@@ -65,7 +65,6 @@ function ViewCourse(props) {
         lesson={lesson}
         courseId={course.id}
         chapters={chapters}
-        getLesson={getLesson}
         isStudent={isStudent}
         setShowPane={setShowPane}
       />

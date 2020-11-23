@@ -7,17 +7,17 @@ import Viewer from "react-viewer";
 import { getChapter } from "apis/chapters";
 import PreviousButton from "./PreviousButton";
 import NextButton from "./NextButton";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function Lesson({
   lesson,
   courseId,
-  getLesson,
   chapters,
   isStudent,
   setShowPane,
+  history,
 }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [publishedLessonIds, setPublishedLessonIds] = useState([]);
@@ -50,15 +50,21 @@ function Lesson({
     }
   }
 
+  const lessonUrl = (chapterId, lessonId) => {
+    history.push(
+      `/courses/${courseId}/chapters/${chapterId}/lessons/${lessonId}`
+    );
+  };
+
   const handleNextButton = lessonId => {
     if (isStudent == true) {
       const index = publishedLessonIds.indexOf(lessonId);
       const nextLessonId = publishedLessonIds[index + 1];
-      getLesson(lesson.chapter_id, nextLessonId);
+      lessonUrl(lesson.chapter_id, nextLessonId);
     } else {
       const index = lessonIds.indexOf(lessonId);
       const nextLessonId = lessonIds[index + 1];
-      getLesson(lesson.chapter_id, nextLessonId);
+      lessonUrl(lesson.chapter_id, nextLessonId);
     }
   };
 
@@ -75,7 +81,7 @@ function Lesson({
       const currentChapterIndex = getChapterIndex(chapterId);
       const nextChapterObject = chapters[currentChapterIndex + 1];
       if (nextChapterObject.lessons.length > 0) {
-        getLesson(
+        lessonUrl(
           nextChapterObject.chapter.id,
           nextChapterObject.lessons[0].id
         );
@@ -88,7 +94,7 @@ function Lesson({
       lesson => lesson.is_published
     );
     if (ChapterObject.lessons.length > 0) {
-      getLesson(ChapterObject.chapter.id, publishedLessons[0].id);
+      lessonUrl(ChapterObject.chapter.id, publishedLessons[0].id);
     }
   };
 
@@ -97,7 +103,7 @@ function Lesson({
       lesson => lesson.is_published
     );
     if (ChapterObject.lessons.length > 0) {
-      getLesson(
+      lessonUrl(
         ChapterObject.chapter.id,
         publishedLessons[publishedLessons.length - 1].id
       );
@@ -108,11 +114,11 @@ function Lesson({
     if (isStudent == true) {
       const index = publishedLessonIds.indexOf(lessonId);
       const previousLessonId = publishedLessonIds[index - 1];
-      getLesson(lesson.chapter_id, previousLessonId);
+      lessonUrl(lesson.chapter_id, previousLessonId);
     } else {
       const index = lessonIds.indexOf(lessonId);
       const previousLessonId = lessonIds[index - 1];
-      getLesson(lesson.chapter_id, previousLessonId);
+      lessonUrl(lesson.chapter_id, previousLessonId);
     }
   };
 
@@ -129,7 +135,7 @@ function Lesson({
       const currentChapterIndex = getChapterIndex(chapterId);
       const previousChapterObject = chapters[currentChapterIndex - 1];
       if (previousChapterObject.lessons.length > 0) {
-        getLesson(
+        lessonUrl(
           previousChapterObject.chapter.id,
           previousChapterObject.lessons[
             previousChapterObject.lessons.length - 1
@@ -289,4 +295,4 @@ function Lesson({
   );
 }
 
-export default Lesson;
+export default withRouter(Lesson);
