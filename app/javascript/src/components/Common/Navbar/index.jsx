@@ -6,20 +6,20 @@ class NavBar extends Component {
   render() {
     return (
       <div className="bg-gray-100 nh-sidebar" key="sidebar">
-        <div className="nh-logo">
-          <div className="flex items-center justify-center w-8 h-8 rounded-md">
-            <i className="text-purple-500 ri-flashlight-fill ri-2x" />
+        <div className="flex flex-col items-center justify-between w-full h-full">
+          <div className="flex flex-col items-center justify-start w-full pt-4">
+            <NavItem
+              title="Explore Courses"
+              link="/"
+              icon="ri-flashlight-fill"
+            />
+            <NavItem
+              title="My Courses"
+              link="/courses"
+              icon="ri-book-open-line"
+            />
+            <NavItem title="Profile" link="/profile" icon="ri-user-line" />
           </div>
-        </div>
-        <div className="flex flex-col items-center justify-start w-full pt-4">
-          <NavItem
-            title="My Courses"
-            link="/courses"
-            icon="ri-book-open-line"
-          />
-        </div>
-        <div className="flex flex-col items-center justify-start w-full pt-4">
-          <NavItem title="Profile" link="/profile" icon="ri-user-line" />
         </div>
       </div>
     );

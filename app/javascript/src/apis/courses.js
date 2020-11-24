@@ -35,3 +35,7 @@ export const getJoinCourse = invitation_code => {
 export const joinCourse = courseId => {
   return axios.post(`/api/v1/courses/${courseId}/join_courses`);
 };
+
+export const exploreCourses = () => {
+  return axios.get(`/api/v1/explore_courses`);
+};

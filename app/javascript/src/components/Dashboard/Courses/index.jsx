@@ -6,8 +6,9 @@ import CoursePane from "./Pane";
 import { TABS } from "./constants";
 import ListCourses from "./ListCourses";
 import JoinCoursePane from "./Join";
+import { withRouter } from "react-router-dom";
 
-export default function Courses() {
+function Courses() {
   const [coursePane, setCoursePane] = useState(false);
   const [courses, setCourses] = useState({});
   const [activeTab, setActiveTab] = useState("myCourses");
@@ -18,7 +19,9 @@ export default function Courses() {
   }, []);
 
   const fetchCourses = () => {
-    getCourses().then(response => setCourses(response.data));
+    getCourses().then(response => {
+      setCourses(response.data);
+    });
   };
 
   return (
@@ -105,3 +108,5 @@ export default function Courses() {
     </div>
   );
 }
+
+export default withRouter(Courses);

@@ -7,10 +7,9 @@ class Api::V1::CoursesController < Api::V1::BaseController
   before_action :check_published_course, only: :destroy
 
   def index
-    courses_created = current_user.courses
-    courses_joined = current_user.joined_courses
-    my_courses = current_user.my_courses
-    render json: { my_courses: my_courses, courses_created: courses_created, courses_joined: courses_joined }, status: :ok
+    respond_to do |format|
+      format.json
+    end
   end
 
   def create

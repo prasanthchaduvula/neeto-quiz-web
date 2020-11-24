@@ -1,10 +1,11 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Course from "../Dashboard/Courses/Course";
 import Courses from "../Dashboard/Courses";
 import Profile from "../Dashboard/Users/Profile";
 import CourseTemplate from "../Dashboard/Template";
 import ViewCourse from "../Dashboard/Template/ViewCourse";
+import ExploreCourses from "../Dashboard/Courses/Explore";
 
 const DashboardRoutes = () => {
   return (
@@ -23,7 +24,7 @@ const DashboardRoutes = () => {
       <Route exact path="/courses/:course_id" component={Course} />
       <Route path="/courses" component={Courses} />
       <Route path="/profile" component={Profile} />
-      <Redirect from="/" to="/courses" />
+      <Route path="/" component={ExploreCourses} />
     </Switch>
   );
 };

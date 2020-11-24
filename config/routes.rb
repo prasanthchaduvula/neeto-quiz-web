@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       resource :payment_details, only: [:create, :show]
 
       resources :join_courses, only: [:show], param: :invitation_code
+
+      resources :explore_courses, only: [:index]
     end
   end
 
