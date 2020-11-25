@@ -24,7 +24,7 @@ class Razorpay::OrdersService
     end
 
     def setup_razorpay
-      Razorpay.setup('rzp_test_mmqLGnTt8AkXIJ', 'zDt0nX3LM8WyxXH5uMNOdlJk')
+      Razorpay.setup(Rails.application.credentials[:razorpay_api_key_id], Rails.application.credentials[:razorpay_api_key_secret])
     end
 
     def create_razorpay_order
