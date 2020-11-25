@@ -6,6 +6,7 @@ import Profile from "../Dashboard/Users/Profile";
 import CourseTemplate from "../Dashboard/Template";
 import ViewCourse from "../Dashboard/Template/ViewCourse";
 import ExploreCourses from "../Dashboard/Courses/Explore";
+import Instructor from "../Dashboard/Instructor";
 
 const DashboardRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const DashboardRoutes = () => {
       />
       <Route exact path="/courses/:course_id" component={Course} />
       <Route path="/courses" component={Courses} />
+      <Route exact path="/instructors/:id" component={Instructor} />
       <Route path="/profile" component={Profile} />
       <Route path="/" component={ExploreCourses} />
     </Switch>

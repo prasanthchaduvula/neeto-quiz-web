@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Toastr } from "nitroui";
 import { joinCourse } from "apis/courses";
 import BuyCourseBtn from "./BuyCourseBtn";
@@ -6,6 +6,7 @@ import TableOfContents from "./TableOfContents";
 import { withRouter } from "react-router-dom";
 
 function Details({ onClose, course, chapters, history }) {
+  const [loading, setLoading] = useState(false);
   function loadChaptersWithPublishedLessons(chapters) {
     return chapters.filter(chapter => {
       if (chapter.lessons.filter(lesson => lesson.is_published).length > 0) {
@@ -15,8 +16,10 @@ function Details({ onClose, course, chapters, history }) {
   }
 
   const handleSubmit = () => {
+    setLoading(true);
     joinCourse(course.id).then(response => {
       Toastr.success(response.data.notice);
+      setLoading(false);
       onClose();
       history.push(`/courses/${course.id}`);
     });
@@ -50,6 +53,7 @@ function Details({ onClose, course, chapters, history }) {
             style="primary"
             fullWidth
             className="ml-2 text-center text-base font-bold"
+            loading={loading}
             onClick={handleSubmit}
           />
         )}
