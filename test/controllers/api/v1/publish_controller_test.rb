@@ -28,4 +28,12 @@ class Api::V1::PublishControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_equal true, @course.reload.published
   end
+
+  test "ensure at least one lesson is published" do
+    new_course = courses(:react_js)
+    patch api_v1_publish_path(new_course.id), params: { course: { published: true } }, headers: headers(@user)
+    assert_response :unprocessable_entity
+    json_response = JSON.parse(response.body)
+    assert_equal "Make sure at least one lesson is published", json_response["error"]
+  end
 end

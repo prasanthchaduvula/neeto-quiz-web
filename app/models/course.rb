@@ -20,6 +20,10 @@ class Course < ApplicationRecord
     published && joined_students.present?
   end
 
+  def is_publishable?
+    published_lessons_count > 0 ? true : false
+  end
+
   private
 
     def set_invitation_code
@@ -31,5 +35,14 @@ class Course < ApplicationRecord
         token = SecureRandom.alphanumeric(4)
         break token unless Course.where(invitation_code: token).exists?
       end
+    end
+
+    def published_lessons_count
+      lesson_count = 0
+      self.chapter_ids.map do |chapter_id|
+        published_lessons =  Lesson.where(chapter_id: chapter_id, is_published: true)
+        lesson_count = lesson_count + published_lessons.count
+      end
+      lesson_count
     end
 end

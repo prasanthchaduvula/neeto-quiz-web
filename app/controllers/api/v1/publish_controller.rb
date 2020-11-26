@@ -4,6 +4,7 @@ class Api::V1::PublishController < Api::V1::BaseController
   before_action :find_course
   before_action :ensure_course_is_unpublishable, only: [:update]
   before_action :ensure_payment_details, only: [:update]
+  before_action :ensure_publishable, only: [:update]
 
   def update
     if @course.update(course_params)
@@ -34,6 +35,14 @@ class Api::V1::PublishController < Api::V1::BaseController
       if @course.price? && publish_request?
         if current_user.payment_details.nil?
           render status: :unprocessable_entity, json: { errors: ["Course has a price. So please add Bank account details to publish the course"] }
+        end
+      end
+    end
+
+    def ensure_publishable
+      if publish_request?
+        unless @course.is_publishable?
+          render status: :unprocessable_entity, json: { error: "Make sure at least one lesson is published" }
         end
       end
     end

@@ -2,7 +2,7 @@ rails_migration:
   name: Rails Migration
   description: Description on rails migration
   lesson_type: youtube
-  is_published: false
+  is_published: true
   content: https://youtu.be/G-B_KUFNkQQ
   chapter: getting_started
 
