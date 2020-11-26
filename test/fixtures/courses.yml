@@ -1,8 +1,9 @@
 ruby_on_rails:
   name: Ruby On Rails
   description: Description on ruby-on-rails
-  published: false
+  published: true
   invitation_code: 25Xy
+  is_explored: false
   user: oliver
 
 react_js:
@@ -10,4 +11,5 @@ react_js:
   description: Description on react js
   published: false
   invitation_code: az52
+  is_explored: true
   user: oliver

@@ -11,6 +11,7 @@ json.course do
   json.price @course.price.to_i
   json.published @course.published
   json.invitation_code @course.invitation_code
+  json.is_explored @course.is_explored
 end
 json.creator do
   json.id @course.user.id

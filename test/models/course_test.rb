@@ -52,4 +52,9 @@ class CourseTest < ActiveSupport::TestCase
     new_course.save
     assert_equal ["Invitation code has already been taken"], new_course.errors.full_messages
   end
+
+  test "Added to market place" do
+    @course.is_explored = true
+    assert @course.valid?
+  end
 end

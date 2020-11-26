@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
       resources :join_courses, only: [:show], param: :invitation_code
 
-      resources :explore_courses, only: [:index]
+      resources :explore_courses, only: [:index, :update]
 
       resources :instructors, only: [:show]
     end

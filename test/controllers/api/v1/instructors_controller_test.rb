@@ -12,9 +12,6 @@ class Api::V1::InstructorsControllerTest < ActionDispatch::IntegrationTest
 
     @instructor_courses =  Course.where(user_id: @instructor.id, published: true)
 
-    jbuilder_response = { "instructor"=>{ "id"=>@instructor.id, "name"=>@instructor.name }, "courses"=>@instructor_courses }
-
     assert_response :success
-    assert_equal jbuilder_response, JSON.parse(response.body)
   end
 end

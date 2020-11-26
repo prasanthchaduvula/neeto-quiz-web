@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { PageLoader, Button, Badge, Label, Alert, Toastr } from "nitroui";
+import {
+  PageLoader,
+  Button,
+  Badge,
+  Label,
+  Alert,
+  Toastr,
+  Dropdown,
+} from "nitroui";
 import { PageHeading } from "nitroui/layouts";
 import { getCourse, publishCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
@@ -9,6 +16,7 @@ import CoursePane from "./Pane";
 import Students from "../Students";
 import CourseTemplate from "../Template";
 import PageNotFound from "../../shared/PageNotFound";
+import { updateExploreCourse } from "apis/courses";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -82,6 +90,25 @@ export default function Course(props) {
         fetchSingleCourse();
       });
     };
+
+    const addCourseToMarketPlace = () => {
+      const payload = {
+        course: {
+          is_explored: !course.is_explored,
+        },
+      };
+      updateExploreCourse(course.id, payload).then(response => {
+        Toastr.success(
+          `Course ${
+            response.data.course.is_explored
+              ? "Added to market place"
+              : "Removed from market place"
+          } successfully`
+        );
+        fetchSingleCourse();
+      });
+    };
+
     return (
       <>
         {!isLoading ? (
@@ -102,10 +129,82 @@ export default function Course(props) {
                   <Button
                     label="Add Chapter"
                     icon="ri-add-line"
+                    style="primary"
+                    className="mr-4"
                     onClick={() => {
                       setChapterPane(true);
                     }}
                   />
+
+                  <Dropdown
+                    label="Settings"
+                    popoverClassName="pb-2"
+                    position="bottom-right"
+                    buttonStyle="primary"
+                    closeOnSelect
+                  >
+                    <li
+                      onClick={() => {
+                        course.published
+                          ? setShowStudents(true)
+                          : Toastr.error(
+                              "You cannot add students without publishing course"
+                            );
+                      }}
+                    >
+                      Students
+                    </li>
+                    <li
+                      onClick={() => {
+                        props.history.push(`/courses/${course.id}/preview`);
+                      }}
+                    >
+                      Preview
+                    </li>
+                    <li
+                      onClick={() => {
+                        setCoursePane(true);
+                      }}
+                    >
+                      Edit
+                    </li>
+                    <li
+                      className={`${course.published && "text-red-600"}`}
+                      onClick={() =>
+                        students.length
+                          ? Toastr.error(
+                              "Students are present. You cannot unpublish course"
+                            )
+                          : publishSingleCourse()
+                      }
+                    >
+                      {course.published
+                        ? students.length
+                          ? "Published Course"
+                          : "Unpublish Course"
+                        : "Publish Course"}
+                    </li>
+                    <li
+                      className={`${course.is_explored && "text-red-600"}`}
+                      onClick={() => addCourseToMarketPlace()}
+                    >
+                      {course.is_explored
+                        ? "Remove from market place"
+                        : "Add to market place"}
+                    </li>
+                    <li
+                      className="text-red-600"
+                      onClick={() => {
+                        course.published
+                          ? Toastr.error(
+                              "You can not delete a published course"
+                            )
+                          : setShowAlert(true);
+                      }}
+                    >
+                      Delete
+                    </li>
+                  </Dropdown>
                 </>
               )}
             />
@@ -125,55 +224,6 @@ export default function Course(props) {
                     Invitation code: &nbsp;
                     <span className="font-bold ">{course.invitation_code}</span>
                   </Label>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Button
-                    label="Students"
-                    onClick={() => {
-                      course.published
-                        ? setShowStudents(true)
-                        : Toastr.error(
-                            "You cannot add students without publishing course"
-                          );
-                    }}
-                  />
-                  <Button
-                    label="Edit Course"
-                    className="ml-4"
-                    onClick={() => {
-                      setCoursePane(true);
-                    }}
-                  />
-                  <Link className="ml-4" to={`/courses/${course.id}/preview`}>
-                    <Button label="Preview Course" />
-                  </Link>
-
-                  <Button
-                    label={
-                      course.published
-                        ? students.length
-                          ? "Published Course"
-                          : "Unpublish Course"
-                        : "Publish Course"
-                    }
-                    className="ml-4"
-                    onClick={() =>
-                      students.length
-                        ? Toastr.error(
-                            "Students are present. You cannot unpublish course"
-                          )
-                        : publishSingleCourse()
-                    }
-                  />
-                  <Button
-                    label="Delete Course"
-                    className="ml-4"
-                    onClick={() => {
-                      course.published
-                        ? Toastr.error("You can not delete a published course")
-                        : setShowAlert(true);
-                    }}
-                  />
                 </div>
               </div>
             </nav>

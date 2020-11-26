@@ -39,3 +39,7 @@ export const joinCourse = courseId => {
 export const exploreCourses = () => {
   return axios.get(`/api/v1/explore_courses`);
 };
+
+export const updateExploreCourse = (Id, payload) => {
+  return axios.patch(`/api/v1/explore_courses/${Id}`, payload);
+};
