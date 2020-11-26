@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader, Toastr } from "nitroui";
+import { PageLoader, Toastr } from "neetoui";
 import { Link } from "react-router-dom";
 import { getCourse } from "apis/courses";
 

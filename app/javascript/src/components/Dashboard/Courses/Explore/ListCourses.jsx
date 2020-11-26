@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Badge } from "nitroui";
+import { Badge } from "neetoui";
 import { withRouter } from "react-router-dom";
 import ExplorCoursePane from "./Pane";
 

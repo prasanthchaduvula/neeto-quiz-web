@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { PageLoader, Toastr } from "nitroui";
+import { PageLoader, Toastr } from "neetoui";
 
 import { fetchAllOrders } from "apis/orders";
 import OrderCard from "./OrderCard";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { PageLoader, Button, Toastr } from "nitroui";
-import { Input } from "nitroui/formik";
+import { PageLoader, Button, Toastr } from "neetoui";
+import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { getUser, updateUser } from "apis/users";

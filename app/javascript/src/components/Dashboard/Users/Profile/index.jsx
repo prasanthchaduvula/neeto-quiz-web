@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Tab, Button } from "nitroui";
-import { PageHeading } from "nitroui/layouts";
+import { Tab, Button } from "neetoui";
+import { PageHeading } from "neetoui/layouts";
 
 import { TABS } from "./constants";
 import GeneralSettings from "./Form";

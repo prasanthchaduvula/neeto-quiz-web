@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "nitroui";
-import { Input } from "nitroui/formik";
+import { Button } from "neetoui";
+import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 

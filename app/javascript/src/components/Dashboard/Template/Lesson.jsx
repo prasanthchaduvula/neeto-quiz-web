@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { PageHeading } from "nitroui/layouts";
-import { Button } from "nitroui";
+import { PageHeading } from "neetoui/layouts";
+import { Button } from "neetoui";
 import ReactPlayer from "react-player";
 import { Document, Page, pdfjs } from "react-pdf";
 import Viewer from "react-viewer";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "nitroui";
+import { Button } from "neetoui";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 

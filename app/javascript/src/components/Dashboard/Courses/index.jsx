@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { PageHeading } from "nitroui/layouts";
-import { Button, PageLoader, Tab } from "nitroui";
+import { PageHeading } from "neetoui/layouts";
+import { Button, PageLoader, Tab } from "neetoui";
 import { getCourses } from "apis/courses";
 import CoursePane from "./Pane";
 import { TABS } from "./constants";

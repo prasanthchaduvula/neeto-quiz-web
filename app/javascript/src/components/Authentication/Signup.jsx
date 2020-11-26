@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Toastr } from "nitroui";
+import { Toastr } from "neetoui";
 import { createOtp } from "apis/authentication";
 import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader, Button, Callout, Toastr } from "nitroui";
-import { Input, Radio } from "nitroui/formik";
+import { PageLoader, Button, Callout, Toastr } from "neetoui";
+import { Input, Radio } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { getPaymentDetails, createPaymentDetails } from "apis/users";

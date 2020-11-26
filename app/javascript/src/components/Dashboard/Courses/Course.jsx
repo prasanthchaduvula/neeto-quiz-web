@@ -7,8 +7,8 @@ import {
   Alert,
   Toastr,
   Dropdown,
-} from "nitroui";
-import { PageHeading } from "nitroui/layouts";
+} from "neetoui";
+import { PageHeading } from "neetoui/layouts";
 import { getCourse, publishCourse, deleteCourse } from "apis/courses";
 import Chapters from "../Chapters";
 import ChapterPane from "../Chapters/Pane";

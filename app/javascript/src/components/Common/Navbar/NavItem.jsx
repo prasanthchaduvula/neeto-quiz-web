@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Tooltip } from "nitroui";
+import { Button, Tooltip } from "neetoui";
 import classnames from "classnames";
 import { useHistory, useLocation } from "react-router-dom";
 

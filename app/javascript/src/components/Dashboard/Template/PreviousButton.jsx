@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "nitroui";
+import { Button } from "neetoui";
 
 const PreviousButton = ({
   lesson,

@@ -5989,6 +5989,13 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+"neetoui@https://github.com/bigbinary/neeto-ui.git":
+  version "0.7.1"
+  resolved "https://github.com/bigbinary/neeto-ui.git#67ee4a5188c5feccbeca2767107651fb24932764"
+  dependencies:
+    moment "^2.29.1"
+    yup "^0.30.0"
+
 negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
@@ -6003,13 +6010,6 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
-
-"nitroui@https://github.com/bigbinary/nitroui.git":
-  version "0.7.1"
-  resolved "https://github.com/bigbinary/nitroui.git#ad50000d9354582a17c428d0cacffd92713537f8"
-  dependencies:
-    moment "^2.29.1"
-    yup "^0.30.0"
 
 node-emoji@^1.8.1:
   version "1.10.0"

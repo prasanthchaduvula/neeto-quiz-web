@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Toastr } from "nitroui";
+import { Button, Toastr } from "neetoui";
 import { joinCourse } from "apis/courses";
 import BuyCourseBtn from "./BuyCourseBtn";
 import TableOfContents from "./TableOfContents";

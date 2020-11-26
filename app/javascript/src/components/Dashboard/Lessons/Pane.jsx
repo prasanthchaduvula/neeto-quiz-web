@@ -1,5 +1,5 @@
 import React from "react";
-import { Pane } from "nitroui";
+import { Pane } from "neetoui";
 import LessonForm from "./Form";
 
 export default function LessonPane({

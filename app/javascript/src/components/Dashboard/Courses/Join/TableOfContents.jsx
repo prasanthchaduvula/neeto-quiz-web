@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "nitroui";
+import { Button } from "neetoui";
 import classNames from "classnames";
 
 export default function TableOfContents({ chapter, lessons }) {

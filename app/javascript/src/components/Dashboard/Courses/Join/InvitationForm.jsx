@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Toastr } from "nitroui";
-import { Input } from "nitroui/formik";
+import { Button, Toastr } from "neetoui";
+import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { getJoinCourse } from "apis/courses";

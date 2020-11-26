@@ -1,5 +1,5 @@
 import React from "react";
-import { Toastr } from "nitroui";
+import { Toastr } from "neetoui";
 import { withRouter } from "react-router-dom";
 
 function ListCourses({ courses, history }) {

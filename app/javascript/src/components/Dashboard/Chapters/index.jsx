@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Alert, Toastr } from "nitroui";
+import { Button, Alert, Toastr } from "neetoui";
 import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
 import LessonPane from "../Lessons/Pane";

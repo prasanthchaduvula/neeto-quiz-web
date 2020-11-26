@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
-import { Button, Toastr } from "nitroui";
+import { Button, Toastr } from "neetoui";
 
 import { createOrder } from "apis/orders";
 import { loadRazorpayCheckoutScript } from "common";

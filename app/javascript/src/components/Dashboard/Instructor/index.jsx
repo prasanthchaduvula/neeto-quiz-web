@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { PageHeading } from "nitroui/layouts";
-import { PageLoader, Callout } from "nitroui";
+import { PageHeading } from "neetoui/layouts";
+import { PageLoader, Callout } from "neetoui";
 import { withRouter } from "react-router-dom";
 import { getInstructor } from "apis/instructors";
 import ListCourses from "../Courses/Explore/ListCourses";

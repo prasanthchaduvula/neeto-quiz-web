@@ -1,5 +1,5 @@
 import React from "react";
-import { Pane } from "nitroui";
+import { Pane } from "neetoui";
 import Details from "../Join/Details";
 
 export default function ExplorCoursePane({

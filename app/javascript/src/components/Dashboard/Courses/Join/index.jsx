@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pane } from "nitroui";
+import { Pane } from "neetoui";
 import InvitationForm from "./InvitationForm";
 import Details from "./Details";
 
