@@ -9,10 +9,12 @@ function Signup() {
   const [userPage, setUserPage] = useState(false);
   const [phonePage, setPhonePage] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const newRegistration = phonePayload => {
     createOtp(phonePayload).then(() => {
       Toastr.success("OTP sent successfully");
+      setLoading(false);
       setPhonePage(false);
     });
   };
@@ -52,6 +54,8 @@ function Signup() {
                 handlePhoneSubmit={handlePhoneSubmit}
                 setPhoneNumber={setPhoneNumber}
                 phoneNumber={phoneNumber}
+                loading={loading}
+                setLoading={setLoading}
               />
             ) : !userPage ? (
               <EnterOtp

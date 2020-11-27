@@ -10,29 +10,6 @@ function EnterOtp(props) {
     otp: "",
   };
 
-  const verifyRegistration = otpPayload => {
-    verifyOtp(otpPayload).then(response => {
-      const {
-        id,
-        first_name,
-        last_name,
-        phone_number,
-        authentication_token,
-      } = {
-        ...response.data.user,
-      };
-      Toastr.success("Verification successfull");
-      localStorage.setItem("authToken", JSON.stringify(authentication_token));
-      localStorage.setItem("authPhone", JSON.stringify(phone_number));
-      localStorage.setItem("user_id", id);
-      if (first_name || last_name) {
-        window.location.href = "/";
-      } else {
-        props.setUserPage(true);
-      }
-    });
-  };
-
   const validationSchema = yup.object().shape({
     otp: yup
       .string()
@@ -40,14 +17,29 @@ function EnterOtp(props) {
       .length(4, "OTP must be 4 digits"),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const otpPayload = {
       user: {
         phone_number: `+91${props.phoneNumber}`,
         otp: values.otp,
       },
     };
-    verifyRegistration(otpPayload);
+
+    let response = await verifyOtp(otpPayload);
+    const { id, first_name, last_name, phone_number, authentication_token } = {
+      ...response.data.user,
+    };
+
+    Toastr.success("Verification successfull");
+    localStorage.setItem("authToken", JSON.stringify(authentication_token));
+    localStorage.setItem("authPhone", JSON.stringify(phone_number));
+    localStorage.setItem("user_id", id);
+
+    if (first_name || last_name) {
+      window.location.href = "/";
+    } else {
+      props.setUserPage(true);
+    }
   };
 
   return (
@@ -57,7 +49,7 @@ function EnterOtp(props) {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit }) => {
+      {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
             <Input
@@ -89,6 +81,7 @@ function EnterOtp(props) {
               style="primary"
               fullWidth
               className="mt-6 text-center text-base font-medium"
+              loading={isSubmitting}
               onClick={handleSubmit}
             />
           </Form>

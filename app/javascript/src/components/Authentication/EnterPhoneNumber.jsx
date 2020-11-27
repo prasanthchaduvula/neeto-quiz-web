@@ -20,6 +20,7 @@ function EnterPhoneNumber(props) {
   });
 
   const handleSubmit = values => {
+    props.setLoading(true);
     props.handlePhoneSubmit(values.phone_number);
   };
 
@@ -49,6 +50,7 @@ function EnterPhoneNumber(props) {
               fullWidth
               className="mt-6 text-center text-base font-medium"
               onClick={handleSubmit}
+              loading={props.loading}
             />
           </Form>
         );
