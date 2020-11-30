@@ -60,10 +60,14 @@ class Api::V1::CoursesController < Api::V1::BaseController
       end
     end
 
+    def update_price_request?
+      params[:course][:price] &&  params[:course][:price] > 0
+    end
+
     def ensure_payment_details
-      if params[:course][:price] > 0
+      if update_price_request?
         if current_user.payment_details.nil?
-          render status: :unprocessable_entity, json: { errors: ["Course has a price. So please add Bank account details to publish the course"] }
+          render status: :unprocessable_entity, json: { error: "Please add payment details to update course price" }
         end
       end
     end

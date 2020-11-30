@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_125937) do
+ActiveRecord::Schema.define(version: 2020_11_30_050515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -65,6 +65,17 @@ ActiveRecord::Schema.define(version: 2020_11_25_125937) do
     t.uuid "user_id"
     t.string "invitation_code"
     t.boolean "is_explored", default: false, null: false
+  end
+
+  create_table "exam_mocktests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_published", default: false
+    t.decimal "price", precision: 7, scale: 2, default: "0.0"
+    t.string "invitation_code"
+    t.uuid "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_exam_mocktests_on_user_id"
   end
 
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -129,6 +140,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_125937) do
   add_foreign_key "course_students", "courses"
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
+  add_foreign_key "exam_mocktests", "users", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
   add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade

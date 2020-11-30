@@ -29,6 +29,10 @@ Rails.application.routes.draw do
       resources :explore_courses, only: [:index, :update]
 
       resources :instructors, only: [:show]
+
+      namespace :exam do
+        resources :mocktests, except: [:new, :edit]
+      end
     end
   end
 
