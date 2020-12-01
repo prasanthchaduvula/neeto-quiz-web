@@ -18,6 +18,11 @@ class NavBar extends Component {
               link="/courses"
               icon="ri-book-open-line"
             />
+            <NavItem
+              title="Mocktests"
+              link="/mocktests"
+              icon="ri-file-list-3-line"
+            />
             <NavItem title="Profile" link="/profile" icon="ri-user-line" />
           </div>
         </div>

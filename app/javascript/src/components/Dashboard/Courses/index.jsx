@@ -13,6 +13,7 @@ function Courses() {
   const [courses, setCourses] = useState({});
   const [activeTab, setActiveTab] = useState("myCourses");
   const [joinCoursePane, setJoinCoursePane] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCourses();
@@ -21,6 +22,7 @@ function Courses() {
   const fetchCourses = () => {
     getCourses().then(response => {
       setCourses(response.data);
+      setLoading(false);
     });
   };
 
@@ -44,7 +46,11 @@ function Courses() {
           </>
         )}
       />
-      {courses ? (
+      {loading ? (
+        <div className="min-h-screen flex items-center">
+          <PageLoader />
+        </div>
+      ) : (
         <>
           <Tab className="px-6 -mx-4 border-b border-gray-200">
             <Tab.Item
@@ -88,8 +94,6 @@ function Courses() {
             )}
           </div>
         </>
-      ) : (
-        <PageLoader />
       )}
       <JoinCoursePane
         showPane={joinCoursePane}

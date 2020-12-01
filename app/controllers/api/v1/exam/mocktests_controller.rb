@@ -8,7 +8,9 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
 
 
   def index
-    render json: { mocktests: current_user.mocktests }, status: :ok
+    respond_to do |format|
+      format.json
+    end
   end
 
   def create
@@ -22,7 +24,9 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
   end
 
   def show
-    render json: { mocktest: @mocktest }, status: :ok
+    respond_to do |format|
+      format.json
+    end
   end
 
   def destroy
