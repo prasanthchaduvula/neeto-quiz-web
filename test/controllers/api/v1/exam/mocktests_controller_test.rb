@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class Api::V1::Exam::MocktestControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Exam::MocktestsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @mocktest = exam_mocktests(:solar_system)
     @user = users(:oliver)

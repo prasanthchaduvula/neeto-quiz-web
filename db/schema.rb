@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_050515) do
+ActiveRecord::Schema.define(version: 2020_12_02_151759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,6 +78,24 @@ ActiveRecord::Schema.define(version: 2020_11_30_050515) do
     t.index ["user_id"], name: "index_exam_mocktests_on_user_id"
   end
 
+  create_table "exam_question_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_correct", default: false
+    t.uuid "question_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name", "question_id"], name: "index_exam_question_options_on_name_and_question_id", unique: true
+    t.index ["question_id"], name: "index_exam_question_options_on_question_id"
+  end
+
+  create_table "exam_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "description"
+    t.uuid "mocktest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mocktest_id"], name: "index_exam_questions_on_mocktest_id"
+  end
+
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -141,6 +159,8 @@ ActiveRecord::Schema.define(version: 2020_11_30_050515) do
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
   add_foreign_key "exam_mocktests", "users", on_delete: :cascade
+  add_foreign_key "exam_question_options", "exam_questions", column: "question_id", on_delete: :cascade
+  add_foreign_key "exam_questions", "exam_mocktests", column: "mocktest_id", on_delete: :cascade
   add_foreign_key "lessons", "chapters", on_delete: :cascade
   add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade

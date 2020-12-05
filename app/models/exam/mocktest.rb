@@ -5,6 +5,8 @@ class Exam::Mocktest < ApplicationRecord
 
   default_scope { order(created_at: :asc) }
 
+  has_many :questions, class_name: "Exam::Question", dependent: :destroy
+
   belongs_to :user
 
   validates :name, :user, presence: true
