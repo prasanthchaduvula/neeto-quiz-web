@@ -7,6 +7,7 @@ export const getMocktests = () => {
 export const getMocktest = id => {
   return axios.get(`/api/v1/exam/mocktests/${id}`);
 };
+
 export const createMocktest = payload => {
   return axios.post("/api/v1/exam/mocktests", payload);
 };

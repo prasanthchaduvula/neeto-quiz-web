@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { PageHeading } from "neetoui/layouts";
-import { PageLoader, Badge, Label, Toastr, Dropdown, Alert } from "neetoui";
-import { deleteMocktest, getMocktest } from "../../../apis/mocktests";
-import PageNotFound from "../../shared/PageNotFound";
-import MocktestPane from "./Pane";
 import { withRouter } from "react-router-dom";
+import { PageHeading } from "neetoui/layouts";
+import {
+  PageLoader,
+  Button,
+  Badge,
+  Label,
+  Toastr,
+  Dropdown,
+  Alert,
+} from "neetoui";
+import { deleteMocktest, getMocktest } from "apis/mocktests";
+import PageNotFound from "../../shared/PageNotFound";
+import QuestionPane from "../Questions/Pane";
+import MocktestPane from "./Pane";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -50,6 +59,7 @@ const MocktestDisplayForCreator = ({
 }) => {
   const [mocktestPane, setMocktestPane] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [questionPane, setQuestionPane] = useState(false);
 
   const deleteSingleMocktest = () => {
     deleteMocktest(mocktest.id).then(() => {
@@ -72,6 +82,15 @@ const MocktestDisplayForCreator = ({
                 ? "Published mocktest"
                 : "Unpublished mocktest"}
             </Badge>
+
+            <Button
+              label="Add Question"
+              icon="ri-add-line"
+              className="mr-4"
+              onClick={() => {
+                setQuestionPane(true);
+              }}
+            />
 
             <Dropdown
               label="Settings"
@@ -127,6 +146,11 @@ const MocktestDisplayForCreator = ({
         message="You are permanently deleting the course. This cannot be undone."
         confirmAction={deleteSingleMocktest}
         cancelAction={() => setShowAlert(false)}
+      />
+      <QuestionPane
+        showPane={questionPane}
+        setShowPane={setQuestionPane}
+        mocktestId={mocktest.id}
       />
     </>
   );

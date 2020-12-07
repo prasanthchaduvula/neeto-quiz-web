@@ -3,8 +3,7 @@ import { Button, Toastr } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { createMocktest } from "apis/mocktests";
-import { updateMocktest } from "../../../apis/mocktests";
+import { createMocktest, updateMocktest } from "apis/mocktests";
 import { Link } from "react-router-dom";
 
 export default function MocktestForm({

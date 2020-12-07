@@ -12,6 +12,12 @@ class Api::V1::Exam::QuestionsController < Api::V1::BaseController
     end
   end
 
+  def index
+    respond_to do |format|
+      format.json
+    end
+  end
+
   def create
     @question = @mocktest.questions.create!(question_params)
     render json: { notice: "Question created successfully", question: @question, options: @question.options }, status: :ok
