@@ -5,7 +5,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { createQuestion } from "apis/questions";
 
-export default function QuestionForm({ onClose, mocktestId }) {
+export default function QuestionForm({
+  onClose,
+  mocktestId,
+  fetchSingleMocktest,
+}) {
   const initialValues = {
     description: "",
     option1: "",
@@ -58,6 +62,7 @@ export default function QuestionForm({ onClose, mocktestId }) {
 
     let response = await sendRequest(payload);
     Toastr.success(response.data.notice);
+    fetchSingleMocktest();
     onClose();
   };
 

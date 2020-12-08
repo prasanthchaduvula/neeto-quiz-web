@@ -10,6 +10,17 @@ json.mocktest do
   json.invitation_code @mocktest.invitation_code
 end
 
+json.questions @mocktest.questions.map do |question|
+  json.id question.id
+  json.description question.description
+
+  json.options question.options.map do |option|
+    json.id option.id
+    json.name option.name
+    json.is_correct option.is_correct
+  end
+end
+
 json.creator do
   json.id @mocktest.user.id
   json.name @mocktest.user.name

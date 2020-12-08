@@ -14,10 +14,12 @@ import { deleteMocktest, getMocktest } from "apis/mocktests";
 import PageNotFound from "../../shared/PageNotFound";
 import QuestionPane from "../Questions/Pane";
 import MocktestPane from "./Pane";
+import Questions from "../Questions";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
   const [mocktest, setMocktest] = useState({});
+  const [questions, setQuestions] = useState([]);
   const [isCreator, setIsCreator] = useState(false);
   const [creator, setCreator] = useState({});
 
@@ -27,9 +29,10 @@ function Mocktest({ match, history }) {
 
   const fetchSingleMocktest = () => {
     getMocktest(match.params.id).then(response => {
-      const { isCreator, mocktest, creator } = response.data;
+      const { isCreator, mocktest, questions, creator } = response.data;
       setIsCreator(isCreator);
       setMocktest(mocktest);
+      setQuestions(questions);
       setCreator(creator);
       setLoading(false);
     });
@@ -42,6 +45,7 @@ function Mocktest({ match, history }) {
       <MocktestDisplayForCreator
         mocktest={mocktest}
         fetchSingleMocktest={fetchSingleMocktest}
+        questions={questions}
         creator={creator}
         history={history}
       />
@@ -54,6 +58,7 @@ function Mocktest({ match, history }) {
 const MocktestDisplayForCreator = ({
   mocktest,
   fetchSingleMocktest,
+  questions,
   creator,
   history,
 }) => {
@@ -131,6 +136,7 @@ const MocktestDisplayForCreator = ({
           <span className="font-bold ">{mocktest.invitation_code}</span>
         </Label>
       </div>
+      <Questions questions={questions} />
       <MocktestPane
         showPane={mocktestPane}
         setShowPane={setMocktestPane}
@@ -151,6 +157,7 @@ const MocktestDisplayForCreator = ({
         showPane={questionPane}
         setShowPane={setQuestionPane}
         mocktestId={mocktest.id}
+        fetchSingleMocktest={fetchSingleMocktest}
       />
     </>
   );
