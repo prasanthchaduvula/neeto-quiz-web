@@ -136,7 +136,11 @@ const MocktestDisplayForCreator = ({
           <span className="font-bold ">{mocktest.invitation_code}</span>
         </Label>
       </div>
-      <Questions questions={questions} />
+      <Questions
+        questions={questions}
+        mocktestId={mocktest.id}
+        fetchSingleMocktest={fetchSingleMocktest}
+      />
       <MocktestPane
         showPane={mocktestPane}
         setShowPane={setMocktestPane}
@@ -148,14 +152,15 @@ const MocktestDisplayForCreator = ({
       />
       <Alert
         isOpen={showAlert}
-        title="Delete Course"
-        message="You are permanently deleting the course. This cannot be undone."
+        title="Delete Mocktest"
+        message="You are permanently deleting the mocktest. This cannot be undone."
         confirmAction={deleteSingleMocktest}
         cancelAction={() => setShowAlert(false)}
       />
       <QuestionPane
         showPane={questionPane}
         setShowPane={setQuestionPane}
+        isCreateForm={true}
         mocktestId={mocktest.id}
         fetchSingleMocktest={fetchSingleMocktest}
       />

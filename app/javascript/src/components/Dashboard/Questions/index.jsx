@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox } from "neetoui";
+import { Button, Checkbox, Toastr, Alert } from "neetoui";
+import { deleteQuestion } from "apis/questions";
+import QuestionPane from "./Pane";
 
-function Questions({ questions }) {
+function Questions({ questions, mocktestId, fetchSingleMocktest }) {
   const [question, setQuestion] = useState({});
   const [numberOfQuestions, setNumberOfQuestions] = useState([]);
   const [selectedQuestionNumber, setSelectedQuestionNumber] = useState(1);
+  const [questionPane, setQuestionPane] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     let arr = [];
@@ -15,14 +19,41 @@ function Questions({ questions }) {
     setQuestion(questions[selectedQuestionNumber - 1]);
   }, [questions]);
 
+  const deleteSingleQuestion = () => {
+    deleteQuestion(mocktestId, question.id).then(() => {
+      setShowAlert(false);
+      Toastr.success("Question deleted Successfully");
+      if (questions.length == selectedQuestionNumber && questions.length > 1) {
+        setSelectedQuestionNumber(selectedQuestionNumber - 1);
+      }
+      fetchSingleMocktest();
+    });
+  };
+
   const Question = () => {
     return (
       <>
         {question && (
-          <div className="w-8/12 m-4">
-            <p className="font-semibold text-base text-gray-500 mt-4">
-              {`Question ${selectedQuestionNumber}`}
-            </p>
+          <div className="w-9/12 my-4 mr-12">
+            <div className="flex justify-between items-center w-full">
+              <p className="font-semibold text-base text-gray-500">
+                {`Question ${selectedQuestionNumber}`}
+              </p>
+              <div className="flex items-center">
+                <Button
+                  style="icon"
+                  icon="ri-pencil-line"
+                  className="text-indigo-500 mr-4 font-bold text-xl"
+                  onClick={() => setQuestionPane(true)}
+                />
+                <Button
+                  style="icon"
+                  icon="ri-delete-bin-line"
+                  className="text-red-500"
+                  onClick={() => setShowAlert(true)}
+                />
+              </div>
+            </div>
             <p className="font-medium text-base mt-8">{question.description}</p>
             <div className="pt-4 pb-20 px-2">
               {question.options &&
@@ -68,7 +99,6 @@ function Questions({ questions }) {
       </>
     );
   };
-
   const NumberPanel = () => {
     return (
       <div className="border-2 border-black-500 min-h-screen w-1/4">
@@ -98,7 +128,6 @@ function Questions({ questions }) {
       </div>
     );
   };
-
   const NoData = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -106,7 +135,6 @@ function Questions({ questions }) {
       </div>
     );
   };
-
   return (
     <div>
       {questions.length ? (
@@ -117,8 +145,21 @@ function Questions({ questions }) {
       ) : (
         <NoData />
       )}
+      <QuestionPane
+        showPane={questionPane}
+        setShowPane={setQuestionPane}
+        mocktestId={mocktestId}
+        fetchSingleMocktest={fetchSingleMocktest}
+        question={question}
+      />
+      <Alert
+        isOpen={showAlert}
+        title="Delete Question"
+        message="You are permanently deleting the question. This cannot be undone."
+        confirmAction={deleteSingleQuestion}
+        cancelAction={() => setShowAlert(false)}
+      />
     </div>
   );
 }
-
 export default Questions;

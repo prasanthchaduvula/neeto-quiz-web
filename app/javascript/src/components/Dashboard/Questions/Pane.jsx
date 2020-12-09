@@ -5,8 +5,10 @@ import QuestionForm from "./Form";
 function QuestionPane({
   showPane,
   setShowPane,
+  isCreateForm,
   mocktestId,
   fetchSingleMocktest,
+  question,
 }) {
   const onClose = () => setShowPane(false);
 
@@ -15,8 +17,10 @@ function QuestionPane({
       <div className="px-6">
         <QuestionForm
           onClose={onClose}
+          isCreateForm={isCreateForm}
           mocktestId={mocktestId}
           fetchSingleMocktest={fetchSingleMocktest}
+          question={question}
         />
       </div>
     </Pane>

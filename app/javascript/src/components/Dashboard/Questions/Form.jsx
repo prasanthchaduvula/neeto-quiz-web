@@ -1,22 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button, Toastr, Callout } from "neetoui";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import { createQuestion } from "apis/questions";
+import { createQuestion, updateQuestion } from "apis/questions";
 
 export default function QuestionForm({
   onClose,
+  isCreateForm,
   mocktestId,
   fetchSingleMocktest,
+  question,
 }) {
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     description: "",
     option1: "",
     option2: "",
     option3: "",
     option4: "",
     correct_option: null,
+  });
+
+  useEffect(() => {
+    loadQuestionDetails();
+  }, []);
+
+  const loadQuestionDetails = () => {
+    question &&
+      question.options.filter(
+        (option, index) =>
+          option.is_correct &&
+          setInitialValues({
+            ...initialValues,
+            description: question.description,
+            option1: question.options[0].name,
+            option2: question.options[1].name,
+            option3: question.options[2].name,
+            option4: question.options[3].name,
+            correct_option: index + 1,
+          })
+      );
   };
 
   const validationSchema = yup.object().shape({
@@ -35,17 +58,29 @@ export default function QuestionForm({
 
   const handleSubmit = async values => {
     let { option1, option2, option3, option4, correct_option } = values;
+    let options = [];
 
-    let options = [
-      { name: option1 },
-      { name: option2 },
-      { name: option3 },
-      { name: option4 },
-    ];
+    if (isCreateForm) {
+      options.push(
+        { name: option1 },
+        { name: option2 },
+        { name: option3 },
+        { name: option4 }
+      );
+    } else {
+      options.push(
+        { id: question.options[0].id, name: option1 },
+        { id: question.options[1].id, name: option2 },
+        { id: question.options[2].id, name: option3 },
+        { id: question.options[3].id, name: option4 }
+      );
+    }
 
     options.map((option, index) => {
       if (index + 1 == correct_option) {
         option.is_correct = true;
+      } else {
+        option.is_correct = false;
       }
     });
 
@@ -57,7 +92,9 @@ export default function QuestionForm({
     };
 
     const sendRequest = payload => {
-      return createQuestion(mocktestId, payload);
+      return isCreateForm
+        ? createQuestion(mocktestId, payload)
+        : updateQuestion(mocktestId, payload, question.id);
     };
 
     let response = await sendRequest(payload);
@@ -68,6 +105,7 @@ export default function QuestionForm({
 
   return (
     <Formik
+      enableReinitialize
       validateOnBlur={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
@@ -83,6 +121,7 @@ export default function QuestionForm({
               </label>
               <TextareaAutosize
                 name="description"
+                value={values.description}
                 minRows={3}
                 className="border-2 rounded-md shadow-sm w-full focus:outline-none focus-within:shadow-focus-purple focus-within:border-purple-400"
                 onChange={event => {
