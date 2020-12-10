@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class Api::V1::CoursesController < Api::V1::BaseController
-  before_action :find_course, only: [:show, :destroy, :update]
-  before_action :ensure_course_admin, only: [:update, :destroy]
-  before_action :ensure_payment_details, only: [:update]
+  before_action :load_course, except: [:index, :create]
+  before_action :ensure_course_admin, except: [:index, :create, :show]
   before_action :check_published_course, only: :destroy
+  before_action :ensure_payment_details_to_update_price, only: :update
+  before_action :ensure_payment_details_to_publish, only: :publish
+  before_action :ensure_publishable, only: :publish
+  before_action :ensure_course_is_unpublishable, only: :unpublish
 
   def index
     respond_to do |format|
@@ -13,20 +16,13 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def create
-    course = current_user.courses.new(course_params)
-    if course.save
-      render json: { notice: "Course created succesfully", course: course }, status: :ok
-    else
-      render json: { errors: course.errors.full_messages }, status: :unprocessable_entity
-    end
+    course = current_user.courses.create!(course_params)
+    render json: { notice: "Course created succesfully", course: course }, status: :ok
   end
 
   def update
-    if @course.update(course_params)
-      render json: { notice: "Course updated successfully", course: @course, chapters: @course.chapters, joined_students: @course.joined_students }, status: :ok
-    else
-      render json: { errors: @course.errors.full_messages }, status: :unprocessable_entity
-    end
+    @course.update!(course_params)
+    render json: { notice: "Course updated successfully", course: @course }, status: :ok
   end
 
   def show
@@ -36,21 +32,33 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def destroy
-    if @course.destroy
-      render json: @course, status: :ok
-    else
-      render json: { errors: @course.errors.full_messages }, status: :unprocessable_entity
-    end
+    @course.destroy!
+    render json: { notice: "Course deleted successfully", course: @course }, status: :ok
+  end
+
+  def publish
+    @course.update!(published: true)
+    render json: { notice: "Course published successfully", course: @course }, status: :ok
+  end
+
+  def unpublish
+    @course.update!(published: false)
+    render json: { notice: "Course unpublished successfully", course: @course }, status: :ok
   end
 
   private
+
     def course_params
       params.require(:course).permit(:name, :description, :published, :price)
     end
 
+    def load_course
+      @course = Course.find_by!(id: params[:id])
+    end
+
     def check_published_course
       if @course.published
-        render status: :unprocessable_entity, json: { errors: ["You cannot delete a published course"] }
+        render json: { error: "You cannot delete a published course" }, status: :unprocessable_entity
       end
     end
 
@@ -64,11 +72,27 @@ class Api::V1::CoursesController < Api::V1::BaseController
       params[:course][:price] &&  params[:course][:price] > 0
     end
 
-    def ensure_payment_details
-      if update_price_request?
-        if current_user.payment_details.nil?
-          render status: :unprocessable_entity, json: { error: "Please add payment details to update course price" }
-        end
+    def ensure_payment_details_to_update_price
+      if update_price_request? && current_user.payment_details.nil?
+        render json: { error: "Please add payment details to update course price" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_publishable
+      unless @course.is_publishable?
+        render json: { error: "Make sure at least one lesson is published" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_course_is_unpublishable
+      if @course.unpublishable?
+        render json: { error: "You cannot unpublish course as you have students" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_payment_details_to_publish
+      if @course.price? && current_user.payment_details.nil?
+        render json: { error: "Course has a price. So please add payment details to publish the course" }, status: :unprocessable_entity
       end
     end
 end

@@ -16,15 +16,14 @@ function ViewCourse(props) {
     setChaptersWithPublishedLessons,
   ] = useState([]);
 
-  const loadCourse = () => {
-    getCourse(props.match.params.course_id).then(response => {
-      setCourse(response.data.course);
-      setChapters(response.data.chapters);
-      setChaptersWithPublishedLessons(
-        loadChaptersWithPublishedLessons(response.data.chapters)
-      );
-      setIsStudent(response.data.creator.id != localStorage.user_id);
-    });
+  const loadCourse = async () => {
+    let response = await getCourse(props.match.params.course_id);
+    setCourse(response.data.course);
+    setChapters(response.data.chapters);
+    setChaptersWithPublishedLessons(
+      loadChaptersWithPublishedLessons(response.data.chapters)
+    );
+    setIsStudent(response.data.creator.id != localStorage.user_id);
   };
 
   function loadChaptersWithPublishedLessons(chapters) {

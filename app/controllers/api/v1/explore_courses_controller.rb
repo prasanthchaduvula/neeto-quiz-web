@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ExploreCoursesController < Api::V1::BaseController
-  before_action :find_course, only: [:update]
+  before_action :load_course, only: [:update]
   before_action :ensure_course_admin, only: [:update]
   before_action :ensure_course_is_published, only: [:update]
 
@@ -18,8 +18,13 @@ class Api::V1::ExploreCoursesController < Api::V1::BaseController
   end
 
   private
+
     def course_params
       params.require(:course).permit(:is_explored)
+    end
+
+    def load_course
+      @course = Course.find_by!(id: params[:id])
     end
 
     def ensure_course_is_published

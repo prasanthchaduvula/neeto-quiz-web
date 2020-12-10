@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PageHeading } from "neetoui/layouts";
 import { Button, PageLoader, Tab } from "neetoui";
 import { getCourses } from "apis/courses";
-import CoursePane from "./Pane";
+import CoursePane from "./Course/Pane";
 import { TABS } from "./constants";
 import ListCourses from "./ListCourses";
 import JoinCoursePane from "./Join";

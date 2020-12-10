@@ -10,11 +10,16 @@ import {
   Dropdown,
   Alert,
 } from "neetoui";
-import { deleteMocktest, getMocktest } from "apis/mocktests";
-import PageNotFound from "../../shared/PageNotFound";
-import QuestionPane from "../Questions/Pane";
+import {
+  deleteMocktest,
+  getMocktest,
+  publishMocktest,
+  unpublishMocktest,
+} from "apis/mocktests";
+import PageNotFound from "../../../shared/PageNotFound";
+import QuestionPane from "./Questions/Pane";
 import MocktestPane from "./Pane";
-import Questions from "../Questions";
+import Questions from "./Questions";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -73,6 +78,20 @@ const MocktestDisplayForCreator = ({
     });
   };
 
+  const publishSingleMocktest = () => {
+    publishMocktest(mocktest.id).then(response => {
+      Toastr.success(response.data.notice);
+      fetchSingleMocktest();
+    });
+  };
+
+  const unpublishSingleMocktest = () => {
+    unpublishMocktest(mocktest.id).then(response => {
+      Toastr.success(response.data.notice);
+      fetchSingleMocktest();
+    });
+  };
+
   return (
     <>
       <PageHeading
@@ -105,7 +124,14 @@ const MocktestDisplayForCreator = ({
               closeOnSelect
             >
               <li onClick={() => setMocktestPane(true)}>Edit</li>
-              <li className={`${mocktest.is_published && "text-red-600"}`}>
+              <li
+                className={`${mocktest.is_published && "text-red-600"}`}
+                onClick={() =>
+                  mocktest.is_published
+                    ? unpublishSingleMocktest()
+                    : publishSingleMocktest()
+                }
+              >
                 {mocktest.is_published
                   ? "Unpublish Mocktest"
                   : "Publish Mocktest"}

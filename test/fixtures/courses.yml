@@ -13,3 +13,10 @@ react_js:
   invitation_code: az52
   is_explored: true
   user: oliver
+
+next_js:
+  name: Learn NextJS
+  description: Description on next js
+  published: false
+  invitation_code: az52
+  user: oliver

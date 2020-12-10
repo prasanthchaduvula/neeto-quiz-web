@@ -19,3 +19,11 @@ export const updateMocktest = (id, payload) => {
 export const deleteMocktest = id => {
   return axios.delete(`/api/v1/exam/mocktests/${id}`);
 };
+
+export const publishMocktest = mocktestId => {
+  return axios.put(`/api/v1/exam/mocktests/${mocktestId}/publish`);
+};
+
+export const unpublishMocktest = mocktestId => {
+  return axios.put(`/api/v1/exam/mocktests/${mocktestId}/unpublish`);
+};

@@ -32,6 +32,7 @@ function TableOfContents({
     return (
       <Link
         to={`/courses/${course.id}/chapters/${chapter.id}/lessons/${lesson.id}`}
+        key={lesson.id}
       >
         <div
           key={lesson.id}

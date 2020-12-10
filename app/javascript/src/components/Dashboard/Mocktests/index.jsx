@@ -3,7 +3,7 @@ import { PageHeading } from "neetoui/layouts";
 import { Button, PageLoader } from "neetoui";
 import { getMocktests } from "apis/mocktests";
 import ListMocktests from "./ListMocktests";
-import MocktestPane from "./Pane";
+import MocktestPane from "./Mocktest/Pane";
 
 function Mocktests() {
   const [mocktestPane, setMocktestPane] = useState(false);

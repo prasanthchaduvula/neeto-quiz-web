@@ -6,6 +6,8 @@ class Api::V1::Exam::MocktestsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @mocktest = exam_mocktests(:solar_system)
     @user = users(:oliver)
+    @question = @mocktest.questions.create!(description: "Sample question",
+      options_attributes: [{ "name": "sample 1" }, { "name": "sample 2", "is_correct": true }, { "name": "sample 3" }, { "name": "sample 4" }])
   end
 
   test "should get index and list of all mocktest by the current user" do
@@ -90,5 +92,39 @@ class Api::V1::Exam::MocktestsControllerTest < ActionDispatch::IntegrationTest
       json_response = JSON.parse(response.body)
       assert_equal "param is missing or the value is empty: mocktest", json_response["error"]
     end
+  end
+
+  test "Publish a mocktest" do
+    put publish_api_v1_exam_mocktest_path(@mocktest.id), headers: headers(@user)
+    assert_response :success
+    assert_equal true, @mocktest.reload.is_published
+  end
+
+  test "Unpublish a mocktest" do
+    put unpublish_api_v1_exam_mocktest_path(@mocktest.id), headers: headers(@user)
+    assert_response :success
+    assert_equal false, @mocktest.reload.is_published
+  end
+
+  test "Can not unpublish a mocktest with students" do
+    @mocktest.is_published = true
+    @mocktest.save
+    @mocktest.exam_students.create!(user: users(:samuel))
+    put unpublish_api_v1_exam_mocktest_path(@mocktest.id), headers: headers(@user)
+
+    assert_response :unprocessable_entity
+
+    json_response = JSON.parse(response.body)
+    assert_equal "You cannot unpublish mocktest as you have students", json_response["error"]
+  end
+
+  test "Ensure at least one question is present to publish the mocktest" do
+    new_mocktest = exam_mocktests(:general_knowledge)
+    put publish_api_v1_exam_mocktest_path(new_mocktest.id), headers: headers(@user)
+
+    assert_response :unprocessable_entity
+
+    json_response = JSON.parse(response.body)
+    assert_equal "Make sure at least one question is present in the mocktest", json_response["error"]
   end
 end

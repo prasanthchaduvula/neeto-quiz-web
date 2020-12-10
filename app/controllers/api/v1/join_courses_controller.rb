@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::JoinCoursesController < Api::V1::BaseController
-  before_action :load_course, only: [:show]
-  before_action :find_course, only: [:create]
+  before_action :load_course_with_invitation_code, only: :show
+  before_action :load_course, only: :create
   before_action :ensure_course_is_published
   before_action :ensure_not_course_admin
   before_action :ensure_not_course_student
@@ -17,8 +17,12 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
 
   private
 
-    def load_course
+    def load_course_with_invitation_code
       @course = Course.find_by!(invitation_code: params[:invitation_code])
+    end
+
+    def load_course
+      @course = Course.find_by!(id: params[:course_id])
     end
 
     def ensure_course_is_published

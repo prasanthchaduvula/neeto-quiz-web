@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::AddStudentsController < Api::V1::BaseController
-  before_action :find_course, only: :create
+  before_action :load_course, only: :create
   before_action :ensure_course_admin, only: :create
   before_action :ensure_course_published, only: :create
   before_action :load_user, only: :create
@@ -17,6 +17,10 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
   end
 
   private
+
+    def load_course
+      @course = Course.find_by!(id: params[:course_id])
+    end
 
     def load_user
       @user = User.find_by(phone_number: params[:phone_number])

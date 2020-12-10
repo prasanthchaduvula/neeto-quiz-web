@@ -31,6 +31,6 @@ class Api::V1::BaseController < ApplicationController
     end
 
     def find_course
-      @course = Course.find_by!(id: params[:course_id] || params[:id])
+      @course = Course.find(id: params[:course_id] || params[:id])
     end
 end

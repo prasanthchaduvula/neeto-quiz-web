@@ -10,6 +10,10 @@ Rails.application.routes.draw do
       resource :registrations, only: [:create, :update] 
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
+        member do
+          put :publish
+          put :unpublish
+        end
         resources :chapters, only: [:create, :update, :show, :destroy]
         resources :add_students, only: [:create]
         resources :join_courses, only: [:create]
@@ -18,8 +22,6 @@ Rails.application.routes.draw do
       resources :chapters, except: [:new, :edit] do
         resources :lessons, except: [:new, :edit]
       end
-
-      resources :publish,  only: [:update]
       
       resources :orders, only: [:index, :create, :show, :update]
       resource :payment_details, only: [:create, :show]
@@ -32,9 +34,12 @@ Rails.application.routes.draw do
 
       namespace :exam do
         resources :mocktests, except: [:new, :edit] do
+          member do
+            put :publish
+            put :unpublish
+          end
           resources :questions, except: [:new, :edit]
           resources :add_students, only: [:create]
-          resource :publish,  only: [:update, :show]
         end
       end
     end

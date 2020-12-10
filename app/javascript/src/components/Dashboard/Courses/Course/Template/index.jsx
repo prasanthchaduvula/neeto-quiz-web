@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PageLoader, Toastr } from "neetoui";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { getCourse } from "apis/courses";
 
 function CourseTemplate(props) {
@@ -67,6 +67,7 @@ function CourseTemplate(props) {
                   props.isStudent ? chaptersWithPublishedLessons : chapters
                 }
                 course={course}
+                history={props.history}
               />
             </div>
           </div>
@@ -80,7 +81,7 @@ function CourseTemplate(props) {
   );
 }
 
-const ShowChapters = ({ chapters, course }) => {
+const ShowChapters = ({ chapters, course, history }) => {
   return (
     <>
       {chapters.map(({ chapter, lessons }, index) => (
@@ -94,18 +95,21 @@ const ShowChapters = ({ chapters, course }) => {
             </h3>
           </div>
           {lessons.map((lesson, listIndex) => (
-            <div key={lesson.id} className="ml-2 mb-2">
-              <Link
-                className="text-lg font-medium text-gray-900 hover:text-blue-600 no-underline"
-                to={`/courses/${course.id}/chapters/${chapter.id}/lessons/${lesson.id}`}
-              >
-                <div className="w-6 mr-4 inline-block md:w-10 md:mr-2">
-                  <span className="text-gray-500 text-base md:text-lg">
-                    {`${index + 1}.${listIndex + 1}`}
-                  </span>
-                </div>
-                <span>{lesson.name}</span>
-              </Link>
+            <div
+              key={lesson.id}
+              className="ml-2 mb-2 cursor-pointer text-gray-900 hover:text-blue-600 text-lg font-medium"
+              onClick={() => {
+                history.push(
+                  `/courses/${course.id}/chapters/${chapter.id}/lessons/${lesson.id}`
+                );
+              }}
+            >
+              <div className="w-6 mr-4 inline-block md:w-10 md:mr-2">
+                <span className="text-gray-500 text-base  md:text-lg">
+                  {`${index + 1}.${listIndex + 1}`}
+                </span>
+              </div>
+              <span>{lesson.name}</span>
             </div>
           ))}
         </div>
@@ -114,4 +118,4 @@ const ShowChapters = ({ chapters, course }) => {
   );
 };
 
-export default CourseTemplate;
+export default withRouter(CourseTemplate);

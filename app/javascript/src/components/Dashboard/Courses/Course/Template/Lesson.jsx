@@ -18,6 +18,7 @@ function Lesson({
   isStudent,
   setShowPane,
   history,
+  match,
 }) {
   const [lessonIds, setLessonIds] = useState([]);
   const [publishedLessonIds, setPublishedLessonIds] = useState([]);
@@ -39,7 +40,7 @@ function Lesson({
 
   function loadChapter(chapterId) {
     if (lesson.chapter_id) {
-      getChapter(courseId, chapterId).then(response => {
+      getChapter(match.params.course_id, chapterId).then(response => {
         const lessonIds = response.data.lessons.map(lesson => lesson.id);
         const publishedLessonIds = response.data.lessons
           .filter(lesson => lesson.is_published)

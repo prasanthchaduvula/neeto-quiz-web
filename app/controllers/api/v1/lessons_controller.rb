@@ -3,7 +3,7 @@
 class Api::V1::LessonsController < Api::V1::BaseController
   before_action :load_chapter
   before_action :load_course
-  before_action :ensure_course_admin
+  before_action :ensure_course_admin, except: [:show, :index]
   before_action :load_lesson, except: [:index, :create]
 
   def index
@@ -30,11 +30,8 @@ class Api::V1::LessonsController < Api::V1::BaseController
   end
 
   def destroy
-    if @lesson.destroy
-      render json: { notice: "Lesson deleted successfully", lesson: @lesson }, status: :ok
-    else
-      render json: { errors: @lesson.errors.full_messages }, status: :bad_request
-    end
+    @lesson.destroy!
+    render json: { notice: "Lesson deleted successfully", lesson: @lesson }, status: :ok
   end
 
   private

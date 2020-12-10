@@ -9,14 +9,19 @@ import {
   Dropdown,
 } from "neetoui";
 import { PageHeading } from "neetoui/layouts";
-import { getCourse, publishCourse, deleteCourse } from "apis/courses";
-import Chapters from "../Chapters";
-import ChapterPane from "../Chapters/Pane";
+import {
+  getCourse,
+  deleteCourse,
+  publishCourse,
+  unpublishCourse,
+  updateExploreCourse,
+} from "apis/courses";
+import PageNotFound from "../../../shared/PageNotFound";
+import Students from "./Students";
+import CourseTemplate from "./Template";
+import Chapters from "./Chapters";
+import ChapterPane from "./Chapters/Pane";
 import CoursePane from "./Pane";
-import Students from "../Students";
-import CourseTemplate from "../Template";
-import PageNotFound from "../../shared/PageNotFound";
-import { updateExploreCourse } from "apis/courses";
 
 export default function Course(props) {
   const [course, setCourse] = useState({});
@@ -75,18 +80,15 @@ export default function Course(props) {
     };
 
     const publishSingleCourse = () => {
-      const payload = {
-        course: {
-          published: !course.published,
-        },
-      };
+      publishCourse(course.id).then(response => {
+        Toastr.success(response.data.notice);
+        fetchSingleCourse();
+      });
+    };
 
-      publishCourse(course.id, payload).then(response => {
-        Toastr.success(
-          `Course ${
-            response.data.course.published ? "Published" : "Unpublished"
-          } successfully`
-        );
+    const unpublishSingleCourse = () => {
+      unpublishCourse(course.id).then(response => {
+        Toastr.success(response.data.notice);
         fetchSingleCourse();
       });
     };
@@ -171,10 +173,12 @@ export default function Course(props) {
                     <li
                       className={`${course.published && "text-red-600"}`}
                       onClick={() =>
-                        students.length
-                          ? Toastr.error(
-                              "Students are present. You cannot unpublish course"
-                            )
+                        course.published
+                          ? students.length
+                            ? Toastr.error(
+                                "Students are present. You cannot unpublish course"
+                              )
+                            : unpublishSingleCourse()
                           : publishSingleCourse()
                       }
                     >
