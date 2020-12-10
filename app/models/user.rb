@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :mocktests, class_name: "Exam::Mocktest", dependent: :destroy
   has_one :payment_details, class_name: "PaymentDetail", dependent: :destroy
+  has_many :exam_students, class_name: "Exam::Student", dependent: :destroy
+  has_many :joined_mocktests, through: :exam_students, source: :mocktest
 
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable, :rememberable

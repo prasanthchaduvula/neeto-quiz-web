@@ -38,7 +38,7 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     end
 
     def add_student
-      AddStudentService.new(@course, @user, params[:phone_number]).add_student
+      AddCourseStudentService.new(@course, @user, params[:phone_number]).add_student
       render json: { notice: "Added student to course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
     end
 
@@ -47,7 +47,7 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     end
 
     def send_invitation
-      AddStudentService.new(@course, @user, params[:phone_number]).send_invitation
+      AddCourseStudentService.new(@course, @user, params[:phone_number]).send_invitation
       render json: { notice: "Invitation sent successfully" }, status: :ok
     end
 

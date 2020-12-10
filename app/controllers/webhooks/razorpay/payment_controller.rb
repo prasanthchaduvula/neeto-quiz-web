@@ -39,7 +39,7 @@ module Webhooks::Razorpay
           load_order
 
           @order.payment_captured!
-          AddStudentService.new(@order.course, @order.user, @order.user.phone_number).add_student
+          AddCourseStudentService.new(@order.course, @order.user, @order.user.phone_number).add_student
           Razorpay::TransferService.new(@order, @payment_id).transfer_funds_to_merchant
         when "payment.failed"
           load_razorpay_order_id_from_payments_entity

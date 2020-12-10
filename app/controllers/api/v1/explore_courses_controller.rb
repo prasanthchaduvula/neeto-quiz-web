@@ -2,6 +2,7 @@
 
 class Api::V1::ExploreCoursesController < Api::V1::BaseController
   before_action :find_course, only: [:update]
+  before_action :ensure_course_admin, only: [:update]
   before_action :ensure_course_is_published, only: [:update]
 
   def index
@@ -12,11 +13,8 @@ class Api::V1::ExploreCoursesController < Api::V1::BaseController
   end
 
   def update
-    if @course.update(course_params)
-      render status: :ok, json: { notice: "Course Added to explore section successfully", course: @course, chapters: @course.chapters, joined_students: @course.joined_students }
-    else
-      render status: :unprocessable_entity, json: { errors: course.errors.full_messages }
-    end
+    @course.update!(course_params)
+    render json: { notice: "Course Added to explore section successfully", course: @course }, status: :ok
   end
 
   private
@@ -26,7 +24,13 @@ class Api::V1::ExploreCoursesController < Api::V1::BaseController
 
     def ensure_course_is_published
       unless @course.published
-        render status: :unprocessable_entity, json: { error: "Make sure that course is published" }
+        render json: { error: "Make sure that course is published" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_course_admin
+      if current_user != @course.user
+        render json: { error: "You are not the creator of course" }, status: :bad_request
       end
     end
 end

@@ -44,7 +44,7 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
     end
 
     def add_student
-      AddStudentService.new(@course, current_user, current_user.phone_number).add_student
+      AddCourseStudentService.new(@course, current_user, current_user.phone_number).add_student
       render json: { notice: "Joined course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
     end
 end

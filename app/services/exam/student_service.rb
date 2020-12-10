@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-class AddStudentService
-  def initialize(course, user, phone_number)
-    @course = course
+class Exam::StudentService
+  def initialize(mocktest, user, phone_number)
+    @mocktest = mocktest
     @user = user
     @phone_number = phone_number
     @message = "Welcome to NeetoAcademy"
-    @welcome_msg = "you have joined #{@course.name} successfully"
-    @invitation_msg = "to join #{@course.name} course, use join code #{@course.invitation_code}"
+    @welcome_msg = "you have joined #{@mocktest.name} successfully"
+    @invitation_msg = "to join #{@mocktest.name} mocktest, use join code #{@mocktest.invitation_code}"
   end
 
   def add_student
-    @course.course_students.create!(user: @user)
+    @mocktest.exam_students.create!(user: @user)
     send_welcome_msg
   end
 

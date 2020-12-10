@@ -1,40 +1,27 @@
 # frozen_string_literal: true
 
 class Api::V1::ChaptersController < Api::V1::BaseController
-  before_action :find_course, only: :create
+  before_action :find_course
+  before_action :ensure_course_admin, only: [:create, :update, :destroy]
   before_action :find_chapter, only: [:show, :destroy, :update]
 
   def create
-    chapter = @course.chapters.new(chapter_params)
-    if chapter.save
-      render status: :ok, json: { notice: "chapter created succesfully", chapter: chapter }
-    else
-      render status: :unprocessable_entity, json: { errors: chapter.errors.full_messages }
-    end
+    chapter = @course.chapters.create!(chapter_params)
+    render json: { notice: "chapter created succesfully", chapter: chapter }, status: :ok
   end
 
   def update
-    if @chapter.update(chapter_params)
-      render status: :ok, json: { notice: "Chapter updated successfully", chapter_details: load_chapter_json }
-    else
-      render status: :unprocessable_entity, json: { errors: @chapter.errors.full_messages }
-    end
+    @chapter.update!(chapter_params)
+    render json: { notice: "Chapter updated successfully", chapter_details: load_chapter_json }, status: :ok
   end
 
   def show
-    if @chapter
-      render status: :ok, json: load_chapter_json
-    else
-      render status: :not_found, json: { errors: ["Chapter with id #{params[:id]} not found"] }
-    end
+    render json: load_chapter_json, status: :ok
   end
 
   def destroy
-    if @chapter.destroy
-      render status: :ok, json: @chapter
-    else
-      render status: :unprocessable_entity, json: { errors: @chapter.errors.full_messages }
-    end
+    @chapter.destroy!
+    render json: { notice: "Mocktest deleted successfully", chapter: @chapter }, status: :ok
   end
 
   private
@@ -43,10 +30,16 @@ class Api::V1::ChaptersController < Api::V1::BaseController
     end
 
     def find_chapter
-      @chapter = Chapter.find(params[:id])
+      @chapter = Chapter.find_by!(id: params[:id])
     end
 
     def load_chapter_json
       ChapterViewService.new(@chapter).chapter_view
+    end
+
+    def ensure_course_admin
+      if current_user != @course.user
+        render json: { error: "You are not the creator of course" }, status: :bad_request
+      end
     end
 end

@@ -33,6 +33,8 @@ Rails.application.routes.draw do
       namespace :exam do
         resources :mocktests, except: [:new, :edit] do
           resources :questions, except: [:new, :edit]
+          resources :add_students, only: [:create]
+          resource :publish,  only: [:update, :show]
         end
       end
     end

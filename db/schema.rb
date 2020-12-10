@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_151759) do
+ActiveRecord::Schema.define(version: 2020_12_09_072625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -96,6 +96,15 @@ ActiveRecord::Schema.define(version: 2020_12_02_151759) do
     t.index ["mocktest_id"], name: "index_exam_questions_on_mocktest_id"
   end
 
+  create_table "exam_students", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "mocktest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mocktest_id"], name: "index_exam_students_on_mocktest_id"
+    t.index ["user_id"], name: "index_exam_students_on_user_id"
+  end
+
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -161,6 +170,8 @@ ActiveRecord::Schema.define(version: 2020_12_02_151759) do
   add_foreign_key "exam_mocktests", "users", on_delete: :cascade
   add_foreign_key "exam_question_options", "exam_questions", column: "question_id", on_delete: :cascade
   add_foreign_key "exam_questions", "exam_mocktests", column: "mocktest_id", on_delete: :cascade
+  add_foreign_key "exam_students", "exam_mocktests", column: "mocktest_id"
+  add_foreign_key "exam_students", "users"
   add_foreign_key "lessons", "chapters", on_delete: :cascade
   add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade

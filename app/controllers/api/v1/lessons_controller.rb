@@ -2,6 +2,8 @@
 
 class Api::V1::LessonsController < Api::V1::BaseController
   before_action :load_chapter
+  before_action :load_course
+  before_action :ensure_course_admin
   before_action :load_lesson, except: [:index, :create]
 
   def index
@@ -47,5 +49,15 @@ class Api::V1::LessonsController < Api::V1::BaseController
 
     def load_chapter
       @chapter = Chapter.find_by!(id: params[:chapter_id])
+    end
+
+    def load_course
+      @course = Course.find_by!(id: @chapter.course.id)
+    end
+
+    def ensure_course_admin
+      if current_user != @course.user
+        render json: { error: "You are not the creator of course" }, status: :bad_request
+      end
     end
 end
