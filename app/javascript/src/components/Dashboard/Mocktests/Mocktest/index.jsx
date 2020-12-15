@@ -21,6 +21,7 @@ import QuestionPane from "./Questions/Pane";
 import MocktestPane from "./Pane";
 import Questions from "./Questions";
 import Students from "./Students";
+import MocktestTemplate from "./Template";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ function Mocktest({ match, history }) {
   const [isCreator, setIsCreator] = useState(false);
   const [creator, setCreator] = useState({});
   const [students, setStudents] = useState([]);
+  const [isStudent, setIsStudent] = useState(false);
 
   useEffect(() => {
     fetchSingleMocktest();
@@ -38,6 +40,7 @@ function Mocktest({ match, history }) {
     getMocktest(match.params.id).then(response => {
       const {
         isCreator,
+        isStudent,
         mocktest,
         questions,
         creator,
@@ -48,6 +51,7 @@ function Mocktest({ match, history }) {
       setQuestions(questions);
       setCreator(creator);
       setStudents(students);
+      setIsStudent(isStudent);
       setLoading(false);
     });
   };
@@ -65,6 +69,8 @@ function Mocktest({ match, history }) {
         history={history}
       />
     );
+  } else if (isStudent) {
+    return <MocktestTemplate mocktest={mocktest} questions={questions} />;
   } else {
     return <PageNotFound />;
   }

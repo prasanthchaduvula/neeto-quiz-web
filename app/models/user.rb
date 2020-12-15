@@ -43,6 +43,10 @@ class User < ApplicationRecord
     self.courses + self.joined_courses
   end
 
+  def my_mocktests
+    self.mocktests + self.joined_mocktests
+  end
+
   private
 
     def ensure_authentication_token_is_present

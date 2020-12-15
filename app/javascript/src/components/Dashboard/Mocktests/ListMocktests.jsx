@@ -28,7 +28,7 @@ function ListMocktests({ mocktests, history }) {
                 onClick={() => {
                   mocktest.isMember
                     ? history.push(`/mocktests/${mocktest.id}`)
-                    : Toastr.error("You are not the creator of the mocktest");
+                    : Toastr.error("You are not the member of the mocktest");
                 }}
               >
                 {mocktest.name}
