@@ -5,8 +5,8 @@ import StudentForm from "./Form";
 export default function StudentPane({
   setShowPane,
   showPane,
-  course,
-  fetchSingleCourse,
+  mocktest,
+  fetchSingleMocktest,
 }) {
   const onClose = () => setShowPane(false);
   return (
@@ -14,8 +14,8 @@ export default function StudentPane({
       <div className="px-6">
         <StudentForm
           onClose={onClose}
-          course={course}
-          fetchSingleCourse={fetchSingleCourse}
+          mocktest={mocktest}
+          fetchSingleMocktest={fetchSingleMocktest}
         />
       </div>
     </Pane>

@@ -20,6 +20,7 @@ import PageNotFound from "../../../shared/PageNotFound";
 import QuestionPane from "./Questions/Pane";
 import MocktestPane from "./Pane";
 import Questions from "./Questions";
+import Students from "./Students";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,7 @@ function Mocktest({ match, history }) {
   const [questions, setQuestions] = useState([]);
   const [isCreator, setIsCreator] = useState(false);
   const [creator, setCreator] = useState({});
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
     fetchSingleMocktest();
@@ -34,11 +36,18 @@ function Mocktest({ match, history }) {
 
   const fetchSingleMocktest = () => {
     getMocktest(match.params.id).then(response => {
-      const { isCreator, mocktest, questions, creator } = response.data;
+      const {
+        isCreator,
+        mocktest,
+        questions,
+        creator,
+        students,
+      } = response.data;
       setIsCreator(isCreator);
       setMocktest(mocktest);
       setQuestions(questions);
       setCreator(creator);
+      setStudents(students);
       setLoading(false);
     });
   };
@@ -52,6 +61,7 @@ function Mocktest({ match, history }) {
         fetchSingleMocktest={fetchSingleMocktest}
         questions={questions}
         creator={creator}
+        students={students}
         history={history}
       />
     );
@@ -65,11 +75,13 @@ const MocktestDisplayForCreator = ({
   fetchSingleMocktest,
   questions,
   creator,
+  students,
   history,
 }) => {
   const [mocktestPane, setMocktestPane] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [questionPane, setQuestionPane] = useState(false);
+  const [showStudents, setShowStudents] = useState(false);
 
   const deleteSingleMocktest = () => {
     deleteMocktest(mocktest.id).then(() => {
@@ -123,6 +135,17 @@ const MocktestDisplayForCreator = ({
               buttonStyle="primary"
               closeOnSelect
             >
+              <li
+                onClick={() =>
+                  mocktest.is_published
+                    ? setShowStudents(true)
+                    : Toastr.error(
+                        "You cannot add students without publishing mocktest"
+                      )
+                }
+              >
+                Students
+              </li>
               <li onClick={() => setMocktestPane(true)}>Edit</li>
               <li
                 className={`${mocktest.is_published && "text-red-600"}`}
@@ -188,6 +211,13 @@ const MocktestDisplayForCreator = ({
         setShowPane={setQuestionPane}
         isCreateForm={true}
         mocktestId={mocktest.id}
+        fetchSingleMocktest={fetchSingleMocktest}
+      />
+      <Students
+        showPane={showStudents}
+        setShowPane={setShowStudents}
+        students={students}
+        mocktest={mocktest}
         fetchSingleMocktest={fetchSingleMocktest}
       />
     </>

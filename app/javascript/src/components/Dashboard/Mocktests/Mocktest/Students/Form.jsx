@@ -3,9 +3,13 @@ import { Button, Toastr, Callout } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import { addStudent } from "apis/courses";
+import { addStudent } from "apis/mocktests";
 
-export default function StudentForm({ onClose, course, fetchSingleCourse }) {
+export default function StudentForm({
+  onClose,
+  mocktest,
+  fetchSingleMocktest,
+}) {
   const initialValues = {
     phone_number: "",
     is_paid: false,
@@ -27,9 +31,9 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
       is_paid: values.is_paid,
     };
 
-    let response = await addStudent(course.id, payload);
+    let response = await addStudent(mocktest.id, payload);
     Toastr.success(response.data.notice);
-    fetchSingleCourse();
+    fetchSingleMocktest();
     onClose();
   };
 
@@ -45,7 +49,7 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
         return (
           <Form>
             <Input
-              label="Enter the Student Phone Number you want to add"
+              label="Enter the student Phone Number you want to add"
               type="number"
               id="phone_number"
               name="phone_number"
@@ -58,14 +62,14 @@ export default function StudentForm({ onClose, course, fetchSingleCourse }) {
 
             <Callout style="info" className="mt-6 leading-relaxed">
               If student already paid you, then please select below checkbox. So
-              that student will be added to course. If not selected, a SMS will
-              be sent to the phone number with course invitation code
+              that student will be added to mocktest. If not selected, a SMS
+              will be sent to the phone number with mocktest invitation code
             </Callout>
 
             <div className="mt-6">
               <Field type="checkbox" name="is_paid" className="form-checkbox" />
               <label className="ml-2">
-                Is this student already paid for this course
+                Is this student already paid for this mocktest
               </label>
             </div>
 

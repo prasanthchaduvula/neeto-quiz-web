@@ -27,3 +27,10 @@ export const publishMocktest = mocktestId => {
 export const unpublishMocktest = mocktestId => {
   return axios.put(`/api/v1/exam/mocktests/${mocktestId}/unpublish`);
 };
+
+export const addStudent = (mocktestId, payload) => {
+  return axios.post(
+    `/api/v1/exam/mocktests/${mocktestId}/add_students`,
+    payload
+  );
+};

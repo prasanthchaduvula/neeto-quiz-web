@@ -26,3 +26,9 @@ json.creator do
   json.name @mocktest.user.name
   json.payment_details @mocktest.user.payment_details.present?
 end
+
+json.students @mocktest.students.map do |student|
+  json.name student.name
+  json.phone_number student.phone_number
+  json.id student.id
+end

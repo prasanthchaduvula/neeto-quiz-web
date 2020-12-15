@@ -123,7 +123,7 @@ export default function QuestionForm({
                 name="description"
                 value={values.description}
                 minRows={3}
-                className="border-2 rounded-md shadow-sm w-full focus:outline-none focus-within:shadow-focus-purple focus-within:border-purple-400"
+                className="border-2 rounded-md shadow-sm w-full focus:outline-none focus-within:shadow-focus-purple focus-within:border-purple-400 p-4"
                 onChange={event => {
                   setFieldValue("description", event.target.value);
                 }}

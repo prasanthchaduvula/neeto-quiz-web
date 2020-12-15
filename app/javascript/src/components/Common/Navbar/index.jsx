@@ -12,16 +12,19 @@ class NavBar extends Component {
               title="Explore Courses"
               link="/"
               icon="ri-flashlight-fill"
+              className="mb-6"
             />
             <NavItem
               title="My Courses"
               link="/courses"
               icon="ri-book-open-line"
+              className="mb-6"
             />
             <NavItem
               title="Mocktests"
               link="/mocktests"
               icon="ri-file-list-3-line"
+              className="mb-6"
             />
             <NavItem title="Profile" link="/profile" icon="ri-user-line" />
           </div>

@@ -39,7 +39,7 @@ export default function Course(props) {
     fetchSingleCourse();
   }, []);
 
-  const fetchSingleCourse = (studentspane = false) => {
+  const fetchSingleCourse = () => {
     getCourse(props.match.params.course_id).then(response => {
       const {
         isCreator,
@@ -58,7 +58,6 @@ export default function Course(props) {
       setIsMember(isMember);
       setCreator(creator);
       setIsLoading(false);
-      setShowStudents(studentspane);
     });
   };
 
