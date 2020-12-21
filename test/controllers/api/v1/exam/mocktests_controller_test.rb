@@ -127,4 +127,16 @@ class Api::V1::Exam::MocktestsControllerTest < ActionDispatch::IntegrationTest
     json_response = JSON.parse(response.body)
     assert_equal "Make sure at least one question is present in the mocktest", json_response["error"]
   end
+
+  test "Allow reattempts" do
+    put allow_reattempts_api_v1_exam_mocktest_path(@mocktest.id), headers: headers(@user)
+    assert_response :success
+    assert_equal true, @mocktest.reload.allow_reattempts
+  end
+
+  test "Dont allow reattempts" do
+    put dont_allow_reattempts_api_v1_exam_mocktest_path(@mocktest.id), headers: headers(@user)
+    assert_response :success
+    assert_equal false, @mocktest.reload.allow_reattempts
+  end
 end

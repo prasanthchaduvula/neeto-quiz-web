@@ -8,6 +8,7 @@ class Exam::Mocktest < ApplicationRecord
   has_many :questions, class_name: "Exam::Question", dependent: :destroy
   has_many :exam_students, class_name: "Exam::Student", dependent: :destroy
   has_many :students, through: :exam_students, source: :user
+  has_many :attempts, class_name: "Exam::Attempt", dependent: :destroy
 
   belongs_to :user
 

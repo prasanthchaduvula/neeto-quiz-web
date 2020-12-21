@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_072625) do
+ActiveRecord::Schema.define(version: 2020_12_16_112358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,6 +67,26 @@ ActiveRecord::Schema.define(version: 2020_12_09_072625) do
     t.boolean "is_explored", default: false, null: false
   end
 
+  create_table "exam_attempt_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "option_id"
+    t.uuid "question_id"
+    t.uuid "attempt_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["attempt_id"], name: "index_exam_attempt_answers_on_attempt_id"
+    t.index ["option_id"], name: "index_exam_attempt_answers_on_option_id"
+    t.index ["question_id"], name: "index_exam_attempt_answers_on_question_id"
+  end
+
+  create_table "exam_attempts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "mocktest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mocktest_id"], name: "index_exam_attempts_on_mocktest_id"
+    t.index ["user_id"], name: "index_exam_attempts_on_user_id"
+  end
+
   create_table "exam_mocktests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.boolean "is_published", default: false
@@ -75,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_12_09_072625) do
     t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "allow_reattempts", default: true, null: false
     t.index ["user_id"], name: "index_exam_mocktests_on_user_id"
   end
 
@@ -167,6 +188,11 @@ ActiveRecord::Schema.define(version: 2020_12_09_072625) do
   add_foreign_key "course_students", "courses"
   add_foreign_key "course_students", "users"
   add_foreign_key "courses", "users", on_delete: :cascade
+  add_foreign_key "exam_attempt_answers", "exam_attempts", column: "attempt_id"
+  add_foreign_key "exam_attempt_answers", "exam_question_options", column: "option_id"
+  add_foreign_key "exam_attempt_answers", "exam_questions", column: "question_id"
+  add_foreign_key "exam_attempts", "exam_mocktests", column: "mocktest_id"
+  add_foreign_key "exam_attempts", "users"
   add_foreign_key "exam_mocktests", "users", on_delete: :cascade
   add_foreign_key "exam_question_options", "exam_questions", column: "question_id", on_delete: :cascade
   add_foreign_key "exam_questions", "exam_mocktests", column: "mocktest_id", on_delete: :cascade

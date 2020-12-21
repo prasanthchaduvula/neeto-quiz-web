@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_one :payment_details, class_name: "PaymentDetail", dependent: :destroy
   has_many :exam_students, class_name: "Exam::Student", dependent: :destroy
   has_many :joined_mocktests, through: :exam_students, source: :mocktest
+  has_many :attempts, class_name: "Exam::Attempt", dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable, :rememberable

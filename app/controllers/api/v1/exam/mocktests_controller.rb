@@ -8,6 +8,9 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
   before_action :ensure_payment_details_to_publish, only: :publish
   before_action :ensure_publishable, only: :publish
   before_action :ensure_mocktest_is_unpublishable, only: :unpublish
+  before_action :load_recent_attempt, only: :show
+  before_action :ensure_allow_mocktest_reattempts, only: :show
+  before_action :render_show, only: :show
 
   def index
     respond_to do |format|
@@ -26,9 +29,7 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
   end
 
   def show
-    respond_to do |format|
-      format.json
-    end
+    render
   end
 
   def destroy
@@ -38,12 +39,22 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
 
   def publish
     @mocktest.update!(is_published: true)
-    render json: { notice: "Mocktest published successfully", course: @mocktest }, status: :ok
+    render json: { notice: "Mocktest published successfully", mocktest: @mocktest }, status: :ok
   end
 
   def unpublish
     @mocktest.update!(is_published: false)
-    render json: { notice: "Mocktest unpublished successfully", course: @mocktest }, status: :ok
+    render json: { notice: "Mocktest unpublished successfully", mocktest: @mocktest }, status: :ok
+  end
+
+  def allow_reattempts
+    @mocktest.update!(allow_reattempts: true)
+    render json: { notice: "Mocktest can reattmpted", mocktest: @mocktest }, status: :ok
+  end
+
+  def dont_allow_reattempts
+    @mocktest.update!(allow_reattempts: false)
+    render json: { notice: "Mocktest can not be reattmpted", mocktest: @mocktest }, status: :ok
   end
 
   private
@@ -94,6 +105,26 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     def ensure_payment_details_to_publish
       if @mocktest.price? && current_user.payment_details.nil?
         render json: { error: "Mocktest has a price. So please add payment details to publish the mocktest" }, status: :unprocessable_entity
+      end
+    end
+
+    def load_recent_attempt
+      @attempt = Exam::Attempt.where(user_id: current_user.id, mocktest_id: @mocktest.id).last
+    end
+
+    def ensure_allow_mocktest_reattempts
+      if params[:retake] == "true" && @mocktest.allow_reattempts == false
+        render json: { error: "You can not reattempt this mocktest" }, status: :unprocessable_entity
+      end
+    end
+
+    def render_show
+      if params[:retake] == "true" && @mocktest.allow_reattempts == true
+        render template: "api/v1/exam/mocktests/show"
+      elsif @attempt.present?
+        render template: "api/v1/exam/attempts/show"
+      else
+        render template: "api/v1/exam/mocktests/show"
       end
     end
 end

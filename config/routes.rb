@@ -37,9 +37,12 @@ Rails.application.routes.draw do
           member do
             put :publish
             put :unpublish
+            put :allow_reattempts
+            put :dont_allow_reattempts
           end
           resources :questions, except: [:new, :edit]
           resources :add_students, only: [:create]
+          resources :attempts, only: [:create, :index, :show]
         end
       end
     end
