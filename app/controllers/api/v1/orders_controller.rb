@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::OrdersController < Api::V1::BaseController
-  before_action :find_course, only: :create
-  before_action :load_order, only: [:show, :update]
+  before_action :load_course!, only: :create
+  before_action :load_order!, only: [:show, :update]
   before_action :load_orders, only: :index
 
   def index
@@ -45,7 +45,11 @@ class Api::V1::OrdersController < Api::V1::BaseController
       @orders = current_user.orders
     end
 
-    def load_order
-      @order = Order.find_by(id: params[:id])
+    def load_order!
+      @order = Order.find_by!(id: params[:id])
+    end
+
+    def load_course!
+      @course = Course.find_by!(id: params[:course_id])
     end
 end
