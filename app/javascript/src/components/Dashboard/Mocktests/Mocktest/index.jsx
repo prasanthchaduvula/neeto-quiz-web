@@ -22,6 +22,7 @@ import MocktestPane from "./Pane";
 import Questions from "./Questions";
 import Students from "./Students";
 import MocktestTemplate from "./Template";
+import Result from "./Template/Result";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,8 @@ function Mocktest({ match, history }) {
   const [creator, setCreator] = useState({});
   const [students, setStudents] = useState([]);
   const [isStudent, setIsStudent] = useState(false);
+  const [isAttempt, setIsAttempt] = useState(false);
+  const [attempt, setAttempt] = useState({});
 
   useEffect(() => {
     fetchSingleMocktest();
@@ -40,11 +43,13 @@ function Mocktest({ match, history }) {
     getMocktest(match.params.id).then(response => {
       const {
         isCreator,
+        isAttempt,
         isStudent,
         mocktest,
         questions,
         creator,
         students,
+        attempt,
       } = response.data;
       setIsCreator(isCreator);
       setMocktest(mocktest);
@@ -52,6 +57,8 @@ function Mocktest({ match, history }) {
       setCreator(creator);
       setStudents(students);
       setIsStudent(isStudent);
+      setIsAttempt(isAttempt);
+      setAttempt(attempt);
       setLoading(false);
     });
   };
@@ -69,8 +76,18 @@ function Mocktest({ match, history }) {
         history={history}
       />
     );
-  } else if (isStudent) {
-    return <MocktestTemplate mocktest={mocktest} questions={questions} />;
+  } else if (isAttempt && isStudent) {
+    return (
+      <Result mocktest={mocktest} attempt={attempt} questions={questions} />
+    );
+  } else if (!isAttempt && isStudent) {
+    return (
+      <MocktestTemplate
+        mocktest={mocktest}
+        questions={questions}
+        fetchSingleMocktest={fetchSingleMocktest}
+      />
+    );
   } else {
     return <PageNotFound />;
   }

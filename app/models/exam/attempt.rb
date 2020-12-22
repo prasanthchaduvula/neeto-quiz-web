@@ -13,8 +13,13 @@ class Exam::Attempt < ApplicationRecord
   accepts_nested_attributes_for :attempt_answers, allow_destroy: true
 
   def selected_option(question_id, option_id)
-    self.attempt_answers.detect do |answer|
-      answer.question_id == question_id && answer.option_id == option_id
+    self.attempt_answers.find_by(question_id: question_id, option_id: option_id)
+  end
+
+  def correct_answer(question_id)
+    attempted_question = self.attempt_answers.find_by(question_id: question_id)
+    if attempted_question.present?
+      Exam::QuestionOption.exists?(id: attempted_question.option_id, is_correct: true)
     end
   end
 

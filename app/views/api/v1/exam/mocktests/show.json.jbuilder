@@ -2,6 +2,7 @@
 
 json.isCreator @mocktest.user == current_user
 json.isStudent @mocktest.student_ids.include?(current_user.id)
+json.isAttempt @attempt.present?
 json.isMember @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
 
 json.mocktest do
@@ -35,6 +36,28 @@ if @mocktest.user == current_user
     json.phone_number student.phone_number
     json.id student.id
   end
+
+elsif @attempt.present?
+
+  json.attempt do
+    json.id @attempt.id
+    json.attempter_name @attempt.user.name
+    json.correct_answers_count @attempt.correct_answers_count
+    json.incorrect_answers_count @attempt.incorrect_answers_count
+    json.unattempted_questions_count @attempt.unattempted_questions_count
+  end
+
+  json.questions @mocktest.questions.map do |question|
+    json.id question.id
+    json.description question.description
+    json.options question.options.map do |option|
+      json.id option.id
+      json.name option.name
+      json.is_correct option.is_correct
+      json.is_selected @attempt.selected_option(question.id, option.id) ? true : false
+    end
+  end
+
 else
   json.questions @mocktest.questions.map do |question|
     json.id question.id

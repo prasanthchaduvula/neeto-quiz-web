@@ -14,6 +14,7 @@ end
 json.questions @mocktest.questions.map do |question|
   json.id question.id
   json.description question.description
+  json.is_correct @attempt.correct_answer(question.id)
   json.options question.options.map do |option|
     json.id option.id
     json.name option.name

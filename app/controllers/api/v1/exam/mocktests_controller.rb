@@ -57,6 +57,16 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     render json: { notice: "Mocktest can not be reattmpted", mocktest: @mocktest }, status: :ok
   end
 
+  def allow_reattempts
+    @mocktest.update!(allow_reattempts: true)
+    render json: { notice: "Mocktest can reattmpted", course: @mocktest }, status: :ok
+  end
+
+  def dont_allow_reattempts
+    @mocktest.update!(allow_reattempts: false)
+    render json: { notice: "Mocktest can not be reattmpted", course: @mocktest }, status: :ok
+  end
+
   private
 
     def mocktest_params
@@ -121,10 +131,12 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     def render_show
       if params[:retake] == "true" && @mocktest.allow_reattempts == true
         render template: "api/v1/exam/mocktests/show"
-      elsif @attempt.present?
-        render template: "api/v1/exam/attempts/show"
       else
         render template: "api/v1/exam/mocktests/show"
       end
+    end
+
+    def render_attempt
+      render template: "api/v1/exam/attempts/show"
     end
 end

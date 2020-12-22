@@ -34,3 +34,13 @@ export const addStudent = (mocktestId, payload) => {
     payload
   );
 };
+
+export const createAttempt = (mocktestId, payload) => {
+  return axios.post(`/api/v1/exam/mocktests/${mocktestId}/attempts`, payload);
+};
+
+export const getAttempt = (mocktestId, attemptId) => {
+  return axios.get(
+    `/api/v1/exam/mocktests/${mocktestId}/attempts/${attemptId}`
+  );
+};

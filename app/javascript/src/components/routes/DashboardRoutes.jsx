@@ -9,6 +9,7 @@ import ExploreCourses from "../Dashboard/Courses/Explore";
 import Instructor from "../Dashboard/Instructor";
 import Mocktests from "../Dashboard/Mocktests";
 import Mocktest from "../Dashboard/Mocktests/Mocktest";
+import Attempt from "../Dashboard/Mocktests/Mocktest/Template/Attempt";
 
 const DashboardRoutes = () => {
   return (
@@ -28,6 +29,11 @@ const DashboardRoutes = () => {
       <Route path="/courses" component={Courses} />
       <Route exact path="/instructors/:id" component={Instructor} />
       <Route exact path="/mocktests/:id" component={Mocktest} />
+      <Route
+        exact
+        path="/mocktests/:mocktest_id/attempts/:id"
+        component={Attempt}
+      />
       <Route exact path="/mocktests" component={Mocktests} />
       <Route path="/profile" component={Profile} />
       <Route path="/" component={ExploreCourses} />

@@ -5,17 +5,11 @@ import QuestionPane from "./Pane";
 
 function Questions({ questions, mocktestId, fetchSingleMocktest }) {
   const [question, setQuestion] = useState({});
-  const [numberOfQuestions, setNumberOfQuestions] = useState([]);
   const [selectedQuestionNumber, setSelectedQuestionNumber] = useState(1);
   const [questionPane, setQuestionPane] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    let arr = [];
-    for (let i = 1; i <= questions.length; i++) {
-      arr.push(i);
-    }
-    setNumberOfQuestions(arr);
     setQuestion(questions[selectedQuestionNumber - 1]);
   }, [questions]);
 
@@ -54,20 +48,25 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
                 />
               </div>
             </div>
-            <p className="font-medium text-base mt-8">{question.description}</p>
-            <div className="pt-4 pb-20 px-2">
-              {question.options &&
-                question.options.map(option => (
-                  <div className="flex mt-8 items-center" key={option.id}>
-                    <Checkbox
-                      name="option.is_correct"
-                      label={option.name}
-                      checked={option.is_correct}
-                      readOnly
-                    />
-                  </div>
-                ))}
+            <div className="overflow-y-scroll" style={{ height: "70vh" }}>
+              <p className="font-medium text-base mt-8">
+                {question.description}
+              </p>
+              <div className="pt-4 pb-20 px-2">
+                {question.options &&
+                  question.options.map(option => (
+                    <div className="flex mt-8 items-center" key={option.id}>
+                      <Checkbox
+                        name="option.is_correct"
+                        label={option.name}
+                        checked={option.is_correct}
+                        readOnly
+                      />
+                    </div>
+                  ))}
+              </div>
             </div>
+
             <div className="absolute bottom-0 w-8/12 bg-white flex justify-between nui-pane--footer py-5">
               <Button
                 label="Previous"
@@ -102,28 +101,30 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
 
   const NumberPanel = () => {
     return (
-      <div className="border-2 border-black-500 min-h-screen w-1/4">
+      <div className="bg-gray-100  w-1/4">
         <div className="m-4">
           <p className="font-semibold text-base text-gray-500 mt-4">
             Question Pallete
           </p>
-          <div className="grid grid-cols-5 gap-6 sm:grid-cols-2 lg:grid-cols-5 my-8">
-            {numberOfQuestions.map((questionNumber, index) => (
-              <p
-                className={`rounded-full h-8 w-8 flex items-center justify-center cursor-pointer  shadow ${
-                  questionNumber == selectedQuestionNumber
-                    ? "bg-indigo-500 text-white font-bold"
-                    : "bg-gray-100"
-                }`}
-                onClick={() => {
-                  setSelectedQuestionNumber(questionNumber);
-                  setQuestion(questions[index]);
-                }}
-                key={index}
-              >
-                {questionNumber}
-              </p>
-            ))}
+          <div className="overflow-y-scroll" style={{ height: "75vh" }}>
+            <div className="grid grid-cols-5 gap-6 sm:grid-cols-2 lg:grid-cols-5 my-8">
+              {questions.map((question, index) => (
+                <p
+                  className={`rounded-full h-8 w-8 flex items-center justify-center cursor-pointer  shadow ${
+                    index + 1 == selectedQuestionNumber
+                      ? "bg-indigo-500 text-white font-bold"
+                      : "bg-gray-300"
+                  }`}
+                  onClick={() => {
+                    setSelectedQuestionNumber(index + 1);
+                    setQuestion(questions[index]);
+                  }}
+                  key={question.id}
+                >
+                  {index + 1}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +142,7 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
   return (
     <div>
       {questions.length ? (
-        <div className="flex justify-between">
+        <div className="flex justify-between ">
           <Question />
           <NumberPanel />
         </div>
