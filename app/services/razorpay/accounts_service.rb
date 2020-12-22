@@ -31,7 +31,10 @@ module Razorpay
       end
 
       def setup_razorpay
-        Razorpay.setup(Rails.application.credentials[:razorpay_api_key_id], Rails.application.credentials[:razorpay_api_key_secret])
+        Razorpay.setup(
+          ENV["RAZORPAY_API_KEY_ID"] || Rails.application.credentials.dig(:razorpay_api_key_id),
+          ENV["RAZORPAY_API_KEY_SECRET"] || Rails.application.credentials.dig(:razorpay_api_key_secret)
+        )
       end
 
       def set_razorpay_headers

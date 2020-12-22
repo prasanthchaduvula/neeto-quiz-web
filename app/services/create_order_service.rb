@@ -59,7 +59,11 @@ class CreateOrderService
     end
 
     def json_response
-      { notice: "Order created successfully", order: order, key: Rails.application.credentials[:razorpay_api_key_id] }
+      {
+        notice: "Order created successfully",
+        order: order,
+        key: ENV["RAZORPAY_API_KEY_ID"] || Rails.application.credentials.dig(:razorpay_api_key_id)
+      }
     end
 
     def order_payload
