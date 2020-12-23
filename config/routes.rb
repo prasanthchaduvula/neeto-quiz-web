@@ -40,10 +40,13 @@ Rails.application.routes.draw do
             put :allow_reattempts
             put :dont_allow_reattempts
           end
+          resources :join, only: [:create]
           resources :questions, except: [:new, :edit]
           resources :add_students, only: [:create]
           resources :attempts, only: [:create, :index, :show]
         end
+
+        resources :join, only: [:show], param: :invitation_code
       end
     end
   end

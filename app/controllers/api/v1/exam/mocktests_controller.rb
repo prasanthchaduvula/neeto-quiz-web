@@ -59,12 +59,12 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
 
   def allow_reattempts
     @mocktest.update!(allow_reattempts: true)
-    render json: { notice: "Mocktest can reattmpted", course: @mocktest }, status: :ok
+    render json: { notice: "Mocktest can reattmpted", mocktest: @mocktest }, status: :ok
   end
 
   def dont_allow_reattempts
     @mocktest.update!(allow_reattempts: false)
-    render json: { notice: "Mocktest can not be reattmpted", course: @mocktest }, status: :ok
+    render json: { notice: "Mocktest can not be reattmpted", mocktest: @mocktest }, status: :ok
   end
 
   private

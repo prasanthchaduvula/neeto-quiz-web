@@ -51,7 +51,7 @@ class Api::V1::Exam::AddStudentsController < Api::V1::BaseController
     end
 
     def add_student
-      Exam::StudentService.new(@mocktest, @user, params[:phone_number]).add_student
+      Exam::StudentService.new(@mocktest, @user, params[:phone_number]).add_student!
       render json: { notice: "Added student to mocktest successfully", mocktest: @mocktest, students: @mocktest.students }, status: :ok
     end
 

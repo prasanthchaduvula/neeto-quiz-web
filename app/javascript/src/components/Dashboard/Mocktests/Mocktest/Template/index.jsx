@@ -145,6 +145,24 @@ function MocktestTemplate({ mocktest, questions, fetchSingleMocktest }) {
                 }}
               />
               <Button
+                label={
+                  reviewQuestions.includes(question.id)
+                    ? "Remove from review"
+                    : "Mark for review"
+                }
+                size="large"
+                style="secondary"
+                onClick={() => {
+                  reviewQuestions.includes(question.id)
+                    ? setReviewQuestions(
+                        reviewQuestions.filter(
+                          questionId => questionId != question.id
+                        )
+                      )
+                    : setReviewQuestions(reviewQuestions.concat(question.id));
+                }}
+              />
+              <Button
                 label="Next"
                 size="large"
                 style="primary"
@@ -197,6 +215,26 @@ function MocktestTemplate({ mocktest, questions, fetchSingleMocktest }) {
                 {index + 1}
               </p>
             ))}
+          </div>
+        </div>
+        <div className="flex justify-between mt-4">
+          <div className="flex">
+            <span className="rounded-full h-5 w-5 bg-green-500 mr-2"></span>
+            <span>Answered</span>
+          </div>
+          <div className="flex">
+            <span className="rounded-full h-5 w-5 bg-red-500 mr-2"></span>
+            <span>Not answered</span>
+          </div>
+        </div>
+        <div className="flex justify-between mt-4">
+          <div className="flex mr-4 mt-4">
+            <span className="rounded-full h-5 w-5 bg-yellow-300 mr-2"></span>
+            <span>Marked for review</span>
+          </div>
+          <div className="flex mr-4 mt-4">
+            <span className="rounded-full h-5 w-5 bg-gray-300 mr-2"></span>
+            <span>Not visited</span>
           </div>
         </div>
         <div className="flex justify-between mt-4">

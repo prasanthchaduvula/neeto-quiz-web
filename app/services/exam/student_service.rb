@@ -10,7 +10,7 @@ class Exam::StudentService
     @invitation_msg = "to join #{@mocktest.name} mocktest, use join code #{@mocktest.invitation_code}"
   end
 
-  def add_student
+  def add_student!
     @mocktest.exam_students.create!(user: @user)
     send_welcome_msg
   end
