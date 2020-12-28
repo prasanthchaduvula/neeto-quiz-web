@@ -61,6 +61,8 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
                         label={option.name}
                         checked={option.is_correct}
                         readOnly
+                        disabled
+                        className="cursor-text"
                       />
                     </div>
                   ))}

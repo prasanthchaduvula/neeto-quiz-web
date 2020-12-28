@@ -6,7 +6,7 @@ import { useHistory, useLocation } from "react-router-dom";
 export default function NavItem({ icon, link, title }) {
   const history = useHistory();
   const location = useLocation();
-  const isActive = link === location.pathname;
+  const isActive = location.pathname.includes(link);
 
   return (
     <Tooltip content={title} position="right">

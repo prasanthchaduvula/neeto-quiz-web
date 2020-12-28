@@ -5,12 +5,14 @@ import { getMocktests } from "apis/mocktests";
 import { TABS } from "./constants";
 import ListMocktests from "./ListMocktests";
 import MocktestPane from "./Mocktest/Pane";
+import JoinMocktestPane from "./join/index";
 
 function Mocktests() {
   const [mocktestPane, setMocktestPane] = useState(false);
   const [mocktests, setMocktests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("myMocktests");
+  const [joinMocktestPane, setJoinMocktestPane] = useState(false);
 
   useEffect(() => {
     fetchMocktests();
@@ -30,9 +32,15 @@ function Mocktests() {
         rightButton={() => (
           <>
             <Button
+              style="secondary mr-2"
               label="Add new mocktest"
               icon="ri-add-line"
               onClick={() => setMocktestPane(true)}
+            />
+            <Button
+              label="Join mocktest"
+              icon="ri-send-plane-line"
+              onClick={() => setJoinMocktestPane(true)}
             />
           </>
         )}
@@ -92,6 +100,10 @@ function Mocktests() {
         fetchMocktests={fetchMocktests}
         creator=""
         fetchSingleMocktest=""
+      />
+      <JoinMocktestPane
+        showPane={joinMocktestPane}
+        setShowPane={setJoinMocktestPane}
       />
     </>
   );

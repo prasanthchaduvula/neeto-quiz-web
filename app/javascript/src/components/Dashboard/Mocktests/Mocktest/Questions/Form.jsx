@@ -135,11 +135,9 @@ export default function QuestionForm({
               />
             </div>
 
-            {!values.correct_option && (
-              <Callout style="info">
-                Please select one option from below as correct option
-              </Callout>
-            )}
+            <Callout style="info">
+              Please select one option from below as correct option
+            </Callout>
 
             <div className="py-10">
               {[1, 2, 3, 4].map(number => (
@@ -164,6 +162,11 @@ export default function QuestionForm({
                   />
                 </div>
               ))}
+              <ErrorMessage
+                name="correct_option"
+                component="div"
+                className="text-red-600 mt-2"
+              />
             </div>
 
             <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">

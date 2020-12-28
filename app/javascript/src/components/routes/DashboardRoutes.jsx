@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Course from "../Dashboard/Courses/Course";
 import Courses from "../Dashboard/Courses";
 import Profile from "../Dashboard/Users/Profile";
@@ -36,7 +36,8 @@ const DashboardRoutes = () => {
       />
       <Route exact path="/mocktests" component={Mocktests} />
       <Route path="/profile" component={Profile} />
-      <Route path="/" component={ExploreCourses} />
+      <Route exact path="/explore" component={ExploreCourses} />
+      <Redirect to="/explore" path="/" />
     </Switch>
   );
 };

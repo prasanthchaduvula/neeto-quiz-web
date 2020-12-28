@@ -6,11 +6,11 @@ class NavBar extends Component {
   render() {
     return (
       <div className="bg-gray-100 nh-sidebar" key="sidebar">
-        <div className="flex flex-col items-center justify-between w-full h-full">
-          <div className="flex flex-col items-center justify-start w-full pt-4">
+        <div className="flex flex-col items-center justify-between w-full h-full py-4">
+          <div className="flex flex-col items-center justify-start w-full ">
             <NavItem
               title="Explore Courses"
-              link="/"
+              link="/explore"
               icon="ri-flashlight-fill"
               className="mb-6"
             />
@@ -24,10 +24,9 @@ class NavBar extends Component {
               title="Mocktests"
               link="/mocktests"
               icon="ri-file-list-3-line"
-              className="mb-6"
             />
-            <NavItem title="Profile" link="/profile" icon="ri-user-line" />
           </div>
+          <NavItem title="Profile" link="/profile" icon="ri-user-line" />
         </div>
       </div>
     );
