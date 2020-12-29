@@ -1,15 +1,17 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Course from "../Dashboard/Courses/Course";
-import Courses from "../Dashboard/Courses";
-import Profile from "../Dashboard/Users/Profile";
-import CourseTemplate from "../Dashboard/Courses/Course/Template";
-import ViewCourse from "../Dashboard/Courses/Course/Template/ViewCourse";
-import ExploreCourses from "../Dashboard/Courses/Explore";
-import Instructor from "../Dashboard/Instructor";
-import Mocktests from "../Dashboard/Mocktests";
-import Mocktest from "../Dashboard/Mocktests/Mocktest";
-import Attempt from "../Dashboard/Mocktests/Mocktest/Template/Attempt";
+import Course from "components/Dashboard/Courses/Course";
+import Courses from "components/Dashboard/Courses";
+import Profile from "components/Dashboard/Users/Profile";
+import CourseTemplate from "components/Dashboard/Courses/Course/Template";
+import ViewCourse from "components/Dashboard/Courses/Course/Template/ViewCourse";
+import ExploreCourses from "components/Dashboard/Courses/Explore";
+import Instructor from "components/Dashboard/Instructor";
+import Mocktests from "components/Dashboard/Mocktests";
+import Mocktest from "components/Dashboard/Mocktests/Mocktest";
+import Attempt from "components/Dashboard/Mocktests/Mocktest/Template/Attempt";
+import Attempts from "components/Dashboard/Mocktests/Mocktest/Template/Attempts";
+import Result from "components/Dashboard/Mocktests/Mocktest/Template/Result";
 
 const DashboardRoutes = () => {
   return (
@@ -31,8 +33,18 @@ const DashboardRoutes = () => {
       <Route exact path="/mocktests/:id" component={Mocktest} />
       <Route
         exact
+        path="/mocktests/:mocktest_id/attempts"
+        component={Attempts}
+      />
+      <Route
+        exact
         path="/mocktests/:mocktest_id/attempts/:id"
         component={Attempt}
+      />
+      <Route
+        exact
+        path="/mocktests/:mocktest_id/attempts/:id/result"
+        component={Result}
       />
       <Route exact path="/mocktests" component={Mocktests} />
       <Route path="/profile" component={Profile} />

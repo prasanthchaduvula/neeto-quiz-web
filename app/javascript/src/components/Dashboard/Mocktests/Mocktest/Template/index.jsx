@@ -3,8 +3,9 @@ import classNames from "classnames";
 import { PageHeading } from "neetoui/layouts";
 import { Button, Radio, Toastr } from "neetoui";
 import { createAttempt } from "apis/mocktests";
+import { withRouter } from "react-router-dom";
 
-function MocktestTemplate({ mocktest, questions, fetchSingleMocktest }) {
+function MocktestTemplate({ mocktest, questions, history }) {
   const [question, setQuestion] = useState({});
   const [selectedQuestionNumber, setSelectedQuestionNumber] = useState(1);
   const [attemptedAnswers, setAttemptedAnswers] = useState([]);
@@ -78,7 +79,9 @@ function MocktestTemplate({ mocktest, questions, fetchSingleMocktest }) {
     let response = await createAttempt(mocktest.id, payload);
     Toastr.success(response.data.notice);
     setLoading(false);
-    fetchSingleMocktest();
+    history.push(
+      `/mocktests/${mocktest.id}/attempts/${response.data.attempt.id}/result`
+    );
   };
 
   const Question = () => {
@@ -251,4 +254,4 @@ function MocktestTemplate({ mocktest, questions, fetchSingleMocktest }) {
     </div>
   );
 }
-export default MocktestTemplate;
+export default withRouter(MocktestTemplate);

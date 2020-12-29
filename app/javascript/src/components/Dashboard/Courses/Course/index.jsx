@@ -16,7 +16,7 @@ import {
   unpublishCourse,
   updateExploreCourse,
 } from "apis/courses";
-import PageNotFound from "../../../shared/PageNotFound";
+import PageNotFound from "shared/PageNotFound";
 import Students from "./Students";
 import CourseTemplate from "./Template";
 import Chapters from "./Chapters";

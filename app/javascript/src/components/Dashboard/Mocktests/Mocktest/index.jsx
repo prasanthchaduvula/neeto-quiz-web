@@ -16,24 +16,16 @@ import {
   publishMocktest,
   unpublishMocktest,
 } from "apis/mocktests";
-import PageNotFound from "../../../shared/PageNotFound";
+import PageNotFound from "shared/PageNotFound";
 import QuestionPane from "./Questions/Pane";
 import MocktestPane from "./Pane";
 import Questions from "./Questions";
 import Students from "./Students";
 import MocktestTemplate from "./Template";
-import Result from "./Template/Result";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
   const [mocktest, setMocktest] = useState({});
-  const [questions, setQuestions] = useState([]);
-  const [isCreator, setIsCreator] = useState(false);
-  const [creator, setCreator] = useState({});
-  const [students, setStudents] = useState([]);
-  const [isStudent, setIsStudent] = useState(false);
-  const [isAttempt, setIsAttempt] = useState(false);
-  const [attempt, setAttempt] = useState({});
 
   useEffect(() => {
     fetchSingleMocktest();
@@ -41,52 +33,30 @@ function Mocktest({ match, history }) {
 
   const fetchSingleMocktest = () => {
     getMocktest(match.params.id).then(response => {
-      const {
-        isCreator,
-        isAttempt,
-        isStudent,
-        mocktest,
-        questions,
-        creator,
-        students,
-        attempt,
-      } = response.data;
-      setIsCreator(isCreator);
+      const { mocktest } = response.data;
       setMocktest(mocktest);
-      setQuestions(questions);
-      setCreator(creator);
-      setStudents(students);
-      setIsStudent(isStudent);
-      setIsAttempt(isAttempt);
-      setAttempt(attempt);
       setLoading(false);
+      if (mocktest.isAttempt && mocktest.isStudent) {
+        history.push(
+          `/mocktests/${mocktest.id}/attempts/${mocktest.attempt.id}/result`
+        );
+      }
     });
   };
 
   if (loading) {
     return <PageLoader />;
-  } else if (isCreator) {
+  } else if (mocktest.isCreator) {
     return (
       <MocktestDisplayForCreator
         mocktest={mocktest}
         fetchSingleMocktest={fetchSingleMocktest}
-        questions={questions}
-        creator={creator}
-        students={students}
         history={history}
       />
     );
-  } else if (isAttempt && isStudent) {
+  } else if (!mocktest.isAttempt && mocktest.isStudent) {
     return (
-      <Result mocktest={mocktest} attempt={attempt} questions={questions} />
-    );
-  } else if (!isAttempt && isStudent) {
-    return (
-      <MocktestTemplate
-        mocktest={mocktest}
-        questions={questions}
-        fetchSingleMocktest={fetchSingleMocktest}
-      />
+      <MocktestTemplate mocktest={mocktest} questions={mocktest.questions} />
     );
   } else {
     return <PageNotFound />;
@@ -96,9 +66,6 @@ function Mocktest({ match, history }) {
 const MocktestDisplayForCreator = ({
   mocktest,
   fetchSingleMocktest,
-  questions,
-  creator,
-  students,
   history,
 }) => {
   const [mocktestPane, setMocktestPane] = useState(false);
@@ -169,6 +136,13 @@ const MocktestDisplayForCreator = ({
               >
                 Students
               </li>
+              <li
+                onClick={() =>
+                  history.push(`/mocktests/${mocktest.id}/attempts`)
+                }
+              >
+                Attempts
+              </li>
               <li onClick={() => setMocktestPane(true)}>Edit</li>
               <li
                 className={`${mocktest.is_published && "text-red-600"}`}
@@ -209,7 +183,7 @@ const MocktestDisplayForCreator = ({
         </Label>
       </div>
       <Questions
-        questions={questions}
+        questions={mocktest.questions}
         mocktestId={mocktest.id}
         fetchSingleMocktest={fetchSingleMocktest}
       />
@@ -219,7 +193,7 @@ const MocktestDisplayForCreator = ({
         isCreateForm={false}
         mocktest={mocktest}
         fetchMocktests=""
-        creator={creator}
+        creator={mocktest.creator}
         fetchSingleMocktest={fetchSingleMocktest}
       />
       <Alert
@@ -239,7 +213,7 @@ const MocktestDisplayForCreator = ({
       <Students
         showPane={showStudents}
         setShowPane={setShowStudents}
-        students={students}
+        students={mocktest.students}
         mocktest={mocktest}
         fetchSingleMocktest={fetchSingleMocktest}
       />

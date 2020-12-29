@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Signup from "../Authentication/Signup";
-import PageNotFound from "../shared/PageNotFound";
+import PageNotFound from "shared/PageNotFound";
 
 const PublicRoutes = () => {
   return (

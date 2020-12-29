@@ -51,4 +51,8 @@ export const getJoinMocktest = invitationCode => {
 
 export const joinMocktest = mocktestId => {
   return axios.post(`/api/v1/exam/mocktests/${mocktestId}/join`);
+}
+
+export const getAttempts = mocktestId => {
+  return axios.get(`/api/v1/exam/mocktests/${mocktestId}/attempts`);
 };

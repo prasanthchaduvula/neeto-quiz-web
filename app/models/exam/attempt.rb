@@ -40,4 +40,8 @@ class Exam::Attempt < ApplicationRecord
   def incorrect_answers_count
     self.mocktest.questions.size - self.unattempted_questions_count - self.correct_answers_count
   end
+
+  def percentile
+    self.correct_answers_count.to_f / self.mocktest.questions.size.to_f * 100.0
+  end
 end

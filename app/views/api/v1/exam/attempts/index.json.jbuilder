@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.isCreator @mocktest.user == current_user
 
 json.mocktest do
   json.id @mocktest.id
@@ -15,4 +16,6 @@ json.attempts @attempts.map do |attempt|
   json.correct_answers_count attempt.correct_answers_count
   json.incorrect_answers_count attempt.incorrect_answers_count
   json.unattempted_questions_count attempt.unattempted_questions_count
+  json.percentile attempt.percentile.round(2)
+  json.total_questions_count @mocktest.questions.count
 end

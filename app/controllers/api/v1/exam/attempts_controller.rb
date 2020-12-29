@@ -2,7 +2,7 @@
 
 class Api::V1::Exam::AttemptsController < Api::V1::BaseController
   before_action :load_mocktest, only: [:create, :index, :show]
-  before_action :ensure_mocktest_member
+  before_action :ensure_mocktest_member, only: [:create, :index]
   before_action :ensure_not_mocktest_admin, only: :create
   before_action :ensure_mocktest_student, only: :create
   before_action :load_attempts_for_instructor, only: :index
@@ -61,8 +61,8 @@ class Api::V1::Exam::AttemptsController < Api::V1::BaseController
     end
 
     def ensure_mocktest_member
-      unless  check_mocktest_member
-        render json: { notice: "You are not the member of mocktest" }, status: :bad_request
+      unless check_mocktest_member
+        render json: { error: "You are not the member of mocktest", isMember: false }, status: :bad_request
       end
     end
 

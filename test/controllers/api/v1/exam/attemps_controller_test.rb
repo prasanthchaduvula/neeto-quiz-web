@@ -11,15 +11,6 @@ class Api::V1::Exam::AttemptsControllerTest < ActionDispatch::IntegrationTest
     @attempt = @mocktest.attempts.create!(user_id: @user.id, mocktest_id: @mocktest.id, attempt_answers_attributes: [{ option_id: @question.options.first.id, question_id: @question.id }])
   end
 
-  test "Should be member of mocktest to get all mocktest attempts either student or instructor" do
-    new_user = users(:samuel)
-    get api_v1_exam_mocktest_attempts_path(mocktest_id: @mocktest.id), headers: headers(new_user)
-
-    assert_response :bad_request
-    json_response = JSON.parse(response.body)
-    assert_equal "You are not the member of mocktest", json_response["notice"]
-  end
-
   test "Get all mocktest attempts either student or instructor" do
     get api_v1_exam_mocktest_attempts_path(mocktest_id: @mocktest.id), headers: headers(@user)
     assert_response :success
@@ -58,7 +49,7 @@ class Api::V1::Exam::AttemptsControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :bad_request
       json_response = JSON.parse(response.body)
-      assert_equal "You are not the member of mocktest", json_response["notice"]
+      assert_equal "You are not the member of mocktest", json_response["error"]
     end
   end
 

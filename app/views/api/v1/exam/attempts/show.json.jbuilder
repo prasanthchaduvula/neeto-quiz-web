@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-json.isCreator @mocktest.user == current_user
-json.isStudent @mocktest.student_ids.include?(current_user.id)
+json.isMember @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
 
 json.mocktest do
   json.id @mocktest.id
@@ -9,6 +8,7 @@ json.mocktest do
   json.price @mocktest.price.to_i
   json.is_published @mocktest.is_published
   json.invitation_code @mocktest.invitation_code
+  json.total_questions_count @mocktest.questions.count
 end
 
 json.questions @mocktest.questions.map do |question|
@@ -29,4 +29,5 @@ json.attempt do
   json.correct_answers_count @attempt.correct_answers_count
   json.incorrect_answers_count @attempt.incorrect_answers_count
   json.unattempted_questions_count @attempt.unattempted_questions_count
+  json.percentile @attempt.percentile.round(2)
 end
