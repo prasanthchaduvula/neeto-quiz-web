@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-# json.isCreator @mocktest.user == current_user
-# json.isStudent @mocktest.student_ids.include?(current_user.id)
-# json.isAttempt @attempt.present?
-# json.isMember @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
-
 json.mocktest do
   json.id @mocktest.id
   json.name @mocktest.name

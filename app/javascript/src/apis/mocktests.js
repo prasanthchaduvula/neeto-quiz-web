@@ -56,3 +56,11 @@ export const joinMocktest = mocktestId => {
 export const getAttempts = mocktestId => {
   return axios.get(`/api/v1/exam/mocktests/${mocktestId}/attempts`);
 };
+
+export const exploreMocktests = () => {
+  return axios.get(`/api/v1/exam/explore`);
+};
+
+export const updateExploreMocktest = (Id, payload) => {
+  return axios.patch(`/api/v1/exam/explore/${Id}`, payload);
+};

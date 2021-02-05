@@ -5,7 +5,7 @@ import { getMocktests } from "apis/mocktests";
 import { TABS } from "./constants";
 import ListMocktests from "./ListMocktests";
 import MocktestPane from "./Mocktest/Pane";
-import JoinMocktestPane from "./join/index";
+import JoinMocktestPane from "./Join";
 
 function Mocktests() {
   const [mocktestPane, setMocktestPane] = useState(false);

@@ -47,6 +47,8 @@ Rails.application.routes.draw do
         end
 
         resources :join, only: [:show], param: :invitation_code
+        resources :explore, only: [:index, :update]
+
       end
     end
   end

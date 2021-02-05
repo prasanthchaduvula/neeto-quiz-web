@@ -15,6 +15,7 @@ import {
   getMocktest,
   publishMocktest,
   unpublishMocktest,
+  updateExploreMocktest,
 } from "apis/mocktests";
 import PageNotFound from "shared/PageNotFound";
 import QuestionPane from "./Questions/Pane";
@@ -94,6 +95,24 @@ const MocktestDisplayForCreator = ({
     });
   };
 
+  const addMocktestToMarketPlace = () => {
+    const payload = {
+      mocktest: {
+        is_explored: !mocktest.is_explored,
+      },
+    };
+    updateExploreMocktest(mocktest.id, payload).then(response => {
+      Toastr.success(
+        `Mocktest ${
+          response.data.mocktest.is_explored
+            ? "Added to market place"
+            : "Removed from market place"
+        } successfully`
+      );
+      fetchSingleMocktest();
+    });
+  };
+
   return (
     <>
       <PageHeading
@@ -155,6 +174,14 @@ const MocktestDisplayForCreator = ({
                 {mocktest.is_published
                   ? "Unpublish Mocktest"
                   : "Publish Mocktest"}
+              </li>
+              <li
+                className={`${mocktest.is_explored && "text-red-600"}`}
+                onClick={() => addMocktestToMarketPlace()}
+              >
+                {mocktest.is_explored
+                  ? "Remove from market place"
+                  : "Add to market place"}
               </li>
               <li
                 className="text-red-600"

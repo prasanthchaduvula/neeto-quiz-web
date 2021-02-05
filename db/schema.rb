@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_074713) do
+ActiveRecord::Schema.define(version: 2020_12_28_085955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_074713) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "allow_reattempts", default: true, null: false
+    t.boolean "is_explored", default: false, null: false
     t.index ["user_id"], name: "index_exam_mocktests_on_user_id"
   end
 

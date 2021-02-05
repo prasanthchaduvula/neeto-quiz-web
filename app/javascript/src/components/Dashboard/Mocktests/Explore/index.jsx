@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { PageLoader } from "neetoui";
-import { exploreCourses } from "apis/courses";
-import ListCourses from "./ListCourses";
 import { withRouter } from "react-router-dom";
+import { exploreMocktests } from "apis/mocktests";
+import ListMocktests from "./ListMocktests";
 
-function ExploreCourses() {
-  const [courses, setCourses] = useState([]);
+function ExploreMocktests() {
+  const [mocktests, setMocktests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchExploreCourses();
+    fetchExploreMocktests();
   }, []);
 
-  const fetchExploreCourses = () => {
-    exploreCourses().then(response => {
-      setCourses(response.data.courses);
+  const fetchExploreMocktests = () => {
+    exploreMocktests().then(response => {
+      setMocktests(response.data.mocktests);
       setIsLoading(false);
     });
   };
@@ -26,10 +26,10 @@ function ExploreCourses() {
           <PageLoader />
         </div>
       ) : (
-        <ListCourses courses={courses} />
+        <ListMocktests mocktests={mocktests} />
       )}
     </div>
   );
 }
 
-export default withRouter(ExploreCourses);
+export default withRouter(ExploreMocktests);

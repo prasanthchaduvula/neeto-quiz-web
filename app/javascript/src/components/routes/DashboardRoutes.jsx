@@ -5,13 +5,13 @@ import Courses from "components/Dashboard/Courses";
 import Profile from "components/Dashboard/Users/Profile";
 import CourseTemplate from "components/Dashboard/Courses/Course/Template";
 import ViewCourse from "components/Dashboard/Courses/Course/Template/ViewCourse";
-import ExploreCourses from "components/Dashboard/Courses/Explore";
 import Instructor from "components/Dashboard/Instructor";
 import Mocktests from "components/Dashboard/Mocktests";
 import Mocktest from "components/Dashboard/Mocktests/Mocktest";
 import Attempt from "components/Dashboard/Mocktests/Mocktest/Template/Attempt";
 import Attempts from "components/Dashboard/Mocktests/Mocktest/Template/Attempts";
 import Result from "components/Dashboard/Mocktests/Mocktest/Template/Result";
+import Explore from "../Dashboard/Explore";
 
 const DashboardRoutes = () => {
   return (
@@ -48,7 +48,7 @@ const DashboardRoutes = () => {
       />
       <Route exact path="/mocktests" component={Mocktests} />
       <Route path="/profile" component={Profile} />
-      <Route exact path="/explore" component={ExploreCourses} />
+      <Route exact path="/explore" component={Explore} />
       <Redirect to="/explore" path="/" />
     </Switch>
   );
