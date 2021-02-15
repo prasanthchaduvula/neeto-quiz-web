@@ -10,7 +10,6 @@ export default function SidePanel({
   getLesson,
   lesson,
   isStudent,
-  chaptersWithPublishedLessons,
 }) {
   const onClose = () => {
     setShowPane(false);
@@ -25,31 +24,18 @@ export default function SidePanel({
       position="left"
     >
       <div className="px-6">
-        {isStudent
-          ? chaptersWithPublishedLessons.map(chapter => (
-              <TableOfContents
-                key={chapter.chapter.id}
-                course={course}
-                chapter={chapter.chapter}
-                lessons={chapter.lessons}
-                onLessonSelect={getLesson}
-                lesson={lesson}
-                isStudent={isStudent}
-                onClose={onClose}
-              />
-            ))
-          : chapters.map(chapter => (
-              <TableOfContents
-                key={chapter.chapter.id}
-                course={course}
-                chapter={chapter.chapter}
-                lessons={chapter.lessons}
-                onLessonSelect={getLesson}
-                lesson={lesson}
-                isStudent={isStudent}
-                onClose={onClose}
-              />
-            ))}
+        {chapters.map(chapter => (
+          <TableOfContents
+            key={chapter.chapter.id}
+            course={course}
+            chapter={chapter.chapter}
+            lessons={chapter.lessons}
+            onLessonSelect={getLesson}
+            lesson={lesson}
+            isStudent={isStudent}
+            onClose={onClose}
+          />
+        ))}
       </div>
     </Pane>
   ) : (

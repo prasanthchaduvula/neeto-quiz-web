@@ -11,28 +11,14 @@ function ViewCourse(props) {
   const [chapters, setChapters] = useState([]);
   const [lesson, setLesson] = useState({});
   const [isStudent, setIsStudent] = useState("");
-  const [
-    chaptersWithPublishedLessons,
-    setChaptersWithPublishedLessons,
-  ] = useState([]);
 
   const loadCourse = async () => {
     let response = await getCourse(props.match.params.course_id);
     setCourse(response.data.course);
     setChapters(response.data.chapters);
-    setChaptersWithPublishedLessons(
-      loadChaptersWithPublishedLessons(response.data.chapters)
-    );
+
     setIsStudent(response.data.creator.id != localStorage.user_id);
   };
-
-  function loadChaptersWithPublishedLessons(chapters) {
-    return chapters.filter(chapter => {
-      if (chapter.lessons.filter(lesson => lesson.is_published).length > 0) {
-        return chapter;
-      }
-    });
-  }
 
   const getLesson = (chapter_id, lesson_id) => {
     showLesson(chapter_id, lesson_id).then(response => {
@@ -58,7 +44,6 @@ function ViewCourse(props) {
         getLesson={getLesson}
         lesson={lesson}
         isStudent={isStudent}
-        chaptersWithPublishedLessons={chaptersWithPublishedLessons}
       />
       <Lesson
         lesson={lesson}

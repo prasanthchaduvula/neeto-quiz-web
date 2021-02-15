@@ -7,22 +7,10 @@ function CourseTemplate(props) {
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
   const [creator, setCreator] = useState({});
-  const [
-    chaptersWithPublishedLessons,
-    setChaptersWithPublishedLessons,
-  ] = useState([]);
 
   useEffect(() => {
     loadCourseDetails();
   }, []);
-
-  function loadChaptersWithPublishedLessons(chapters) {
-    return chapters.filter(chapter => {
-      if (chapter.lessons.filter(lesson => lesson.is_published).length > 0) {
-        return chapter;
-      }
-    });
-  }
 
   const loadCourseDetails = () => {
     getCourse(props.courseId || props.match.params.course_id)
@@ -30,9 +18,6 @@ function CourseTemplate(props) {
         setCourse(response.data.course);
         setChapters(response.data.chapters);
         setCreator(response.data.creator);
-        setChaptersWithPublishedLessons(
-          loadChaptersWithPublishedLessons(response.data.chapters)
-        );
       })
       .catch(error => {
         Toastr.error(error);
@@ -63,9 +48,7 @@ function CourseTemplate(props) {
               </h2>
               <hr />
               <ShowChapters
-                chapters={
-                  props.isStudent ? chaptersWithPublishedLessons : chapters
-                }
+                chapters={chapters}
                 course={course}
                 history={props.history}
               />
@@ -84,36 +67,39 @@ function CourseTemplate(props) {
 const ShowChapters = ({ chapters, course, history }) => {
   return (
     <>
-      {chapters.map(({ chapter, lessons }, index) => (
-        <div key={chapter.id} className="my-5">
-          <div className="flex items-center mb-4">
-            <span className="mr-2 text-xl text-gray-500 text-normal">
-              {index + 1}
-            </span>
-            <h3 className="text-xl font-semibold text-gray-900">
-              {chapter.name}
-            </h3>
-          </div>
-          {lessons.map((lesson, listIndex) => (
-            <div
-              key={lesson.id}
-              className="ml-2 mb-2 cursor-pointer text-gray-900 hover:text-blue-600 text-lg font-medium"
-              onClick={() => {
-                history.push(
-                  `/courses/${course.id}/chapters/${chapter.id}/lessons/${lesson.id}`
-                );
-              }}
-            >
-              <div className="w-6 mr-4 inline-block md:w-10 md:mr-2">
-                <span className="text-gray-500 text-base  md:text-lg">
-                  {`${index + 1}.${listIndex + 1}`}
-                </span>
-              </div>
-              <span>{lesson.name}</span>
+      {chapters.map(({ chapter, lessons }, index) => {
+        return (
+          <div key={chapter.id} className="my-5">
+            <div className="flex items-center mb-4">
+              <span className="mr-2 text-xl text-gray-500 text-normal">
+                {index + 1}
+              </span>
+              <h3 className="text-xl font-semibold text-gray-900">
+                {chapter.name}
+              </h3>
             </div>
-          ))}
-        </div>
-      ))}
+            {lessons &&
+              lessons.map((lesson, listIndex) => (
+                <div
+                  key={lesson.id}
+                  className="ml-2 mb-2 cursor-pointer text-gray-900 hover:text-blue-600 text-lg font-medium"
+                  onClick={() => {
+                    history.push(
+                      `/courses/${course.id}/chapters/${chapter.id}/lessons/${lesson.id}`
+                    );
+                  }}
+                >
+                  <div className="w-6 mr-4 inline-block md:w-10 md:mr-2">
+                    <span className="text-gray-500 text-base  md:text-lg">
+                      {`${index + 1}.${listIndex + 1}`}
+                    </span>
+                  </div>
+                  <span>{lesson.name}</span>
+                </div>
+              ))}
+          </div>
+        );
+      })}
     </>
   );
 };

@@ -24,7 +24,11 @@ end
 
 json.chapters @course.chapters.map do |chapter|
   json.chapter chapter
-  json.lessons chapter.lessons.includes([:file_attachment]).map { |l| l.attributes.merge(file: l.file_url) }
+  if @course.user == current_user
+    json.lessons chapter.lessons.includes([:file_attachment]).map { |l| l.attributes.merge(file: l.file_url) }
+  else
+    json.lessons chapter.lessons.select { |lesson| lesson.is_published }
+  end
 end
 
 json.students @course.joined_students.map do |student|
