@@ -6,6 +6,7 @@ json.mocktest do
   json.price @mocktest.price.to_i
   json.is_published @mocktest.is_published
   json.invitation_code @mocktest.invitation_code
+  json.is_explored @mocktest.is_explored
   json.isCreator @mocktest.user == current_user
   json.isStudent @mocktest.student_ids.include?(current_user.id)
   json.isAttempt @attempt.present?
