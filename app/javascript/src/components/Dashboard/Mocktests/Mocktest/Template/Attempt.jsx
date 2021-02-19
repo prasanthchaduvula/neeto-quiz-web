@@ -50,15 +50,12 @@ function Attempt({ match }) {
                 {question.options &&
                   question.options.map(option => (
                     <div
-                      className={`flex py-4 px-2 items-center ${option.is_correct &&
+                      className={`flex items-baseline py-4 px-2  ${option.is_correct &&
                         "bg-green-100"} `}
                       key={option.id}
                     >
-                      <Radio.Item
-                        label={option.name}
-                        checked={option.is_selected}
-                        readOnly
-                      />
+                      <Radio.Item checked={option.is_selected} readOnly />
+                      <pre className="leading-6 ml-3 ">{option.name}</pre>
                     </div>
                   ))}
               </div>

@@ -99,12 +99,12 @@ function MocktestTemplate({ mocktest, questions, history }) {
               <div className="pt-4 pb-6 px-2">
                 {question.options &&
                   question.options.map(option => (
-                    <div className="flex mt-8 items-center" key={option.id}>
+                    <div className="flex items-baseline mt-8 " key={option.id}>
                       <Radio.Item
-                        label={option.name}
                         onChange={() => attemptQuestion(question.id, option.id)}
                         checked={selectedOption(question.id, option.id)}
                       />
+                      <pre className="leading-6 ml-3 ">{option.name}</pre>
                     </div>
                   ))}
               </div>

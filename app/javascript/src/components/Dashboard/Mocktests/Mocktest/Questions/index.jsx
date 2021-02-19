@@ -55,15 +55,15 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
               <div className="pt-4 pb-20 px-2">
                 {question.options &&
                   question.options.map(option => (
-                    <div className="flex mt-8 items-center" key={option.id}>
+                    <div className="flex items-baseline mt-8" key={option.id}>
                       <Checkbox
                         name="option.is_correct"
-                        label={option.name}
                         checked={option.is_correct}
                         readOnly
                         disabled
                         className="cursor-text"
                       />
+                      <pre className="leading-6 ml-3">{option.name}</pre>
                     </div>
                   ))}
               </div>

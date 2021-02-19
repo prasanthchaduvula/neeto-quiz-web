@@ -141,7 +141,10 @@ export default function QuestionForm({
 
             <div className="py-10">
               {[1, 2, 3, 4].map(number => (
-                <div className="flex flex-row items-center mb-10" key={number}>
+                <div
+                  className="flex flex-row items-baseline mb-10"
+                  key={number}
+                >
                   <Field
                     type="radio"
                     name="correct_option"
@@ -149,11 +152,14 @@ export default function QuestionForm({
                     checked={values.correct_option == number}
                     className="form-radio"
                   />
-                  <Field
-                    type="text"
+                  <TextareaAutosize
                     name={`option${number}`}
-                    placeholder={`option ${number}`}
-                    className="border-b w-4/5 ml-2 outline-none focus:border-black"
+                    value={`${values[`option${number}`]}`}
+                    minRows={2}
+                    className="border-b w-4/5 ml-2 outline-none focus:border-black "
+                    onChange={event => {
+                      setFieldValue(`option${number}`, event.target.value);
+                    }}
                   />
                   <ErrorMessage
                     name={`option${number}`}
