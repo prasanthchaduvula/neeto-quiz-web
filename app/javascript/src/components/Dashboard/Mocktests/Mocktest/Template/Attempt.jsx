@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { PageHeading } from "neetoui/layouts";
 import { Button, Radio } from "neetoui";
+import TextareaAutosize from "react-textarea-autosize";
 import { getAttempt } from "apis/mocktests";
 import { withRouter } from "react-router-dom";
 
@@ -43,19 +44,31 @@ function Attempt({ match }) {
               {`Question ${selectedQuestionNumber}`}
             </p>
             <div className="overflow-y-scroll" style={{ height: "75vh" }}>
-              <pre className="leading-6font-medium text-base mt-4">
-                {question.description}
-              </pre>
+              <TextareaAutosize
+                name="description"
+                value={question.description}
+                minRows={1}
+                className="leading-6 text-base mt-4 w-full bg-white resize-none"
+                disabled={true}
+              />
               <div className="pt-4 pb-6">
                 {question.options &&
-                  question.options.map(option => (
+                  question.options.map((option, index) => (
                     <div
                       className={`flex items-baseline py-4 px-2  ${option.is_correct &&
                         "bg-green-100"} `}
                       key={option.id}
                     >
                       <Radio.Item checked={option.is_selected} readOnly />
-                      <pre className="leading-6 ml-3 ">{option.name}</pre>
+                      <TextareaAutosize
+                        name={`option${index}`}
+                        value={option.name}
+                        minRows={1}
+                        className={`leading-6 font-normal text-base ml-4 w-full resize-none ${
+                          option.is_correct ? "bg-green-100" : "bg-white"
+                        }`}
+                        disabled={true}
+                      />
                     </div>
                   ))}
               </div>

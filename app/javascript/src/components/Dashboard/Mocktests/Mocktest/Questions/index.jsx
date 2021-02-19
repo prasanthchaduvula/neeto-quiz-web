@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Toastr, Alert } from "neetoui";
+import TextareaAutosize from "react-textarea-autosize";
 import { deleteQuestion } from "apis/questions";
 import QuestionPane from "./Pane";
 
@@ -49,12 +50,16 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
               </div>
             </div>
             <div className="overflow-y-scroll" style={{ height: "70vh" }}>
-              <pre className="leading-6font-medium text-base mt-4">
-                {question.description}
-              </pre>
+              <TextareaAutosize
+                name="description"
+                value={question.description}
+                minRows={1}
+                className="leading-8 text-base mt-4 w-full bg-white resize-none"
+                disabled={true}
+              />
               <div className="pt-4 pb-20 px-2">
                 {question.options &&
-                  question.options.map(option => (
+                  question.options.map((option, index) => (
                     <div className="flex items-baseline mt-8" key={option.id}>
                       <Checkbox
                         name="option.is_correct"
@@ -63,7 +68,13 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
                         disabled
                         className="cursor-text"
                       />
-                      <pre className="leading-6 ml-3">{option.name}</pre>
+                      <TextareaAutosize
+                        name={`option${index}`}
+                        value={option.name}
+                        minRows={1}
+                        className="leading-6 font-normal text-base ml-4 w-full bg-white resize-none"
+                        disabled={true}
+                      />
                     </div>
                   ))}
               </div>

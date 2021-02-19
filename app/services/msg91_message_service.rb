@@ -21,7 +21,7 @@ class Msg91MessageService
   end
 
   def send_sms(phone_number, message)
-    url = "https://api.msg91.com/api/sendhttp.php?authkey=344320ADzUdaWyKVf5f8684dbP1&mobiles=#{phone_number}&message=#{message}&sender=NITROA&route=4"
+    url = "https://api.msg91.com/api/sendhttp.php?authkey=344320ADzUdaWyKVf5f8684dbP1&mobiles=#{phone_number}&message=#{message}&sender=NEETOA&route=4"
 
     response = Typhoeus.get(url)
   end
