@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { getAttempt } from "apis/mocktests";
 import PageNotFound from "shared/PageNotFound";
 
-function Result({ match, history }) {
+function Result({ match, history, mocktestId, attemptId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [metaData, setMetaData] = useState({});
 
@@ -14,11 +14,13 @@ function Result({ match, history }) {
     loadResult();
   }, []);
 
-  const loadResult = () => {
-    getAttempt(match.params.mocktest_id, match.params.id).then(response => {
-      setMetaData({ ...metaData, ...response.data });
-      setIsLoading(false);
-    });
+  const loadResult = async () => {
+    let response = await getAttempt(
+      mocktestId || match.params.mocktest_id,
+      attemptId || match.params.id
+    );
+    setMetaData({ ...metaData, ...response.data });
+    setIsLoading(false);
   };
 
   const DisplayAttempt = () => {

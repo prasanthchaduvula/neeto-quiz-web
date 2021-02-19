@@ -8,6 +8,6 @@ class Exam::QuestionOption < ApplicationRecord
   belongs_to :question, class_name: "Exam::Question"
 
   validates :name, presence: true,
-                   length: { minimum: 3, maximum: 25 },
+                   length: { minimum: 1 },
                    uniqueness: { scope: :question_id,  message: "should be unique" }
 end

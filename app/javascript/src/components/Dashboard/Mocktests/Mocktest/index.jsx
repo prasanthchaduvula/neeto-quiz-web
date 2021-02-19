@@ -23,6 +23,7 @@ import MocktestPane from "./Pane";
 import Questions from "./Questions";
 import Students from "./Students";
 import MocktestTemplate from "./Template";
+import Result from "./Template/Result";
 
 function Mocktest({ match, history }) {
   const [loading, setLoading] = useState(true);
@@ -37,11 +38,6 @@ function Mocktest({ match, history }) {
       const { mocktest } = response.data;
       setMocktest(mocktest);
       setLoading(false);
-      if (mocktest.isAttempt && mocktest.isStudent) {
-        history.push(
-          `/mocktests/${mocktest.id}/attempts/${mocktest.attempt.id}/result`
-        );
-      }
     });
   };
 
@@ -59,6 +55,8 @@ function Mocktest({ match, history }) {
     return (
       <MocktestTemplate mocktest={mocktest} questions={mocktest.questions} />
     );
+  } else if (mocktest.isAttempt && mocktest.isStudent) {
+    return <Result mocktestId={mocktest.id} attemptId={mocktest.attempt.id} />;
   } else {
     return <PageNotFound />;
   }

@@ -55,6 +55,6 @@ class Exam::QuestionTest < ActiveSupport::TestCase
       options_attributes: [{ "is_correct": true }, { "name": "new 2" }, { "name": "new 3" }, { "name": "new 4" }])
     new_question.save
     assert_not new_question.valid?
-    assert_equal ["Options name can't be blank", "Options name is too short (minimum is 3 characters)"], new_question.errors.full_messages
+    assert_equal ["Options name can't be blank", "Options name is too short (minimum is 1 character)"], new_question.errors.full_messages
   end
 end
