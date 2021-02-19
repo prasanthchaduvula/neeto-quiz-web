@@ -93,9 +93,9 @@ function MocktestTemplate({ mocktest, questions, history }) {
               {`Question ${selectedQuestionNumber}`}
             </p>
             <div className="overflow-y-scroll" style={{ height: "75vh" }}>
-              <p className="font-medium text-base mt-8">
+              <pre className="leading-6font-medium text-base mt-4">
                 {question.description}
-              </p>
+              </pre>
               <div className="pt-4 pb-6 px-2">
                 {question.options &&
                   question.options.map(option => (
