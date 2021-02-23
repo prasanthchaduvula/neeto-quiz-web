@@ -11,6 +11,8 @@ class Lesson < ApplicationRecord
 
   has_one_attached :file
 
+  scope :published, -> { where(is_published: true) }
+
   validates :name, presence: true, uniqueness: { scope: :chapter_id }
   validates :lesson_type, presence: true
   validates :content, presence: true, if: -> { lesson_type == "youtube" }
