@@ -8,7 +8,7 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
   before_action :ensure_not_course_student
 
   def show
-    render template: "api/v1/courses/show"
+    render template: "api/v1/courses/preview"
   end
 
   def create

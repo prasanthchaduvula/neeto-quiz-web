@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
         member do
+          get :preview
           put :publish
           put :unpublish
         end

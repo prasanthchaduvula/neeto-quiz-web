@@ -2,7 +2,7 @@
 
 class Api::V1::CoursesController < Api::V1::BaseController
   before_action :load_course, except: [:index, :create]
-  before_action :ensure_course_admin, except: [:index, :create, :show]
+  before_action :ensure_course_admin, except: [:index, :create, :show, :preview]
   before_action :check_published_course, only: :destroy
   before_action :ensure_payment_details_to_update_price, only: :update
   before_action :ensure_payment_details_to_publish, only: :publish
@@ -34,6 +34,10 @@ class Api::V1::CoursesController < Api::V1::BaseController
   def destroy
     @course.destroy!
     render json: { notice: "Course deleted successfully", course: @course }, status: :ok
+  end
+
+  def preview
+    render template: "api/v1/courses/preview"
   end
 
   def publish

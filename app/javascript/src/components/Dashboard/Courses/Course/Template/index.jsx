@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { PageLoader, Toastr } from "neetoui";
+import { PageLoader } from "neetoui";
 import { withRouter } from "react-router-dom";
-import { getCourse } from "apis/courses";
+import { previewCourse } from "apis/courses";
 
 function CourseTemplate(props) {
   const [course, setCourse] = useState({});
@@ -9,19 +9,16 @@ function CourseTemplate(props) {
   const [creator, setCreator] = useState({});
 
   useEffect(() => {
-    loadCourseDetails();
+    loadCourse();
   }, []);
 
-  const loadCourseDetails = () => {
-    getCourse(props.courseId || props.match.params.course_id)
-      .then(response => {
-        setCourse(response.data.course);
-        setChapters(response.data.chapters);
-        setCreator(response.data.creator);
-      })
-      .catch(error => {
-        Toastr.error(error);
-      });
+  const loadCourse = async () => {
+    let response = await previewCourse(
+      props.courseId || props.match.params.course_id
+    );
+    setCourse(response.data.course);
+    setChapters(response.data.chapters);
+    setCreator(response.data.creator);
   };
 
   return (

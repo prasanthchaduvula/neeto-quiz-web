@@ -22,7 +22,15 @@ class Course < ApplicationRecord
   end
 
   def is_publishable?
-    published_lessons_count > 0 ? true : false
+    self.lessons.published.count > 0 ? true : false
+  end
+
+  def published_chapters
+    find_published_chapters.uniq
+  end
+
+  def chapters_with_lessons
+    find_chapters_with_lessons.uniq
   end
 
   private
@@ -38,12 +46,13 @@ class Course < ApplicationRecord
       end
     end
 
-    def published_lessons_count
-      lesson_count = 0
-      self.chapter_ids.map do |chapter_id|
-        published_lessons =  Lesson.where(chapter_id: chapter_id, is_published: true)
-        lesson_count = lesson_count + published_lessons.count
-      end
-      lesson_count
+
+    def find_published_chapters
+      chapters.joins(:lessons).where("lessons.is_published = ?", true)
+    end
+
+
+    def find_chapters_with_lessons
+      chapters.joins(:lessons)
     end
 end

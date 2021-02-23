@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { getCourse } from "apis/courses";
+import { previewCourse } from "apis/courses";
 import { showLesson } from "apis/lessons";
 import SidePanel from "./SidePanel";
 import Lesson from "./Lesson";
@@ -9,15 +9,14 @@ function ViewCourse(props) {
   const [showPane, setShowPane] = useState(false);
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
+  const [lessons, setLessons] = useState([]);
   const [lesson, setLesson] = useState({});
-  const [isStudent, setIsStudent] = useState("");
 
   const loadCourse = async () => {
-    let response = await getCourse(props.match.params.course_id);
+    let response = await previewCourse(props.match.params.course_id);
     setCourse(response.data.course);
     setChapters(response.data.chapters);
-
-    setIsStudent(response.data.creator.id != localStorage.user_id);
+    setLessons(response.data.lessons);
   };
 
   const getLesson = (chapter_id, lesson_id) => {
@@ -43,13 +42,11 @@ function ViewCourse(props) {
         chapters={chapters}
         getLesson={getLesson}
         lesson={lesson}
-        isStudent={isStudent}
       />
       <Lesson
         lesson={lesson}
         courseId={course.id}
-        chapters={chapters}
-        isStudent={isStudent}
+        lessons={lessons}
         setShowPane={setShowPane}
       />
     </div>

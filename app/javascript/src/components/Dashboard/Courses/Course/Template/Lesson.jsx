@@ -8,7 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function Lesson({ history, lesson, courseId, chapters, setShowPane }) {
+function Lesson({ history, lesson, courseId, lessons, setShowPane }) {
   const [visible, setVisible] = useState(false);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -17,76 +17,36 @@ function Lesson({ history, lesson, courseId, chapters, setShowPane }) {
   const goToPrevPage = () => setPageNumber(pageNumber - 1);
   const goToNextPage = () => setPageNumber(pageNumber + 1);
 
-  const previousLessson = (lessonId, chapterId) => {
-    chapters.filter(({ chapter, lessons }, chapterIndex) => {
-      if (chapter.id == chapterId) {
-        lessons.filter((lesson, lessonIndex) => {
-          if (lesson.id == lessonId) {
-            if (lessonIndex - 1 < 0) {
-              if (chapterIndex == 0) {
-                Toastr.success("This is the first lesson");
-              } else if (chapters[chapterIndex - 1].lessons.length == 0) {
-                let previousChapter = chapters[chapterIndex - 2];
-                let previousChapterId = previousChapter.chapter.id;
-                let previousLessonId =
-                  previousChapter.lessons[previousChapter.lessons.length - 1]
-                    .id;
-                history.push(
-                  `/courses/${courseId}/chapters/${previousChapterId}/lessons/${previousLessonId}`
-                );
-              } else {
-                let previousChapter = chapters[chapterIndex - 1];
-                let previousChapterId = previousChapter.chapter.id;
-                let previousLessonId =
-                  previousChapter.lessons[previousChapter.lessons.length - 1]
-                    .id;
-                history.push(
-                  `/courses/${courseId}/chapters/${previousChapterId}/lessons/${previousLessonId}`
-                );
-              }
-            } else {
-              let previousLessonId = lessons[lessonIndex - 1].id;
-              history.push(
-                `/courses/${courseId}/chapters/${chapter.id}/lessons/${previousLessonId}`
-              );
-            }
+  const previousLessson = lessonId => {
+    lessons &&
+      lessons.map((lesson, lessonIndex) => {
+        if (lessonId == lesson.id) {
+          if (lessonIndex - 1 < 0) {
+            Toastr.success("This is the first lesson");
+          } else {
+            let previousLesson = lessons[lessonIndex - 1];
+            history.push(
+              `/courses/${courseId}/chapters/${previousLesson.chapter_id}/lessons/${previousLesson.id}`
+            );
           }
-        });
-      }
-    });
+        }
+      });
   };
 
-  const nextLessson = (lessonId, chapterId) => {
-    chapters.filter(({ chapter, lessons }, chapterIndex) => {
-      if (chapter.id == chapterId) {
-        lessons.filter((lesson, lessonIndex) => {
-          if (lesson.id == lessonId) {
-            if (lessonIndex + 1 == lessons.length) {
-              if (chapters.length == chapterIndex + 1) {
-                Toastr.success("This is the last lesson");
-              } else if (chapters[chapterIndex + 1].lessons.length == 0) {
-                let nextLessonId = chapters[chapterIndex + 2].lessons[0].id;
-                let nextChapterId = chapters[chapterIndex + 2].chapter.id;
-                history.push(
-                  `/courses/${courseId}/chapters/${nextChapterId}/lessons/${nextLessonId}`
-                );
-              } else {
-                let nextLessonId = chapters[chapterIndex + 1].lessons[0].id;
-                let nextChapterId = chapters[chapterIndex + 1].chapter.id;
-                history.push(
-                  `/courses/${courseId}/chapters/${nextChapterId}/lessons/${nextLessonId}`
-                );
-              }
-            } else {
-              let nextLessonId = lessons[lessonIndex + 1].id;
-              history.push(
-                `/courses/${courseId}/chapters/${chapter.id}/lessons/${nextLessonId}`
-              );
-            }
+  const nextLessson = lessonId => {
+    lessons &&
+      lessons.map((lesson, lessonIndex) => {
+        if (lessonId == lesson.id) {
+          if (lessonIndex + 1 == lessons.length) {
+            Toastr.success("This is the last lesson");
+          } else {
+            let nextLessson = lessons[lessonIndex + 1];
+            history.push(
+              `/courses/${courseId}/chapters/${nextLessson.chapter_id}/lessons/${nextLessson.id}`
+            );
           }
-        });
-      }
-    });
+        }
+      });
   };
 
   return (
@@ -179,13 +139,13 @@ function Lesson({ history, lesson, courseId, chapters, setShowPane }) {
         <Button
           label="Previous"
           icon="ri-arrow-left-s-line"
-          onClick={() => previousLessson(lesson.id, lesson.chapter_id)}
+          onClick={() => previousLessson(lesson.id)}
         />
         <Button
           label="Next"
           icon="ri-arrow-right-s-line"
           iconPosition="right"
-          onClick={() => nextLessson(lesson.id, lesson.chapter_id)}
+          onClick={() => nextLessson(lesson.id)}
         />
       </div>
     </div>

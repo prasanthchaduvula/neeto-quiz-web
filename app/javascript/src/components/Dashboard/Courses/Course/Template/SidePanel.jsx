@@ -9,7 +9,6 @@ export default function SidePanel({
   chapters,
   getLesson,
   lesson,
-  isStudent,
 }) {
   const onClose = () => {
     setShowPane(false);
@@ -32,7 +31,6 @@ export default function SidePanel({
             lessons={chapter.lessons}
             onLessonSelect={getLesson}
             lesson={lesson}
-            isStudent={isStudent}
             onClose={onClose}
           />
         ))}

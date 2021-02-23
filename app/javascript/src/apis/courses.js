@@ -24,6 +24,10 @@ export const addStudent = (id, payload) => {
   return axios.post(`/api/v1/courses/${id}/add_students`, payload);
 };
 
+export const previewCourse = courseId => {
+  return axios.get(`/api/v1/courses/${courseId}/preview`);
+};
+
 export const publishCourse = courseId => {
   return axios.put(`/api/v1/courses/${courseId}/publish`);
 };
