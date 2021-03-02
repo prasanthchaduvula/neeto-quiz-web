@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_085955) do
+ActiveRecord::Schema.define(version: 2021_03_01_083718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -155,6 +155,14 @@ ActiveRecord::Schema.define(version: 2020_12_28_085955) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "subdomain", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subdomain"], name: "index_organizations_on_subdomain", unique: true
+  end
+
   create_table "payment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "razorpay_account_id", null: false
     t.string "ifsc", limit: 11, null: false
@@ -182,6 +190,9 @@ ActiveRecord::Schema.define(version: 2020_12_28_085955) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "encrypted_password", default: "", null: false
+    t.uuid "organization_id"
+    t.integer "role", default: 0, null: false
+    t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -203,4 +214,5 @@ ActiveRecord::Schema.define(version: 2020_12_28_085955) do
   add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade
   add_foreign_key "payment_details", "users", on_delete: :cascade
+  add_foreign_key "users", "organizations"
 end

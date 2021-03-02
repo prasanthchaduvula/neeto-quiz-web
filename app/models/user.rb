@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :trackable, :validatable, :rememberable
+  devise :database_authenticatable, authentication_keys: [:phone_number]
+
+  enum role: { regular_user: 0, admin: 1 }
+
   has_many :courses, dependent: :destroy
   has_many :course_students, dependent: :destroy
   has_many :joined_courses, through: :course_students,  source: :course
@@ -11,12 +17,12 @@ class User < ApplicationRecord
   has_many :joined_mocktests, through: :exam_students, source: :mocktest
   has_many :attempts, class_name: "Exam::Attempt", dependent: :destroy
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :trackable, :validatable, :rememberable
-  devise :database_authenticatable, authentication_keys: [:phone_number]
+  belongs_to :organization
 
   validates :first_name, :last_name, presence: true, on: :update
-  validates :phone_number, presence: true, numericality: true, length: { is: 13 }, uniqueness: true
+  validates :phone_number, presence: true, numericality: true, length: { is: 13 }, uniqueness: { scope: :organization_id }
+
+  before_validation :set_organization
 
   before_save :ensure_authentication_token_is_present
 
@@ -61,5 +67,9 @@ class User < ApplicationRecord
         token = Devise.friendly_token
         break token unless User.where(authentication_token: token).first
       end
+    end
+
+    def set_organization
+      self.organization = Organization.first unless organization_id
     end
 end

@@ -38,9 +38,16 @@ def delete_all_records_from_all_tables
 end
 
 def create_sample_data!
-  create_user!
+  create_organization!
+  create_admin_user!
 end
 
-def create_user!
-  User.create!(first_name: "Sam", last_name: "Smith", phone_number: "+917680918423")
+def create_organization!
+  Organization.create!(name: "App", subdomain: Rails.application.secrets.app_subdomain)
 end
+
+def create_admin_user!
+  User.create!(first_name: "Oliver", last_name: "Smith", phone_number: "+917680918423", role: "admin")
+end
+
+
