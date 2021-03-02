@@ -5,7 +5,6 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   skip_before_action :authenticate_user_using_x_auth_token, only: [:create, :update]
 
   before_action :verify_otp, only: [:update]
-  before_action :load_user, only: [:update]
 
   def create
     unless ENV["DEFAULT_OTP"].present?
@@ -18,7 +17,7 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
 
   def update
     if @response["type"] == "success"
-      register_user
+      render json: { notice: "Verified" }, status: :ok
     else
       render json: { notice: @response["message"] }, status: :unprocessable_entity
     end
@@ -34,26 +33,5 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
       else
         @response = { "type" => "failed", message: "Invalid OTP" }
       end
-    end
-
-    def register_user
-      if @user.nil?
-        @user = User.new(user_params)
-        if @user.save
-          render json: { notice: "Registration successful", user: @user }, status: :ok
-        else
-          render json: { notice: "Registration failed", user: @user.errors.full_messages }, status: :ok
-        end
-      else
-        render json: { notice: "User exists, use user token and phone number for login", user: @user }, status: :ok
-      end
-    end
-
-    def user_params
-      params.require(:user).permit(:phone_number)
-    end
-
-    def load_user
-      @user = User.find_by(phone_number: params[:user][:phone_number])
     end
 end

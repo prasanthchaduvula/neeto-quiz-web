@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   devise_for :users, only: []
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      namespace :server do
+        resources :organizations, only: [:create, :update], param: :subdomain
+      end
+
       resource :registrations, only: [:create, :update] 
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do

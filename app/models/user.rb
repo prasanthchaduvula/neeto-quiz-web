@@ -54,6 +54,10 @@ class User < ApplicationRecord
     self.mocktests + self.joined_mocktests
   end
 
+  def admin?
+    role == "admin"
+  end
+
   private
 
     def ensure_authentication_token_is_present
