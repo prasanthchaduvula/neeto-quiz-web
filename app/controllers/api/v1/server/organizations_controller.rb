@@ -27,12 +27,13 @@ class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
     end
 
     def user_params
-      params.require(:user).permit(:phone_number, :first_name, :last_name, organization_id: @organization.id)
+      params.require(:user).permit(:phone_number, :first_name, :last_name)
     end
 
     def setup_organization_admin
       @user = User.new(user_params)
       @user.role = "admin"
+      @user.organization =  @organization
       if @user.save
         render json: { notice: "Created organization successfully", organization: @organization, user: @user }, status: :ok
       else

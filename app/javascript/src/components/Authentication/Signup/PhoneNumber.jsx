@@ -4,7 +4,7 @@ import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-function EnterPhoneNumber(props) {
+function PhoneNumber(props) {
   const initialValues = {
     phone_number: props.phoneNumber,
   };
@@ -42,9 +42,8 @@ function EnterPhoneNumber(props) {
               prefix="+91"
               placeholder="Enter phone number"
             />
-
             <Button
-              label="Submit"
+              label="Next"
               size="large"
               style="primary"
               fullWidth
@@ -59,4 +58,4 @@ function EnterPhoneNumber(props) {
   );
 }
 
-export default EnterPhoneNumber;
+export default PhoneNumber;

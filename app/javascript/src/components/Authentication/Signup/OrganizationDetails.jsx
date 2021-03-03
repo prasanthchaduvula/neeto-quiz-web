@@ -1,45 +1,29 @@
 import React from "react";
-import { Button, Toastr } from "neetoui";
+import { Button } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { verifyOtp } from "apis/authentication";
 
-function EnterOtp(props) {
+function OrganizationDetails({
+  setPhonePage,
+  setUserDetailsPage,
+  setOrgPage,
+  orgName,
+  subdomain,
+  handleOrganization,
+}) {
   const initialValues = {
-    otp: "",
+    name: orgName,
+    subdomain: subdomain,
   };
 
   const validationSchema = yup.object().shape({
-    otp: yup
-      .string()
-      .required("Required *")
-      .length(4, "OTP must be 4 digits"),
+    name: yup.string().required("Required *"),
+    subdomain: yup.string().required("Required *"),
   });
 
   const handleSubmit = async values => {
-    const otpPayload = {
-      user: {
-        phone_number: `+91${props.phoneNumber}`,
-        otp: values.otp,
-      },
-    };
-
-    let response = await verifyOtp(otpPayload);
-    const { id, first_name, last_name, phone_number, authentication_token } = {
-      ...response.data.user,
-    };
-
-    Toastr.success("Verification successfull");
-    localStorage.setItem("authToken", JSON.stringify(authentication_token));
-    localStorage.setItem("authPhone", JSON.stringify(phone_number));
-    localStorage.setItem("user_id", id);
-
-    if (first_name || last_name) {
-      window.location.href = "/";
-    } else {
-      props.setUserPage(true);
-    }
+    handleOrganization(values.name, values.subdomain);
   };
 
   return (
@@ -52,31 +36,32 @@ function EnterOtp(props) {
       {({ handleSubmit, isSubmitting }) => {
         return (
           <Form>
-            <Input
-              label="OTP"
-              type="number"
-              name="otp"
-              placeholder="Enter otp"
-              autoFocus
-            />
+            <Input label="Organization Name" name="name" autoFocus />
+            <Input label="Unique Subdomain" name="subdomain" className="mt-6" />
             <div className="flex justify-between items-center mt-6">
               <Button
                 label="Edit Phone Number"
                 style="secondary"
                 icon="ri-pencil-line"
                 className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                onClick={() => props.setPhonePage(true)}
+                onClick={() => {
+                  setOrgPage(false);
+                  setPhonePage(true);
+                }}
               />
               <Button
-                label="Resend OTP"
+                label="Edit User Details"
                 style="secondary"
-                icon="ri-send-plane-line"
+                icon="ri-pencil-line"
                 className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                onClick={() => props.handlePhoneSubmit(props.phoneNumber)}
+                onClick={() => {
+                  setOrgPage(false);
+                  setUserDetailsPage(true);
+                }}
               />
             </div>
             <Button
-              label="Submit"
+              label="Create Organization"
               size="large"
               style="primary"
               fullWidth
@@ -90,4 +75,4 @@ function EnterOtp(props) {
     </Formik>
   );
 }
-export default EnterOtp;
+export default OrganizationDetails;

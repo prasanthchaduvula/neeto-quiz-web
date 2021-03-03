@@ -12,10 +12,10 @@ function LandingPage() {
             Start learning in your own time and space
           </p>
           <a
-            href="/signup"
+            href="/signin"
             className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
           >
-            Signup
+            Signin
           </a>
         </div>
       </div>

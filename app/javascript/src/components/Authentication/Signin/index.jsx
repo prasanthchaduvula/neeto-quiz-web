@@ -5,7 +5,7 @@ import UpdateUser from "./UpdateUser";
 import EnterOtp from "./EnterOtp";
 import EnterPhoneNumber from "./EnterPhoneNumber";
 
-function Signup() {
+function Signin() {
   const [userPage, setUserPage] = useState(false);
   const [phonePage, setPhonePage] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -73,4 +73,4 @@ function Signup() {
     </>
   );
 }
-export default Signup;
+export default Signin;
