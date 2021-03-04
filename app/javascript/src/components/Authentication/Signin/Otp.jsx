@@ -3,9 +3,15 @@ import { Button, Toastr } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { verifyOtp } from "apis/authentication";
+import { verifyOtpForLogin } from "apis/authentication";
 
-function EnterOtp(props) {
+function Otp({
+  handlePhoneSubmit,
+  setPhonePage,
+  setOtpPage,
+  setUserDetailsPage,
+  phoneNumber,
+}) {
   const initialValues = {
     otp: "",
   };
@@ -18,14 +24,12 @@ function EnterOtp(props) {
   });
 
   const handleSubmit = async values => {
-    const otpPayload = {
-      user: {
-        phone_number: `+91${props.phoneNumber}`,
-        otp: values.otp,
-      },
+    const payload = {
+      phone_number: `+91${phoneNumber}`,
+      otp: values.otp,
     };
 
-    let response = await verifyOtp(otpPayload);
+    let response = await verifyOtpForLogin(payload);
     const { id, first_name, last_name, phone_number, authentication_token } = {
       ...response.data.user,
     };
@@ -34,11 +38,14 @@ function EnterOtp(props) {
     localStorage.setItem("authToken", JSON.stringify(authentication_token));
     localStorage.setItem("authPhone", JSON.stringify(phone_number));
     localStorage.setItem("user_id", id);
+    localStorage.setItem("org_id", response.data.organization.id);
+    localStorage.setItem("subdomain", response.data.organization.subdomain);
 
     if (first_name || last_name) {
       window.location.href = "/";
     } else {
-      props.setUserPage(true);
+      setOtpPage(false);
+      setUserDetailsPage(true);
     }
   };
 
@@ -65,14 +72,17 @@ function EnterOtp(props) {
                 style="secondary"
                 icon="ri-pencil-line"
                 className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                onClick={() => props.setPhonePage(true)}
+                onClick={() => {
+                  setPhonePage(true);
+                  setOtpPage(false);
+                }}
               />
               <Button
                 label="Resend OTP"
                 style="secondary"
                 icon="ri-send-plane-line"
                 className="border-none text-sm leading-5 text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                onClick={() => props.handlePhoneSubmit(props.phoneNumber)}
+                onClick={() => handlePhoneSubmit(phoneNumber)}
               />
             </div>
             <Button
@@ -90,4 +100,4 @@ function EnterOtp(props) {
     </Formik>
   );
 }
-export default EnterOtp;
+export default Otp;

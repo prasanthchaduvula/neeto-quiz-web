@@ -10,8 +10,13 @@ Rails.application.routes.draw do
       namespace :server do
         resources :organizations, only: [:create, :update], param: :subdomain
       end
-
-      resource :registrations, only: [:create, :update] 
+      resources :login, param: :subdomain do
+        member do
+          post :sendotp
+          post :verifyotp
+        end
+      end
+      resource :registrations, only: [:create, :update]
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
         member do

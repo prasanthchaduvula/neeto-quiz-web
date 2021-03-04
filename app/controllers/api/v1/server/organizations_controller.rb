@@ -47,7 +47,7 @@ class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
 
     def ensure_admin
       unless current_user.admin?
-        render json: { notice: "You don't have access to update the organization" }, status: :unprocessable_entity
+        render json: { error: "You don't have access to update the organization" }, status: :unprocessable_entity
       end
     end
 end

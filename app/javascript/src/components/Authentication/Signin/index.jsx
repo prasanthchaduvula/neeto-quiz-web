@@ -1,32 +1,36 @@
 import React, { useState } from "react";
 import { Toastr } from "neetoui";
-import { createOtp } from "apis/authentication";
+import { sendOtpForLogin } from "apis/authentication";
 import UpdateUser from "./UpdateUser";
-import EnterOtp from "./EnterOtp";
-import EnterPhoneNumber from "./EnterPhoneNumber";
+import Otp from "./Otp";
+import PhoneNumber from "./PhoneNumber";
 
 function Signin() {
-  const [userPage, setUserPage] = useState(false);
   const [phonePage, setPhonePage] = useState(true);
+  const [otpPage, setOtpPage] = useState(false);
+  const [userDetailsPage, setUserDetailsPage] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitBtnLoading, setSubmitBtnLoading] = useState(false);
 
-  const newRegistration = phonePayload => {
-    createOtp(phonePayload).then(() => {
+  const sendOtp = async payload => {
+    setSubmitBtnLoading(true);
+    try {
+      await sendOtpForLogin(payload);
       Toastr.success("OTP sent successfully");
-      setLoading(false);
+      setSubmitBtnLoading(false);
       setPhonePage(false);
-    });
+      setOtpPage(true);
+    } catch {
+      setSubmitBtnLoading(false);
+    }
   };
 
   const handlePhoneSubmit = number => {
     setPhoneNumber(number);
-    const phonePayload = {
-      user: {
-        phone_number: `+91${number}`,
-      },
+    const payload = {
+      phone_number: `+91${number}`,
     };
-    newRegistration(phonePayload);
+    sendOtp(payload);
   };
 
   return (
@@ -48,24 +52,27 @@ function Signin() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {phonePage ? (
-              <EnterPhoneNumber
-                setPhonePage={setPhonePage}
+            {phonePage && (
+              <PhoneNumber
                 handlePhoneSubmit={handlePhoneSubmit}
-                setPhoneNumber={setPhoneNumber}
                 phoneNumber={phoneNumber}
-                loading={loading}
-                setLoading={setLoading}
+                submitBtnLoading={submitBtnLoading}
               />
-            ) : !userPage ? (
-              <EnterOtp
+            )}
+            {otpPage && (
+              <Otp
                 handlePhoneSubmit={handlePhoneSubmit}
                 setPhonePage={setPhonePage}
+                setOtpPage={setOtpPage}
+                setUserDetailsPage={setUserDetailsPage}
                 phoneNumber={phoneNumber}
-                setUserPage={setUserPage}
               />
-            ) : (
-              <UpdateUser id={localStorage.getItem("user_id")} />
+            )}
+            {userDetailsPage && (
+              <UpdateUser
+                setPhonePage={setPhonePage}
+                setUserDetailsPage={setUserDetailsPage}
+              />
             )}
           </div>
         </div>
