@@ -9,11 +9,13 @@ axios.defaults.headers = {
 };
 
 const handleRequest = config => {
-  const token = JSON.parse(localStorage.getItem("authToken"));
-  const phone = JSON.parse(localStorage.getItem("authPhone"));
+  const token = localStorage.getItem("authToken");
+  const phone = localStorage.getItem("authPhone");
+  const subdomain = localStorage.getItem("authSubdomain");
   if (token && phone) {
     config.headers["X-Auth-Phone"] = phone;
     config.headers["X-Auth-Token"] = token;
+    config.headers["X-Auth-Subdomain"] = subdomain;
   }
   return config;
 };

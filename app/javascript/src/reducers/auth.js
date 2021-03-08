@@ -1,18 +1,33 @@
 const authReducer = (state, { type, payload }) => {
   switch (type) {
     case "LOGIN": {
-      localStorage.setItem("authToken", JSON.stringify(payload.auth_token));
-      localStorage.setItem("authEmail", JSON.stringify(payload.email));
+      localStorage.setItem("authToken", payload.token);
+      localStorage.setItem("authPhone", payload.phoneNumber);
+      localStorage.setItem("authUserId", payload.userId);
+      localStorage.setItem("authOrgId", payload.orgId);
+      localStorage.setItem("authSubdomain", payload.subdomain);
+      localStorage.setItem("authRole", payload.role);
       return {
         isLoggedIn: true,
-        authToken: payload.auth_token,
-        authEmail: payload.email,
+        authToken: payload.token,
+        authPhone: payload.phoneNumber,
+        authUserId: payload.userId,
+        authOrgId: payload.orgId,
+        authSubdomain: payload.subdomain,
+        authRole: payload.role,
       };
     }
     case "LOGOUT": {
-      localStorage.setItem("authToken", JSON.stringify(null));
-      localStorage.setItem("authEmail", JSON.stringify(null));
-      return { isLoggedIn: false, authToken: null, authEmail: null };
+      localStorage.clear();
+      return {
+        isLoggedIn: false,
+        authToken: null,
+        authPhone: null,
+        authUserId: null,
+        authOrgId: null,
+        authSubdomain: null,
+        authRole: null,
+      };
     }
     default: {
       throw new Error(`Unhandled action type: ${type}`);

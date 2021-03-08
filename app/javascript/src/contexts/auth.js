@@ -6,12 +6,21 @@ import authReducer from "reducers/auth";
 const AuthStateContext = React.createContext();
 const AuthDispatchContext = React.createContext();
 
-const token = JSON.parse(localStorage.getItem("authToken"));
-const email = JSON.parse(localStorage.getItem("authEmail"));
+const token = localStorage.getItem("authToken");
+const phoneNumber = localStorage.getItem("authPhone");
+const userId = localStorage.getItem("authUserId");
+const orgId = localStorage.getItem("authOrgId");
+const subdomain = localStorage.getItem("authSubdomain");
+const role = localStorage.getItem("authRole");
+
 const initialState = {
   isLoggedIn: !!token,
   authToken: token ? token : null,
-  authEmail: email ? email : null,
+  authPhone: phoneNumber ? phoneNumber : null,
+  authUserId: userId ? userId : null,
+  authOrgId: orgId ? orgId : null,
+  authSubdomain: subdomain ? subdomain : null,
+  authRole: role ? role : null,
 };
 
 const AuthProvider = ({ children }) => {

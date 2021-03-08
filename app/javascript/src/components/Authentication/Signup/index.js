@@ -6,8 +6,11 @@ import Otp from "./Otp";
 import PhoneNumber from "./PhoneNumber";
 import UserDetails from "./UserDetails";
 import OrganizationDetails from "./OrganizationDetails";
+import { useAuthDispatch } from "contexts/auth";
 
 function Signup() {
+  const authDispatch = useAuthDispatch();
+
   const [phonePage, setPhonePage] = useState(true);
   const [otpPage, setOtpPage] = useState(false);
   const [userDetailsPage, setUserDetailsPage] = useState(false);
@@ -55,14 +58,22 @@ function Signup() {
 
     let response = await createOrganization(payload);
     Toastr.success(response.data.notice);
-    const { id, phone_number, authentication_token } = {
+    const { id, phone_number, authentication_token, role } = {
       ...response.data.user,
     };
-    localStorage.setItem("authToken", JSON.stringify(authentication_token));
-    localStorage.setItem("authPhone", JSON.stringify(phone_number));
-    localStorage.setItem("user_id", id);
-    localStorage.setItem("org_id", response.data.organization.id);
-    localStorage.setItem("subdomain", response.data.organization.subdomain);
+
+    authDispatch({
+      type: "LOGIN",
+      payload: {
+        token: authentication_token,
+        phoneNumber: phone_number,
+        userId: id,
+        orgId: response.data.organization.id,
+        subdomain: response.data.organization.subdomain,
+        role: role,
+      },
+    });
+
     window.location.href = "/";
   };
 

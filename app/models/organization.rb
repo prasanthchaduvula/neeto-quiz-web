@@ -21,4 +21,9 @@ class Organization < ApplicationRecord
                           in: RESERVED_SUBDOMAINS,
                           message: "%{value} is reserved."
                         }
+
+
+  def instructors
+    self.users.where(role: "instructor")
+  end
 end

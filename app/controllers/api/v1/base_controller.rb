@@ -20,13 +20,19 @@ class Api::V1::BaseController < ApplicationController
 
     def authenticate_user_using_x_auth_token
       user_phone_number = request.headers["X-Auth-Phone"]
+      subdomain = request.headers["X-Auth-Subdomain"]
       auth_token = request.headers["X-Auth-Token"].presence
-      user = user_phone_number && User.find_for_database_authentication(phone_number: user_phone_number)
+      organization = subdomain && Organization.find_by(subdomain: subdomain)
 
-      if user && Devise.secure_compare(user.authentication_token, auth_token)
-        sign_in user, store: false
+      if organization
+        user = user_phone_number && User.find_for_database_authentication(phone_number: user_phone_number, organization_id: organization.id)
+        if user && Devise.secure_compare(user.authentication_token, auth_token)
+          sign_in user, store: false
+        else
+          respond_with_error("Could not authenticate with the provided credentials", 401)
+        end
       else
-        respond_with_error("Could not authenticate with the provided credentials", 401)
+        respond_with_error("No organization exist with this subdomain", 401)
       end
     end
 

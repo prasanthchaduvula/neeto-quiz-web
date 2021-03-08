@@ -12,8 +12,12 @@ import Attempt from "components/Dashboard/Mocktests/Mocktest/Template/Attempt";
 import Attempts from "components/Dashboard/Mocktests/Mocktest/Template/Attempts";
 import Result from "components/Dashboard/Mocktests/Mocktest/Template/Result";
 import Explore from "../Dashboard/Explore";
+import Instructors from "../Dashboard/Instructors";
+import { useAuthState } from "contexts/auth";
 
 const DashboardRoutes = () => {
+  const authState = useAuthState();
+
   return (
     <Switch>
       <Route
@@ -47,6 +51,9 @@ const DashboardRoutes = () => {
         component={Result}
       />
       <Route exact path="/mocktests" component={Mocktests} />
+      {authState.authRole == "admin" && (
+        <Route exact path="/instructors" component={Instructors} />
+      )}
       <Route path="/profile" component={Profile} />
       <Route exact path="/explore" component={Explore} />
       <Redirect to="/explore" path="/" />

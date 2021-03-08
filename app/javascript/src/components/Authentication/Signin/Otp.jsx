@@ -4,6 +4,7 @@ import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { verifyOtpForLogin } from "apis/authentication";
+import { useAuthDispatch } from "contexts/auth";
 
 function Otp({
   handlePhoneSubmit,
@@ -12,6 +13,8 @@ function Otp({
   setUserDetailsPage,
   phoneNumber,
 }) {
+  const authDispatch = useAuthDispatch();
+
   const initialValues = {
     otp: "",
   };
@@ -30,16 +33,30 @@ function Otp({
     };
 
     let response = await verifyOtpForLogin(payload);
-    const { id, first_name, last_name, phone_number, authentication_token } = {
+    const {
+      id,
+      first_name,
+      last_name,
+      phone_number,
+      authentication_token,
+      role,
+    } = {
       ...response.data.user,
     };
 
     Toastr.success("Verification successfull");
-    localStorage.setItem("authToken", JSON.stringify(authentication_token));
-    localStorage.setItem("authPhone", JSON.stringify(phone_number));
-    localStorage.setItem("user_id", id);
-    localStorage.setItem("org_id", response.data.organization.id);
-    localStorage.setItem("subdomain", response.data.organization.subdomain);
+
+    authDispatch({
+      type: "LOGIN",
+      payload: {
+        token: authentication_token,
+        phoneNumber: phone_number,
+        userId: id,
+        orgId: response.data.organization.id,
+        subdomain: response.data.organization.subdomain,
+        role: role,
+      },
+    });
 
     if (first_name || last_name) {
       window.location.href = "/";

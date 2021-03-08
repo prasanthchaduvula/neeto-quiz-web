@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import { initializeLogger } from "common/logger";
 import { registerResponseIntercept } from "apis/axios";
-import { useAuthDispatch } from "contexts/auth";
+import { useAuthDispatch, useAuthState } from "contexts/auth";
 import { useUserDispatch } from "contexts/user";
 import { registerRequestIntercept } from "../apis/axios";
 import PublicRoutes from "./routes/PublicRoutes";
@@ -15,6 +15,7 @@ registerRequestIntercept();
 const App = props => {
   const userDispatch = useUserDispatch();
   const authDispatch = useAuthDispatch();
+  const authState = useAuthState();
 
   useEffect(() => {
     userDispatch({ type: "SET_USER", payload: { user: props.user } });
@@ -32,7 +33,7 @@ const App = props => {
   return (
     <BrowserRouter>
       <ToastContainer />
-      {localStorage.user_id && localStorage.authToken
+      {authState.authUserId && authState.authToken
         ? privateRoutes()
         : publicRoutes()}
     </BrowserRouter>

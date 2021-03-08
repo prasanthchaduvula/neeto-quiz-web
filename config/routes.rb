@@ -7,15 +7,27 @@ Rails.application.routes.draw do
   devise_for :users, only: []
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+
       namespace :server do
         resources :organizations, only: [:create, :update], param: :subdomain
       end
-      resources :login, param: :subdomain do
+
+      resources :login, only: [], param: :subdomain do
         member do
           post :sendotp
           post :verifyotp
         end
       end
+
+      resources :organizations, only: [], param: :subdomain do
+        resource :instructors, only:  [:show] do
+          member do
+            post :add
+          end
+        end
+      end
+
+      
       resource :registrations, only: [:create, :update]
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
@@ -39,8 +51,6 @@ Rails.application.routes.draw do
       resources :join_courses, only: [:show], param: :invitation_code
 
       resources :explore_courses, only: [:index, :update]
-
-      resources :instructors, only: [:show]
 
       namespace :exam do
         resources :mocktests, except: [:new, :edit] do

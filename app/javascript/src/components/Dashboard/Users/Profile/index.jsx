@@ -6,8 +6,11 @@ import { TABS } from "./constants";
 import GeneralSettings from "./Form";
 import PaymentDetails from "./PaymentDetails";
 import Orders from "./Orders";
+import { useAuthDispatch } from "contexts/auth";
 
 export default function Profile(props) {
+  const authDispatch = useAuthDispatch();
+
   const { location } = props;
 
   const [activeTab, setActiveTab] = useState("");
@@ -25,9 +28,9 @@ export default function Profile(props) {
   }, [props]);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("authPhone");
-    localStorage.removeItem("user_id");
+    authDispatch({
+      type: "LOGOUT",
+    });
     window.location.href = "/";
   };
 
