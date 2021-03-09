@@ -26,4 +26,8 @@ class Organization < ApplicationRecord
   def instructors
     self.users.where(role: "instructor")
   end
+
+  def students
+    self.users.where(role: "student")
+  end
 end

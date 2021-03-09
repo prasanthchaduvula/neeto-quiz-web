@@ -25,6 +25,8 @@ Rails.application.routes.draw do
             post :add
           end
         end
+
+        resources :students, except: [:new, :edit]
       end
 
       

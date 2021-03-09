@@ -28,11 +28,14 @@ function NavBar() {
             icon="ri-file-list-3-line"
           />
           {authState.authRole == "admin" && (
-            <NavItem
-              title="Instructors"
-              link="/instructors"
-              icon="ri-contacts-line"
-            />
+            <>
+              <NavItem
+                title="Instructors"
+                link="/instructors"
+                icon="ri-contacts-line"
+              />
+              <NavItem title="Students" link="/students" icon="ri-group-line" />
+            </>
           )}
         </div>
         <NavItem title="Profile" link="/profile" icon="ri-user-line" />

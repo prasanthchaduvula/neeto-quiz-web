@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useAuthState } from "contexts/auth";
 import Course from "components/Dashboard/Courses/Course";
 import Courses from "components/Dashboard/Courses";
 import Profile from "components/Dashboard/Users/Profile";
@@ -13,7 +14,7 @@ import Attempts from "components/Dashboard/Mocktests/Mocktest/Template/Attempts"
 import Result from "components/Dashboard/Mocktests/Mocktest/Template/Result";
 import Explore from "../Dashboard/Explore";
 import Instructors from "../Dashboard/Instructors";
-import { useAuthState } from "contexts/auth";
+import Students from "../Dashboard/Students";
 
 const DashboardRoutes = () => {
   const authState = useAuthState();
@@ -52,7 +53,10 @@ const DashboardRoutes = () => {
       />
       <Route exact path="/mocktests" component={Mocktests} />
       {authState.authRole == "admin" && (
-        <Route exact path="/instructors" component={Instructors} />
+        <>
+          <Route exact path="/instructors" component={Instructors} />
+          <Route exact path="/students" component={Students} />
+        </>
       )}
       <Route path="/profile" component={Profile} />
       <Route exact path="/explore" component={Explore} />

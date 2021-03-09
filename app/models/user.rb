@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :trackable, :validatable, :rememberable
   devise :database_authenticatable, authentication_keys: [:phone_number]
 
-  enum role: { regular_user: 0, admin: 1, instructor: 2 }
+  enum role: { regular_user: 0, admin: 1, instructor: 2, student: 3 }
 
   has_many :courses, dependent: :destroy
   has_many :course_students, dependent: :destroy
