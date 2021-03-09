@@ -2,7 +2,7 @@
 
 class Api::V1::AddStudentsController < Api::V1::BaseController
   before_action :load_course, only: :create
-  before_action :ensure_course_admin, only: :create
+  before_action :ensure_can_manage_course, only: :create
   before_action :ensure_course_published, only: :create
   before_action :load_user, only: :create
   before_action :ensure_not_course_student, only: :create
@@ -23,20 +23,20 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     end
 
     def load_user
-      @user = User.find_by(phone_number: params[:phone_number])
+      @user = User.find_by(phone_number: params[:phone_number], organization_id: current_user.organization_id)
       if @user.nil?
         create_user
       end
     end
 
-    def ensure_course_admin
-      if current_user != @course.user
-        render json: { notice: "You are not the creator of course" }, status: :unprocessable_entity
+    def ensure_can_manage_course
+      unless current_user.can_manage_course?(@course)
+        render json: { error: "Should be the admin or instructor of the organization" }, status: :unprocessable_entity
       end
     end
 
     def ensure_not_course_student
-      unless current_user != @user && @course.joined_student_ids.exclude?(@user.id)
+      if current_user == @user || @user.instructor? || @course.joined_student_ids.include?(@user.id)
         already_course_student
       end
     end
@@ -56,12 +56,12 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     end
 
     def create_user
-      @user = User.create!(phone_number: params[:phone_number])
+      @user = User.create!(phone_number: params[:phone_number], organization_id: current_user.organization_id, role: "student")
     end
 
     def ensure_course_published
       unless @course.published
-        render status: :unprocessable_entity, json: { errors: ["You cannot add students without publishing course"] }
+        render json: { error: "You cannot add students without publishing course" }, status: :unprocessable_entity
       end
     end
 end

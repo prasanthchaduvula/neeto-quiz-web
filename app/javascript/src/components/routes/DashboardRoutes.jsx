@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useAuthState } from "contexts/auth";
+import PageNotFound from "shared/PageNotFound";
 import Course from "components/Dashboard/Courses/Course";
 import Courses from "components/Dashboard/Courses";
 import Profile from "components/Dashboard/Users/Profile";
@@ -26,7 +27,6 @@ const DashboardRoutes = () => {
         path="/courses/:course_id/chapters/:chapter_id/lessons/:lesson_id"
         component={ViewCourse}
       />
-
       <Route
         exact
         path="/courses/:course_id/preview"
@@ -52,14 +52,18 @@ const DashboardRoutes = () => {
         component={Result}
       />
       <Route exact path="/mocktests" component={Mocktests} />
-      {authState.authRole == "admin" && (
-        <>
-          <Route exact path="/instructors" component={Instructors} />
-          <Route exact path="/students" component={Students} />
-        </>
-      )}
       <Route path="/profile" component={Profile} />
       <Route exact path="/explore" component={Explore} />
+      <Route
+        exact
+        path="/instructors"
+        component={authState.authRole == "admin" ? Instructors : PageNotFound}
+      />
+      <Route
+        exact
+        path="/students"
+        component={authState.authRole == "admin" ? Students : PageNotFound}
+      />
       <Redirect to="/explore" path="/" />
     </Switch>
   );

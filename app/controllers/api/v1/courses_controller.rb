@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::CoursesController < Api::V1::BaseController
+  before_action :ensure_can_create_course, only: [:create]
   before_action :load_course, except: [:index, :create]
-  before_action :ensure_course_admin, except: [:index, :create, :show, :preview]
+  before_action :ensure_can_manage_course, only: [:update, :destroy, :publish, :unpublish ]
   before_action :check_published_course, only: :destroy
   before_action :ensure_payment_details_to_update_price, only: :update
   before_action :ensure_payment_details_to_publish, only: :publish
@@ -60,15 +61,21 @@ class Api::V1::CoursesController < Api::V1::BaseController
       @course = Course.find_by!(id: params[:id])
     end
 
-    def check_published_course
-      if @course.published
-        render json: { error: "You cannot delete a published course" }, status: :unprocessable_entity
+    def ensure_can_create_course
+      unless current_user.can_create_course?
+        render json: { error: "Should be the admin or instructor of the organization to create course" }, status: :unprocessable_entity
       end
     end
 
-    def ensure_course_admin
-      if current_user != @course.user
-        render json: { notice: "You are not the creator of course" }, status: :unprocessable_entity
+    def ensure_can_manage_course
+      unless current_user.can_manage_course?(@course)
+        render json: { error: "Should be the admin or instructor of the organization" }, status: :unprocessable_entity
+      end
+    end
+
+    def check_published_course
+      if @course.published
+        render json: { error: "You cannot delete a published course" }, status: :unprocessable_entity
       end
     end
 

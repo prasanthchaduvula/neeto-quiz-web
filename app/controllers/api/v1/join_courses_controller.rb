@@ -3,8 +3,9 @@
 class Api::V1::JoinCoursesController < Api::V1::BaseController
   before_action :load_course_with_invitation_code, only: :show
   before_action :load_course, only: :create
+  before_action :ensure_organization_member
   before_action :ensure_course_is_published
-  before_action :ensure_not_course_admin
+  before_action :ensure_can_manage_course
   before_action :ensure_not_course_student
 
   def show
@@ -25,14 +26,20 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
       @course = Course.find_by!(id: params[:course_id])
     end
 
-    def ensure_course_is_published
-      unless @course.published
-        render json: { notice: "Course is not yet published by the course creator" }
+    def ensure_organization_member
+      if current_user.organization.subdomain != @course.user.organization.subdomain
+        render json: { error: "You are not the member of organization where this course belongs to" }, status: :unprocessable_entity
       end
     end
 
-    def ensure_not_course_admin
-      if current_user == @course.user
+    def ensure_course_is_published
+      unless @course.published
+        render json: { error: "Course is not yet published by the course creator" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_can_manage_course
+      if current_user.can_manage_course?(@course)
         already_course_member
       end
     end

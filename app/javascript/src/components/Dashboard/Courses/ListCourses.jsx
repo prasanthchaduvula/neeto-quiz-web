@@ -1,15 +1,11 @@
 import React from "react";
-import { Toastr } from "neetoui";
 import { withRouter } from "react-router-dom";
 
 function ListCourses({ courses, history }) {
   const NoData = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have any created or joined courses by you to show here.
-          Please add or join courses
-        </h4>
+        <h4 className="text-xl ">We do not have any courses to show here.</h4>
       </div>
     );
   };
@@ -25,11 +21,7 @@ function ListCourses({ courses, history }) {
             >
               <p
                 className="mt-1 text-lg font-semibold text-gray-900 truncate hover:text-indigo-600 cursor-pointer"
-                onClick={() => {
-                  course.isMember
-                    ? history.push(`/courses/${course.id}`)
-                    : Toastr.error("You are not the member of the course");
-                }}
+                onClick={() => history.push(`/courses/${course.id}`)}
               >
                 {course.name}
               </p>

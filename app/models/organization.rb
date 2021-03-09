@@ -30,4 +30,8 @@ class Organization < ApplicationRecord
   def students
     self.users.where(role: "student")
   end
+
+  def marketplace_courses
+    self.courses.where(published: true, is_explored: true)
+  end
 end

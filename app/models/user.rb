@@ -46,17 +46,28 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def my_courses
-    self.courses + self.joined_courses
-  end
-
   def my_mocktests
     self.mocktests + self.joined_mocktests
   end
 
-  def admin?
-    role == "admin"
+  def can_create_course?
+    self.admin? || self.instructor?
   end
+
+  def can_manage_course?(course)
+    self.admin? || Course.exists?(id: course.id, user_id: id)
+  end
+
+  def my_courses
+    if self.admin?
+      self.organization.courses
+    elsif self.instructor?
+      self.courses
+    else
+      self.joined_courses
+    end
+  end
+
 
   private
 

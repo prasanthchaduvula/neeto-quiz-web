@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-json.isCreator @course.user == current_user
+json.isCreator current_user.can_manage_course?(@course)
 json.isStudent @course.joined_student_ids.include?(current_user.id)
-json.isMember @course.user == current_user || @course.joined_student_ids.include?(current_user.id)
 
 json.course do
   json.id @course.id

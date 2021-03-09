@@ -6,7 +6,7 @@ class Api::V1::ExploreCoursesController < Api::V1::BaseController
   before_action :ensure_course_is_published, only: [:update]
 
   def index
-    @courses = Course.where(published: true, is_explored: true)
+    @courses = current_user.organization.marketplace_courses
     respond_to do |format|
       format.json
     end

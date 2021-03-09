@@ -28,10 +28,11 @@ Rails.application.routes.draw do
 
         resources :students, except: [:new, :edit]
       end
-
       
       resource :registrations, only: [:create, :update]
+
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
+
       resources :courses, only: [:create, :update, :show, :destroy, :index] do
         member do
           get :preview
@@ -48,6 +49,7 @@ Rails.application.routes.draw do
       end
       
       resources :orders, only: [:index, :create, :show, :update]
+
       resource :payment_details, only: [:create, :show]
 
       resources :join_courses, only: [:show], param: :invitation_code
@@ -70,7 +72,6 @@ Rails.application.routes.draw do
 
         resources :join, only: [:show], param: :invitation_code
         resources :explore, only: [:index, :update]
-
       end
     end
   end
