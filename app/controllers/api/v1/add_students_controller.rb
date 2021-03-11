@@ -36,18 +36,18 @@ class Api::V1::AddStudentsController < Api::V1::BaseController
     end
 
     def ensure_not_course_student
-      if current_user == @user || @user.instructor? || @course.joined_student_ids.include?(@user.id)
+      if current_user == @user || @user.instructor? || @course.student?(@user.id)
         already_course_student
       end
     end
 
     def add_student
       AddCourseStudentService.new(@course, @user, params[:phone_number]).add_student
-      render json: { notice: "Added student to course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
+      render json: { notice: "Added student to course successfully", course: @course, joined_students: @course.students }, status: :ok
     end
 
     def already_course_student
-      render json: { notice: "This student is already a member of course", course: @course, joined_students: @course.joined_students }, status: :ok
+      render json: { notice: "This student is already a member of course", course: @course, joined_students: @course.students }, status: :ok
     end
 
     def send_invitation

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.isMember @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
+json.isMember current_user.mocktest_member?(@mocktest)
 
 json.mocktest do
   json.id @mocktest.id

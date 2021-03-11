@@ -2,7 +2,7 @@
 
 class Api::V1::Exam::QuestionsController < Api::V1::BaseController
   before_action :load_mocktest
-  before_action :ensure_mocktest_admin
+  before_action :ensure_can_manage_mocktest
   before_action :load_question, only: [:update, :destroy, :show]
   rescue_from ActiveRecord::RecordNotUnique, with: :record_already_exists
 
@@ -33,7 +33,6 @@ class Api::V1::Exam::QuestionsController < Api::V1::BaseController
     render json: { notice: "Question deleted successfully", question: @question, options: @question.options }, status: :ok
   end
 
-
   private
 
     def load_mocktest
@@ -48,9 +47,9 @@ class Api::V1::Exam::QuestionsController < Api::V1::BaseController
       @question = @mocktest.questions.find_by!(id: params[:id])
     end
 
-    def ensure_mocktest_admin
-      if current_user != @mocktest.user
-        render json: { error: "You are not the creator of mocktest" }, status: :bad_request
+    def ensure_can_manage_mocktest
+      unless current_user.can_manage_mocktest?(@mocktest)
+        render json: { error: "Should be the admin or instructor of the mocktest" }, status: :unprocessable_entity
       end
     end
 

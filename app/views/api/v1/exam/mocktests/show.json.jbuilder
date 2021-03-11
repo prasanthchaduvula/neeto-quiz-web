@@ -7,13 +7,11 @@ json.mocktest do
   json.is_published @mocktest.is_published
   json.invitation_code @mocktest.invitation_code
   json.is_explored @mocktest.is_explored
-  json.isCreator @mocktest.user == current_user
-  json.isStudent @mocktest.student_ids.include?(current_user.id)
+  json.isCreator current_user.can_manage_mocktest?(@mocktest)
+  json.isStudent @mocktest.student?(current_user.id)
   json.isAttempt @attempt.present?
-  json.isMember @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
 
-  if @mocktest.user == current_user
-
+  if current_user.can_manage_mocktest?(@mocktest)
     json.creator do
       json.id @mocktest.user.id
       json.name @mocktest.user.name

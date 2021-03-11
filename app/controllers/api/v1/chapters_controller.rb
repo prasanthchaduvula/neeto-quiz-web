@@ -2,8 +2,8 @@
 
 class Api::V1::ChaptersController < Api::V1::BaseController
   before_action :load_course
-  before_action :ensure_course_admin, only: [:create, :update, :destroy]
-  before_action :load_chapter, only: [:show, :destroy, :update]
+  before_action :ensure_can_manage_course
+  before_action :load_chapter, except: [:create]
 
   def create
     chapter = @course.chapters.create!(chapter_params)
@@ -42,9 +42,9 @@ class Api::V1::ChaptersController < Api::V1::BaseController
       ChapterViewService.new(@chapter).chapter_view
     end
 
-    def ensure_course_admin
-      if current_user != @course.user
-        render json: { error: "You are not the creator of course" }, status: :bad_request
+    def ensure_can_manage_course
+      unless current_user.can_manage_course?(@course)
+        render json: { error: "Should be the admin or instructor of the organization" }, status: :unprocessable_entity
       end
     end
 end

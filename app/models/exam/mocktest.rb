@@ -24,7 +24,11 @@ class Exam::Mocktest < ApplicationRecord
 
   def is_publishable?
     self.questions.present?
- end
+  end
+
+  def student?(id)
+    self.student_ids.include?(id)
+  end
 
   private
 

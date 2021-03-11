@@ -62,7 +62,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     end
 
     def ensure_can_create_course
-      unless current_user.can_create_course?
+      unless current_user.can_create?
         render json: { error: "Should be the admin or instructor of the organization to create course" }, status: :unprocessable_entity
       end
     end

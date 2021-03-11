@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.isCreator @mocktest.user == current_user
+json.isCreator current_user.can_manage_mocktest?(@mocktest)
 
 json.mocktest do
   json.id @mocktest.id

@@ -8,7 +8,7 @@ json.courses @courses.map do |course|
     json.price course.price.to_i
     json.published course.published
     json.invitation_code course.invitation_code
-    json.isMember course.user == current_user || course.joined_student_ids.include?(current_user.id)
+    json.isMember current_user.course_member?(course)
   end
 
   json.creator do

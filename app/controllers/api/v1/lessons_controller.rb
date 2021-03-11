@@ -3,7 +3,7 @@
 class Api::V1::LessonsController < Api::V1::BaseController
   before_action :load_chapter
   before_action :load_course
-  before_action :ensure_course_admin, except: [:show, :index]
+  before_action :ensure_can_manage_course, except: [:show, :index]
   before_action :load_lesson, except: [:index, :create]
 
   def index
@@ -52,9 +52,9 @@ class Api::V1::LessonsController < Api::V1::BaseController
       @course = Course.find_by!(id: @chapter.course.id)
     end
 
-    def ensure_course_admin
-      if current_user != @course.user
-        render json: { error: "You are not the creator of course" }, status: :bad_request
+    def ensure_can_manage_course
+      unless current_user.can_manage_course?(@course)
+        render json: { error: "Should be the admin or instructor of the organization" }, status: :unprocessable_entity
       end
     end
 end

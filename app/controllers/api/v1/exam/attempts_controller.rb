@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::Exam::AttemptsController < Api::V1::BaseController
-  before_action :load_mocktest, only: [:create, :index, :show]
-  before_action :ensure_mocktest_member, only: [:create, :index]
+  before_action :load_mocktest
+  before_action :ensure_mocktest_member
   before_action :ensure_not_mocktest_admin, only: :create
   before_action :ensure_mocktest_student, only: :create
   before_action :load_attempts_for_instructor, only: :index
@@ -45,35 +45,31 @@ class Api::V1::Exam::AttemptsController < Api::V1::BaseController
     end
 
     def ensure_not_mocktest_admin
-      if @mocktest.user == current_user
+      if current_user.can_manage_mocktest?(@mocktest)
         render json: { notice: "You are the creator of this mocktest" }, status: :unprocessable_entity
       end
     end
 
     def ensure_mocktest_student
-      if @mocktest.student_ids.exclude?(current_user.id)
+      unless @mocktest.student?(current_user.id)
         render json: { notice: "You are not the student of mocktest" }, status: :bad_request
       end
     end
 
-    def check_mocktest_member
-      @mocktest.user == current_user || @mocktest.student_ids.include?(current_user.id)
-    end
-
     def ensure_mocktest_member
-      unless check_mocktest_member
+      unless current_user.mocktest_member?(@mocktest)
         render json: { error: "You are not the member of mocktest", isMember: false }, status: :bad_request
       end
     end
 
     def load_attempts_for_instructor
-      if current_user == @mocktest.user
+      if current_user.can_manage_mocktest?(@mocktest)
         @attempts = @mocktest.attempts
       end
     end
 
     def load_attempts_for_student
-      if @mocktest.student_ids.include?(current_user.id)
+      if @mocktest.student?(current_user.id)
         @attempts = Exam::Attempt.where(user_id: current_user.id, mocktest_id: @mocktest.id)
       end
     end

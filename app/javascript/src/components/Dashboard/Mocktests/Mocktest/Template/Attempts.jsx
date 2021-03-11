@@ -10,17 +10,20 @@ function Attempts({ match, history }) {
   const [mocktest, setMocktest] = useState({});
   const [attempts, setAttempts] = useState([]);
   const [isCreator, setIsCreator] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAttempts(match.params.mocktest_id).then(response => {
-      const { isCreator, mocktest, attempts } = response.data;
-      setMocktest(mocktest);
-      setAttempts(attempts);
-      setIsCreator(isCreator);
-      setIsLoading(false);
-    });
+    fetchAttempts();
   }, []);
+
+  const fetchAttempts = async () => {
+    let response = await getAttempts(match.params.mocktest_id);
+    const { isCreator, mocktest, attempts } = response.data;
+    setMocktest(mocktest);
+    setAttempts(attempts);
+    setIsCreator(isCreator);
+    setLoading(false);
+  };
 
   const DisplayAttempts = () => {
     return (
@@ -89,19 +92,17 @@ function Attempts({ match, history }) {
     );
   };
 
-  return (
-    <div>
-      {isLoading ? (
-        <div className="min-h-screen flex items-center">
-          <PageLoader />
-        </div>
-      ) : isCreator ? (
-        <DisplayAttempts />
-      ) : (
-        <PageNotFound />
-      )}
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center">
+        <PageLoader />
+      </div>
+    );
+  } else if (isCreator) {
+    return <DisplayAttempts />;
+  } else {
+    return <PageNotFound />;
+  }
 }
 
 export default withRouter(Attempts);

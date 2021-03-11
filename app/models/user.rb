@@ -46,16 +46,16 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def my_mocktests
-    self.mocktests + self.joined_mocktests
-  end
-
-  def can_create_course?
+  def can_create?
     self.admin? || self.instructor?
   end
 
   def can_manage_course?(course)
     self.admin? || Course.exists?(id: course.id, user_id: id)
+  end
+
+  def course_member?(course)
+    can_manage_course?(course) || course.student?(id)
   end
 
   def my_courses
@@ -68,6 +68,23 @@ class User < ApplicationRecord
     end
   end
 
+  def can_manage_mocktest?(mocktest)
+    self.admin? || Exam::Mocktest.exists?(id: mocktest.id, user_id: id)
+  end
+
+  def mocktest_member?(mocktest)
+    can_manage_mocktest?(mocktest) || mocktest.student?(id)
+  end
+
+  def my_mocktests
+    if self.admin?
+      self.organization.mocktests
+    elsif self.instructor?
+      self.mocktests
+    else
+      self.joined_mocktests
+    end
+  end
 
   private
 

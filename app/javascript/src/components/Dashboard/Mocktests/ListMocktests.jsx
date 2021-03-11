@@ -1,5 +1,4 @@
 import React from "react";
-import { Toastr } from "neetoui";
 import { withRouter } from "react-router-dom";
 
 function ListMocktests({ mocktests, history }) {
@@ -25,11 +24,7 @@ function ListMocktests({ mocktests, history }) {
             >
               <p
                 className="mt-1 text-lg font-semibold text-gray-900 truncate hover:text-indigo-600 cursor-pointer"
-                onClick={() => {
-                  mocktest.isMember
-                    ? history.push(`/mocktests/${mocktest.id}`)
-                    : Toastr.error("You are not the member of the mocktest");
-                }}
+                onClick={() => history.push(`/mocktests/${mocktest.id}`)}
               >
                 {mocktest.name}
               </p>

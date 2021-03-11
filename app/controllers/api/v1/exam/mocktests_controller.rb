@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::Exam::MocktestsController < Api::V1::BaseController
+  before_action :ensure_can_create_mocktest, only: [:create]
   before_action :load_mocktest, except: [:index, :create]
-  before_action :ensure_mocktest_admin, except: [:index, :create, :show]
+  before_action :ensure_can_manage_mocktest, except: [:index, :create, :show]
   before_action :ensure_payment_details_to_update_price, only: :update
   before_action :check_published_mocktest, only: :destroy
   before_action :ensure_payment_details_to_publish, only: :publish
@@ -57,26 +58,6 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     render json: { notice: "Mocktest can not be reattmpted", mocktest: @mocktest }, status: :ok
   end
 
-  def allow_reattempts
-    @mocktest.update!(allow_reattempts: true)
-    render json: { notice: "Mocktest can reattmpted", mocktest: @mocktest }, status: :ok
-  end
-
-  def dont_allow_reattempts
-    @mocktest.update!(allow_reattempts: false)
-    render json: { notice: "Mocktest can not be reattmpted", mocktest: @mocktest }, status: :ok
-  end
-
-  def allow_reattempts
-    @mocktest.update!(allow_reattempts: true)
-    render json: { notice: "Mocktest can reattmpted", course: @mocktest }, status: :ok
-  end
-
-  def dont_allow_reattempts
-    @mocktest.update!(allow_reattempts: false)
-    render json: { notice: "Mocktest can not be reattmpted", course: @mocktest }, status: :ok
-  end
-
   private
 
     def mocktest_params
@@ -88,9 +69,15 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
       @mocktest = Exam::Mocktest.find_by!(id: params[:id])
     end
 
-    def ensure_mocktest_admin
-      if current_user != @mocktest.user
-        render json: { error: "You are not the creator of mocktest" }, status: :bad_request
+    def ensure_can_create_mocktest
+      unless current_user.can_create?
+        render json: { error: "Should be the admin or instructor of the organization to create mocktest" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_can_manage_mocktest
+      unless current_user.can_manage_mocktest?(@mocktest)
+        render json: { error: "Should be the admin or instructor of the organization" }, status: :unprocessable_entity
       end
     end
 

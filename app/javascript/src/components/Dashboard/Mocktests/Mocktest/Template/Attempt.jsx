@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 import classNames from "classnames";
 import { PageHeading } from "neetoui/layouts";
-import { Button, Radio } from "neetoui";
+import { Button, Radio, PageLoader } from "neetoui";
 import TextareaAutosize from "react-textarea-autosize";
 import { getAttempt } from "apis/mocktests";
-import { withRouter } from "react-router-dom";
+import PageNotFound from "shared/PageNotFound";
 
 function Attempt({ match }) {
+  const [loading, setLoading] = useState(true);
   const [mocktest, setMocktest] = useState({});
+  const [isMember, setIsMember] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [question, setQuestion] = useState({});
   const [selectedQuestionNumber, setSelectedQuestionNumber] = useState(1);
@@ -17,12 +20,12 @@ function Attempt({ match }) {
     setQuestion(questions[selectedQuestionNumber - 1]);
   }, [questions.length]);
 
-  const fetchAttempt = () => {
-    getAttempt(match.params.mocktest_id, match.params.id).then(response => {
-      const { mocktest, questions } = response.data;
-      setMocktest(mocktest);
-      setQuestions(questions);
-    });
+  const fetchAttempt = async () => {
+    let response = await getAttempt(match.params.mocktest_id, match.params.id);
+    setMocktest(response.data.mocktest);
+    setQuestions(response.data.questions);
+    setIsMember(response.data.isMember);
+    setLoading(false);
   };
 
   const questionBgLabel = question => {
@@ -147,15 +150,25 @@ function Attempt({ match }) {
     );
   };
 
-  return (
-    <div>
-      <PageHeading title={mocktest.name} />
-      <div className="flex justify-between">
-        <Question />
-        <NumberPanel />
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center">
+        <PageLoader />
       </div>
-    </div>
-  );
+    );
+  } else if (isMember) {
+    return (
+      <div>
+        <PageHeading title={mocktest.name} />
+        <div className="flex justify-between">
+          <Question />
+          <NumberPanel />
+        </div>
+      </div>
+    );
+  } else {
+    return <PageNotFound />;
+  }
 }
 
 export default withRouter(Attempt);

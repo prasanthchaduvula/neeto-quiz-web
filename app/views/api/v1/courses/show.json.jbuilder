@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.isCreator current_user.can_manage_course?(@course)
-json.isStudent @course.joined_student_ids.include?(current_user.id)
+json.isStudent @course.student?(current_user.id)
 
 json.course do
   json.id @course.id
@@ -22,7 +22,7 @@ json.chapters @course.chapters.map do |chapter|
   json.lessons chapter.lessons.includes([:file_attachment]).map { |l| l.attributes.merge(file: l.file_url) }
 end
 
-json.students @course.joined_students.map do |student|
+json.students @course.students.map do |student|
   json.name student.name
   json.phone_number student.phone_number
   json.id student.id

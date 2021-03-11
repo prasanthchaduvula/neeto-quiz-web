@@ -6,7 +6,7 @@ class Course < ApplicationRecord
   has_many :chapters, dependent: :destroy
   has_many :lessons, through: :chapters
   has_many :course_students, dependent: :destroy
-  has_many :joined_students, through: :course_students,  source: :user
+  has_many :students, through: :course_students,  source: :user
 
   has_many :orders
 
@@ -18,7 +18,7 @@ class Course < ApplicationRecord
   before_validation :set_invitation_code, on: :create
 
   def unpublishable?
-    published && joined_students.present?
+    published && students.present?
   end
 
   def is_publishable?
@@ -31,6 +31,10 @@ class Course < ApplicationRecord
 
   def chapters_with_lessons
     find_chapters_with_lessons.uniq
+  end
+
+  def student?(id)
+    self.student_ids.include?(id)
   end
 
   private

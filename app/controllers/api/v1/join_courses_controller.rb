@@ -5,7 +5,6 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
   before_action :load_course, only: :create
   before_action :ensure_organization_member
   before_action :ensure_course_is_published
-  before_action :ensure_can_manage_course
   before_action :ensure_not_course_student
 
   def show
@@ -38,24 +37,14 @@ class Api::V1::JoinCoursesController < Api::V1::BaseController
       end
     end
 
-    def ensure_can_manage_course
-      if current_user.can_manage_course?(@course)
-        already_course_member
-      end
-    end
-
     def ensure_not_course_student
-      if @course.joined_student_ids.include?(current_user.id)
-        already_course_member
+      if current_user.course_member?(@course)
+        render json: { notice: "You are already a member of course", course: @course, joined_students: @course.students }, status: :ok
       end
-    end
-
-    def already_course_member
-      render json: { notice: "You are already a member of course", course: @course, joined_students: @course.joined_students }, status: :ok
     end
 
     def add_student
       AddCourseStudentService.new(@course, current_user, current_user.phone_number).add_student
-      render json: { notice: "Joined course successfully", course: @course, joined_students: @course.joined_students }, status: :ok
+      render json: { notice: "Joined course successfully", course: @course, joined_students: @course.students }, status: :ok
     end
 end
