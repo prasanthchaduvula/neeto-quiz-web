@@ -3,8 +3,8 @@
 class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: [:create]
   skip_before_action :authenticate_user_using_x_auth_token, only: [:create]
-  before_action :load_organization, only: [:update]
-  before_action :ensure_admin, only: [:update]
+  before_action :load_organization, except: [:create]
+  before_action :ensure_admin, except: [:create]
 
   def create
     @organization = Organization.new(organization_params)
@@ -13,6 +13,10 @@ class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
     else
       render json: { errors: @organization.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def show
+    render json: { organization: @organization }, status: :ok
   end
 
   def update

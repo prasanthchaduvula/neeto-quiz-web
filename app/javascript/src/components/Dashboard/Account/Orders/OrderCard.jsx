@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { ORDER_STATUS_COLOR_MAPPING, ORDER_STATUS_STEP_MAPPING } from "common";
 
-const OrderCard = ({ order }) => {
+function OrderCard({ order }) {
   const {
     razorpay_order_id,
     amount,
@@ -82,6 +82,6 @@ const OrderCard = ({ order }) => {
       </li>
     </Fragment>
   );
-};
+}
 
 export default OrderCard;

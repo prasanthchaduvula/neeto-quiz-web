@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       namespace :server do
-        resources :organizations, only: [:create, :update], param: :subdomain
+        resources :organizations, only: [:create, :show, :update], param: :subdomain
       end
 
       resources :login, only: [], param: :subdomain do

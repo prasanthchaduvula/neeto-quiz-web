@@ -35,10 +35,15 @@ function NavBar() {
                 icon="ri-contacts-line"
               />
               <NavItem title="Students" link="/students" icon="ri-group-line" />
+              <NavItem
+                title="Settings"
+                link="/settings"
+                icon="ri-settings-2-line"
+              />
             </>
           )}
         </div>
-        <NavItem title="Profile" link="/profile" icon="ri-user-line" />
+        <NavItem title="Account" link="/account" icon="ri-user-line" />
       </div>
     </div>
   );

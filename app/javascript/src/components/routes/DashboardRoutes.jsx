@@ -4,7 +4,6 @@ import { useAuthState } from "contexts/auth";
 import PageNotFound from "shared/PageNotFound";
 import Course from "components/Dashboard/Courses/Course";
 import Courses from "components/Dashboard/Courses";
-import Profile from "components/Dashboard/Users/Profile";
 import CourseTemplate from "components/Dashboard/Courses/Course/Template";
 import ViewCourse from "components/Dashboard/Courses/Course/Template/ViewCourse";
 import Instructor from "components/Dashboard/Instructor";
@@ -16,6 +15,8 @@ import Result from "components/Dashboard/Mocktests/Mocktest/Template/Result";
 import Explore from "../Dashboard/Explore";
 import Instructors from "../Dashboard/Instructors";
 import Students from "../Dashboard/Students";
+import Settings from "../Dashboard/Settings";
+import Account from "../Dashboard/Account";
 
 const DashboardRoutes = () => {
   const authState = useAuthState();
@@ -52,7 +53,7 @@ const DashboardRoutes = () => {
         component={Result}
       />
       <Route exact path="/mocktests" component={Mocktests} />
-      <Route path="/profile" component={Profile} />
+      <Route path="/account" component={Account} />
       <Route exact path="/explore" component={Explore} />
       <Route
         exact
@@ -63,6 +64,11 @@ const DashboardRoutes = () => {
         exact
         path="/students"
         component={authState.authRole == "admin" ? Students : PageNotFound}
+      />
+      <Route
+        exact
+        path="/settings"
+        component={authState.authRole == "admin" ? Settings : PageNotFound}
       />
       <Redirect to="/explore" path="/" />
     </Switch>

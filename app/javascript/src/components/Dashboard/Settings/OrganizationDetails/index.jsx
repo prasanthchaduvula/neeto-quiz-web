@@ -3,40 +3,36 @@ import { PageLoader, Button, Toastr } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { getUser, updateUser } from "apis/users";
+import { getOrganization, updateOrganization } from "apis/organizations";
 
-export default function GeneralSettings() {
+export default function OrganizationDetails() {
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
-    loadProfile();
+    loadOrganization();
   }, []);
 
-  const loadProfile = () => {
-    const user_id = localStorage.getItem("authUserId");
-
-    getUser(user_id).then(response => {
-      setInitialValues(response.data.user);
-      setLoading(false);
-    });
+  const loadOrganization = async () => {
+    let response = await getOrganization();
+    setInitialValues(response.data.organization);
+    setLoading(false);
   };
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("Required *"),
-    last_name: yup.string().required("Required *"),
+    name: yup.string().required("Required *"),
+    subdomain: yup.string().required("Required *"),
   });
 
   const handleSubmit = async values => {
     const payload = {
-      user: {
-        first_name: values.first_name,
-        last_name: values.last_name,
+      organization: {
+        name: values.name,
+        subdomain: values.subdomain,
       },
     };
-
-    await updateUser(values.id, payload);
-    Toastr.success("Profile updated successfully");
+    let response = await updateOrganization(payload);
+    Toastr.success(response.data.notice);
   };
 
   const onReset = () => Toastr.success("Form has been reset.");
@@ -58,15 +54,11 @@ export default function GeneralSettings() {
             <div className="h-full w-2/5">
               <Form>
                 <div className="mt-10">
-                  <div className="grid grid-cols-2 gap-6 mb-6">
-                    <Input label="First Name" name="first_name" autoFocus />
-                    <Input label="Last Name" name="last_name" />
-                  </div>
+                  <Input label="Organization Name" name="name" autoFocus />
                   <Input
-                    label="Phone Number"
-                    name="phone_number"
-                    disabled
-                    className="mb-6"
+                    label="Unique Subdomain"
+                    name="subdomain"
+                    className="mt-6"
                   />
                 </div>
                 <div className="flex flex-row items-center justify-start mt-8">
