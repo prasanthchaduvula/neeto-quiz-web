@@ -24,11 +24,11 @@ class Organization < ApplicationRecord
 
 
   def instructors
-    self.users.where(role: "instructor")
+    self.users.instructor
   end
 
   def students
-    self.users.where(role: "student")
+    self.users.student
   end
 
   def marketplace_courses

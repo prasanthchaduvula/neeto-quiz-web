@@ -20,12 +20,7 @@ Rails.application.routes.draw do
       end
 
       resources :organizations, only: [], param: :subdomain do
-        resource :instructors, only:  [:show] do
-          member do
-            post :add
-          end
-        end
-
+        resources :instructors, except: [:new, :edit]
         resources :students, except: [:new, :edit]
       end
       

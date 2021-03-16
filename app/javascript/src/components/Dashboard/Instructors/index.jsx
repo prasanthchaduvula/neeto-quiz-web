@@ -9,6 +9,9 @@ function Instructors() {
   const [loading, setLoading] = useState(true);
   const [instructors, setInstructors] = useState([]);
   const [instructorsPane, setInstructorsPane] = useState(false);
+  const [instructor, setInstructor] = useState("");
+  const [paneTitle, setPaneTitle] = useState("");
+  const [paneMode, setPaneMode] = useState("");
 
   useEffect(() => {
     loadInstructors();
@@ -26,9 +29,14 @@ function Instructors() {
         title="Instructors"
         rightButton={() => (
           <Button
-            label="Add new instrcuor"
+            label="Add new instructor"
             icon="ri-add-line"
-            onClick={() => setInstructorsPane(true)}
+            onClick={() => {
+              setInstructorsPane(true);
+              setInstructor("");
+              setPaneTitle("Add Instructor");
+              setPaneMode("form");
+            }}
           />
         )}
       />
@@ -38,11 +46,22 @@ function Instructors() {
         </div>
       ) : (
         <div>
-          <ListInstructors instructors={instructors} />
+          <ListInstructors
+            instructors={instructors}
+            setInstructorsPane={setInstructorsPane}
+            setInstructor={setInstructor}
+            setPaneTitle={setPaneTitle}
+            setPaneMode={setPaneMode}
+          />
           <InstructorsPane
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+            paneTitle={paneTitle}
+            paneMode={paneMode}
             showPane={instructorsPane}
             setShowPane={setInstructorsPane}
             loadInstructors={loadInstructors}
+            instructor={instructor}
           />
         </div>
       )}

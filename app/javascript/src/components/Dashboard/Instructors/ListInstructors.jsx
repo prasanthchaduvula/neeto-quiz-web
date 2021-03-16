@@ -2,7 +2,13 @@ import React from "react";
 import moment from "moment";
 import { Checkbox, Switch } from "neetoui";
 
-function ListInstructors({ instructors }) {
+function ListInstructors({
+  instructors,
+  setInstructorsPane,
+  setInstructor,
+  setPaneTitle,
+  setPaneMode,
+}) {
   function formatJoinedTime(joinedOn) {
     if (joinedOn) {
       return moment(joinedOn).format("MMM D, YYYY");
@@ -18,17 +24,22 @@ function ListInstructors({ instructors }) {
     );
   };
 
-  const Rows = ({ key, name, phoneNumber, joinedOn }) => {
+  const Rows = ({ instructor, name, phoneNumber, joinedOn }) => {
     return (
-      <tr
-        role="row"
-        key={key}
-        className={"cursor-pointer bg-white hover:bg-gray-50"}
-      >
+      <tr role="row" className={"cursor-pointer bg-white hover:bg-gray-50"}>
         <td>
           <Checkbox />
         </td>
-        <td>{name}</td>
+        <td
+          onClick={() => {
+            setInstructorsPane(true);
+            setInstructor(instructor);
+            setPaneTitle("Instructor Info");
+            setPaneMode("info");
+          }}
+        >
+          {name}
+        </td>
         <td>{phoneNumber}</td>
         <td>{formatJoinedTime(joinedOn)}</td>
         <td>
@@ -57,6 +68,7 @@ function ListInstructors({ instructors }) {
             {instructors.map(instructor => (
               <Rows
                 key={instructor.id}
+                instructor={instructor}
                 name={instructor.name}
                 phoneNumber={instructor.phone_number}
                 joinedOn={instructor.joined_on}

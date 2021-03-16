@@ -4,8 +4,23 @@ class Api::V1::InstructorsController < Api::V1::BaseController
   before_action :load_organization
   before_action :ensure_organization
   before_action :ensure_admin
-  before_action :load_instructor, only: [:add]
-  before_action :ensure_not_organization_instrcutor, only: [:add]
+  before_action :load_instructor, only: [:create]
+  before_action :ensure_not_organization_instrcutor, only: [:create]
+  before_action :ensure_instructor, only: [:update, :show]
+
+  def index
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def create
+    if @instructor.nil?
+      create_instructor
+    else
+      render json: { notice: "This user is already a member of this organization", organization: @organization, instructor: @instructor }, status: :ok
+    end
+  end
 
   def show
     respond_to do |format|
@@ -13,12 +28,9 @@ class Api::V1::InstructorsController < Api::V1::BaseController
     end
   end
 
-  def add
-    if @instructor.nil?
-      create_instructor
-    else
-      render json: { notice: "This user is already a member of this organization", organization: @organization, instructor: @instructor }, status: :ok
-    end
+  def update
+    @instructor.update!(instructor_params)
+    render json: { notice: "Updated instructor successfully", organization: @organization, instructor: @instructor }, status: :ok
   end
 
   private
@@ -37,7 +49,6 @@ class Api::V1::InstructorsController < Api::V1::BaseController
       end
     end
 
-
     def ensure_admin
       if current_user.organization_id != @organization.id || !current_user.admin?
         render json: { error: "You are not the admin of this organization" }, status: :unprocessable_entity
@@ -52,6 +63,10 @@ class Api::V1::InstructorsController < Api::V1::BaseController
 
     def load_instructor
       @instructor = User.find_by(phone_number: params[:instructor][:phone_number], organization_id: @organization.id)
+    end
+
+    def ensure_instructor
+      @instructor = User.find_by!(id: params[:id])
     end
 
     def create_instructor

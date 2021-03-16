@@ -3,13 +3,13 @@ import { Button, Toastr } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { addStudent } from "apis/students";
+import { addStudent, updateStudent } from "apis/students";
 
-export default function StudentsForm({ onClose, loadStudents }) {
+export default function StudentsForm({ onClose, loadStudents, student }) {
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
+    firstName: student.first_name || "",
+    lastName: student.last_name || "",
+    phoneNumber: (student && student.phone_number.slice(3)) || "",
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -32,7 +32,12 @@ export default function StudentsForm({ onClose, loadStudents }) {
         phone_number: "+91" + values.phoneNumber,
       },
     };
-    let response = await addStudent(payload);
+
+    const sendRequest = payload => {
+      return student ? updateStudent(student.id, payload) : addStudent(payload);
+    };
+
+    let response = await sendRequest(payload);
     Toastr.success(response.data.notice);
     loadStudents();
     onClose();

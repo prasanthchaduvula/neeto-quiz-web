@@ -3,13 +3,17 @@ import { Button, Toastr } from "neetoui";
 import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { addInstructor } from "apis/instructors";
+import { addInstructor, updateInstructor } from "apis/instructors";
 
-export default function InstrcuctorsForm({ onClose, loadInstructors }) {
+export default function InstrcuctorsForm({
+  onClose,
+  loadInstructors,
+  instructor,
+}) {
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
+    firstName: instructor.first_name || "",
+    lastName: instructor.last_name || "",
+    phoneNumber: (instructor && instructor.phone_number.slice(3)) || "",
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -32,7 +36,14 @@ export default function InstrcuctorsForm({ onClose, loadInstructors }) {
         phone_number: "+91" + values.phoneNumber,
       },
     };
-    let response = await addInstructor(payload);
+
+    const sendRequest = payload => {
+      return instructor
+        ? updateInstructor(instructor.id, payload)
+        : addInstructor(payload);
+    };
+
+    let response = await sendRequest(payload);
     Toastr.success(response.data.notice);
     loadInstructors();
     onClose();

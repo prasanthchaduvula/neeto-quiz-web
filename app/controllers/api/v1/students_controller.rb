@@ -3,9 +3,10 @@
 class Api::V1::StudentsController  < Api::V1::BaseController
   before_action :load_organization
   before_action :ensure_organization
-  before_action :ensure_admin, only: [:create, :index]
+  before_action :ensure_admin
   before_action :load_student, only: [:create]
   before_action :ensure_not_organization_student, only: [:create]
+  before_action :ensure_student, only: [:update, :show]
 
   def index
     respond_to do |format|
@@ -18,6 +19,17 @@ class Api::V1::StudentsController  < Api::V1::BaseController
       create_student
     else
       render json: { notice: "This user is already a member of this organization", organization: @organization, student: @student }, status: :ok
+    end
+  end
+
+  def update
+    @student.update!(student_params)
+    render json: { notice: "Updated student successfully", organization: @organization, student: @student }, status: :ok
+  end
+
+  def show
+    respond_to do |format|
+      format.json
     end
   end
 
@@ -52,6 +64,10 @@ class Api::V1::StudentsController  < Api::V1::BaseController
 
     def load_student
       @student = User.find_by(phone_number: params[:student][:phone_number], organization_id: @organization.id)
+    end
+
+    def ensure_student
+      @student = User.find_by!(id: params[:id])
     end
 
     def create_student

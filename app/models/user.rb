@@ -19,6 +19,9 @@ class User < ApplicationRecord
 
   belongs_to :organization
 
+  scope :student, -> { where(role: "student").order(created_at: :desc) }
+  scope :instructor, -> { where(role: "instructor").order(created_at: :desc) }
+
   validates :first_name, :last_name, presence: true, on: :update
   validates :phone_number, presence: true, numericality: true, length: { is: 13 }, uniqueness: { scope: :organization_id }
 

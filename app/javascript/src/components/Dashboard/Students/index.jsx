@@ -9,6 +9,9 @@ function Students() {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [studentsPane, setStudentsPane] = useState(false);
+  const [student, setStudent] = useState("");
+  const [paneTitle, setPaneTitle] = useState("");
+  const [paneMode, setPaneMode] = useState("");
 
   useEffect(() => {
     loadStudents();
@@ -28,7 +31,12 @@ function Students() {
           <Button
             label="Add new student"
             icon="ri-add-line"
-            onClick={() => setStudentsPane(true)}
+            onClick={() => {
+              setStudentsPane(true);
+              setStudent("");
+              setPaneMode("form");
+              setPaneTitle("Add Student");
+            }}
           />
         )}
       />
@@ -38,11 +46,22 @@ function Students() {
         </div>
       ) : (
         <div>
-          <ListStudents students={students} />
+          <ListStudents
+            students={students}
+            setStudentsPane={setStudentsPane}
+            setStudent={setStudent}
+            setPaneTitle={setPaneTitle}
+            setPaneMode={setPaneMode}
+          />
           <StudentsPane
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+            paneTitle={paneTitle}
+            paneMode={paneMode}
             showPane={studentsPane}
             setShowPane={setStudentsPane}
             loadStudents={loadStudents}
+            student={student}
           />
         </div>
       )}
