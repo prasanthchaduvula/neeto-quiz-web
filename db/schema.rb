@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_01_083718) do
+ActiveRecord::Schema.define(version: 2021_03_17_141148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -170,11 +170,11 @@ ActiveRecord::Schema.define(version: 2021_03_01_083718) do
     t.integer "account_type", default: 0, null: false
     t.string "business_name", null: false
     t.string "email_id", null: false
-    t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "organization_id"
+    t.index ["organization_id"], name: "index_payment_details_on_organization_id"
     t.index ["razorpay_account_id"], name: "index_payment_details_on_razorpay_account_id", unique: true
-    t.index ["user_id"], name: "index_payment_details_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -213,6 +213,6 @@ ActiveRecord::Schema.define(version: 2021_03_01_083718) do
   add_foreign_key "lessons", "chapters", on_delete: :cascade
   add_foreign_key "orders", "courses"
   add_foreign_key "orders", "users", on_delete: :cascade
-  add_foreign_key "payment_details", "users", on_delete: :cascade
+  add_foreign_key "payment_details", "organizations", on_delete: :cascade
   add_foreign_key "users", "organizations"
 end

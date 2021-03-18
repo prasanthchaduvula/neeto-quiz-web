@@ -11,10 +11,7 @@ json.course do
   json.published @course.published
   json.invitation_code @course.invitation_code
   json.is_explored @course.is_explored
-end
-
-json.creator do
-  json.payment_details @course.user.payment_details.present?
+  json.payment_details @course.user.organization.payment_details.present?
 end
 
 json.chapters @course.chapters.map do |chapter|

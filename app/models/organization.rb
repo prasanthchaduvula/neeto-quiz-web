@@ -8,6 +8,7 @@ class Organization < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :courses, through: :users
   has_many :mocktests, through: :users
+  has_one :payment_details, class_name: "PaymentDetail", dependent: :destroy
 
   validates :name, presence: true
   validates :subdomain, presence: true,

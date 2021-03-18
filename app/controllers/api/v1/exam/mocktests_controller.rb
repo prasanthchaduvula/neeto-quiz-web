@@ -86,7 +86,7 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     end
 
     def ensure_payment_details_to_update_price
-      if update_price_request? && current_user.payment_details.nil?
+      if update_price_request? && current_user.organization.payment_details.nil?
         render json: { error: "Please add payment details to update mocktest price" }, status: :unprocessable_entity
       end
     end
@@ -110,7 +110,7 @@ class Api::V1::Exam::MocktestsController < Api::V1::BaseController
     end
 
     def ensure_payment_details_to_publish
-      if @mocktest.price? && current_user.payment_details.nil?
+      if @mocktest.price? && current_user.organization.payment_details.nil?
         render json: { error: "Mocktest has a price. So please add payment details to publish the mocktest" }, status: :unprocessable_entity
       end
     end

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :organizations, only: [], param: :subdomain do
         resources :instructors, except: [:new, :edit]
         resources :students, except: [:new, :edit]
+        resource :payment_details, only: [:create, :show]
       end
       
       resource :registrations, only: [:create, :update]
@@ -44,8 +45,6 @@ Rails.application.routes.draw do
       end
       
       resources :orders, only: [:index, :create, :show, :update]
-
-      resource :payment_details, only: [:create, :show]
 
       resources :join_courses, only: [:show], param: :invitation_code
 

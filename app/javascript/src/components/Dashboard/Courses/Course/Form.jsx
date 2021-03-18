@@ -11,7 +11,6 @@ export default function CourseForm({
   isCreateForm,
   course,
   fetchCourses,
-  creator,
   fetchSingleCourse,
 }) {
   const initialValues = {
@@ -83,9 +82,9 @@ export default function CourseForm({
               type="number"
               name="price"
               className="mb-6"
-              disabled={creator && !creator.payment_details ? true : false}
+              disabled={course && !course.payment_details ? true : false}
             />
-            {creator && !creator.payment_details && (
+            {course && !course.payment_details && (
               <Link to="/profile?payment-details" className="text-indigo-600">
                 To add price to the course. Please add bank acount details
               </Link>

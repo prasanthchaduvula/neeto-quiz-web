@@ -12,7 +12,6 @@ class User < ApplicationRecord
   has_many :joined_courses, through: :course_students,  source: :course
   has_many :orders, dependent: :destroy
   has_many :mocktests, class_name: "Exam::Mocktest", dependent: :destroy
-  has_one :payment_details, class_name: "PaymentDetail", dependent: :destroy
   has_many :exam_students, class_name: "Exam::Student", dependent: :destroy
   has_many :joined_mocktests, through: :exam_students, source: :mocktest
   has_many :attempts, class_name: "Exam::Attempt", dependent: :destroy

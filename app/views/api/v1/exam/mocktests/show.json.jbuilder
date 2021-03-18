@@ -15,7 +15,7 @@ json.mocktest do
     json.creator do
       json.id @mocktest.user.id
       json.name @mocktest.user.name
-      json.payment_details @mocktest.user.payment_details.present?
+      json.payment_details current_user.organization.payment_details.present?
     end
 
     json.questions @mocktest.questions.map do |question|

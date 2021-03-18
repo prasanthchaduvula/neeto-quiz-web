@@ -27,7 +27,7 @@ class PaymentDetailTest < ActiveSupport::TestCase
       business_name: "Acme Corp",
       account_number: 1234567890123456789,
       email_id: "email@example.com",
-      user: users(:samuel)
+      organization: organizations(:app)
     )
     assert_not new_payment_detail.valid?
     assert_includes new_payment_detail.errors[:razorpay_account_id], "has already been taken"
@@ -62,7 +62,7 @@ class PaymentDetailTest < ActiveSupport::TestCase
       ifsc: "AXIN0012021",
       account_number: 1234567890123456789,
       email_id: "email@example.com",
-      user: users(:samuel)
+      organization: organizations(:app)
     )
 
     assert_not new_payment_detail.valid?
@@ -75,7 +75,7 @@ class PaymentDetailTest < ActiveSupport::TestCase
       ifsc: "AXIN0012021",
       account_number: 123456,
       email_id: "email@example.com",
-      user: users(:samuel)
+      organization: organizations(:app)
     )
 
     assert_not new_payment_detail.valid?
@@ -88,7 +88,7 @@ class PaymentDetailTest < ActiveSupport::TestCase
       ifsc: "AXIN0012021",
       account_number: "12345678901ANX",
       email_id: "email@example.com",
-      user: users(:samuel)
+      organization: organizations(:app)
     )
 
     assert_not new_payment_detail.valid?
@@ -114,7 +114,7 @@ class PaymentDetailTest < ActiveSupport::TestCase
       account_number: 123456789111,
       business_name: "Acme Corp",
       email_id: payment_detail[:email_id],
-      user: users(:samuel)
+      organization: organizations(:app)
     )
 
     assert_equal new_payment_detail[:email_id], payment_detail[:email_id]

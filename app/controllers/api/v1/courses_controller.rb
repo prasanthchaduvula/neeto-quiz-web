@@ -84,7 +84,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     end
 
     def ensure_payment_details_to_update_price
-      if update_price_request? && current_user.payment_details.nil?
+      if update_price_request? && current_user.organization.payment_details.nil?
         render json: { error: "Please add payment details to update course price" }, status: :unprocessable_entity
       end
     end
@@ -102,7 +102,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
     end
 
     def ensure_payment_details_to_publish
-      if @course.price? && current_user.payment_details.nil?
+      if @course.price? && current_user.organization.payment_details.nil?
         render json: { error: "Course has a price. So please add payment details to publish the course" }, status: :unprocessable_entity
       end
     end

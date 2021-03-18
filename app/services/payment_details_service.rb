@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class PaymentDetailsService
-  attr_reader :options, :user, :razorpay_response, :payment_details
+  attr_reader :options, :organization, :razorpay_response, :payment_details
   attr_accessor :status, :errors, :response
 
-  def initialize(user = {}, options = {})
-    @user = user
+  def initialize(organization = {}, options = {})
+    @organization = organization
     @options = options
     @errors = []
   end
@@ -17,7 +17,7 @@ class PaymentDetailsService
   private
 
     def create_service_response
-      add_razorpay_account && add_payment_details_to_user
+      add_razorpay_account && add_payment_details_to_organization
     end
 
     def add_razorpay_account
@@ -29,7 +29,7 @@ class PaymentDetailsService
       end
     end
 
-    def add_payment_details_to_user
+    def add_payment_details_to_organization
       PaymentDetail.transaction do
         @payment_details = PaymentDetail.create!(
           razorpay_account_id: razorpay_response["id"],
@@ -38,7 +38,7 @@ class PaymentDetailsService
           account_type: options[:account_type],
           business_name: options[:business_name],
           email_id: options[:email_id],
-          user_id: user.id
+          organization_id: organization.id
         )
 
         @response = json_response
@@ -62,7 +62,7 @@ class PaymentDetailsService
 
     def account_payload
       {
-        "name": user.name,
+        "name": organization.name,
         "email": options[:email_id],
         "tnc_accepted": true,
         "account_details": {
@@ -71,7 +71,7 @@ class PaymentDetailsService
         },
         "bank_account": {
           "ifsc_code": options[:ifsc],
-          "beneficiary_name": user.name,
+          "beneficiary_name": organization.name,
           "account_type": options[:account_type],
           "account_number": options[:account_number]
         }

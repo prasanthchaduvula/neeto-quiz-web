@@ -13,3 +13,14 @@ export const getOrganization = () => {
 export const updateOrganization = payload => {
   return axios.patch(`/api/v1/server/organizations/${subdomain}`, payload);
 };
+
+export const createPaymentDetails = payload => {
+  return axios.post(
+    `/api/v1/organizations/${subdomain}/payment_details`,
+    payload
+  );
+};
+
+export const getPaymentDetails = () => {
+  return axios.get(`/api/v1/organizations/${subdomain}/payment_details`);
+};

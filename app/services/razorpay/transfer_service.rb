@@ -49,7 +49,7 @@ module Razorpay
       end
 
       def merchant_razorpay_account_id
-        order.course&.user&.payment_details&.razorpay_account_id
+        order.course&.user&.organization&.payment_details&.razorpay_account_id
       end
 
       def amount

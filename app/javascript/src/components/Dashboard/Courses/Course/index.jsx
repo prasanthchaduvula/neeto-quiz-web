@@ -12,7 +12,6 @@ export default function Course({ history, match }) {
   const [loading, setLoading] = useState(true);
   const [isCreator, setIsCreator] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
-  const [creator, setCreator] = useState({});
 
   useEffect(() => {
     fetchSingleCourse();
@@ -24,7 +23,6 @@ export default function Course({ history, match }) {
         isCreator,
         isStudent,
         course,
-        creator,
         chapters,
         students,
       } = response.data;
@@ -33,7 +31,6 @@ export default function Course({ history, match }) {
       setStudents(students);
       setIsCreator(isCreator);
       setIsStudent(isStudent);
-      setCreator(creator);
       setLoading(false);
     });
   };
@@ -47,7 +44,6 @@ export default function Course({ history, match }) {
         chapters={chapters}
         fetchSingleCourse={fetchSingleCourse}
         students={students}
-        creator={creator}
         history={history}
       />
     );

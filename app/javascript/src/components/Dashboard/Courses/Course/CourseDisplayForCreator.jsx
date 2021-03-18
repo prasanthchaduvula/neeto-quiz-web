@@ -17,7 +17,6 @@ function CourseDisplayForCreator({
   chapters,
   fetchSingleCourse,
   students,
-  creator,
   history,
 }) {
   const [showstudents, setShowStudents] = useState(false);
@@ -188,7 +187,6 @@ function CourseDisplayForCreator({
         setShowPane={setCoursePane}
         isCreateForm={false}
         course={course}
-        creator={creator}
         fetchSingleCourse={fetchSingleCourse}
       />
       <ChapterPane

@@ -3,7 +3,7 @@
 class PaymentDetail < ApplicationRecord
   enum account_type: { savings: 0, current: 1 }
 
-  belongs_to :user
+  belongs_to :organization
 
   before_validation { email_id.downcase! }
 

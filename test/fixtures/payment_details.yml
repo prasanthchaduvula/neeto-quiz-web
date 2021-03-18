@@ -4,4 +4,4 @@ one:
   account_number: 111116789012
   business_name: "Oliver Smith"
   email_id: "valid_email@example.com"
-  user: oliver
+  organization: app

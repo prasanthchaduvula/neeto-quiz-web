@@ -3,7 +3,7 @@ import { PageLoader, Button, Callout, Toastr } from "neetoui";
 import { Input, Radio } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import { getPaymentDetails, createPaymentDetails } from "apis/users";
+import { getPaymentDetails, createPaymentDetails } from "apis/organizations";
 
 export default function PaymentDetails() {
   const [loading, setLoading] = useState(true);
@@ -20,11 +20,10 @@ export default function PaymentDetails() {
     loadPaymentDetails();
   }, []);
 
-  const loadPaymentDetails = () => {
-    getPaymentDetails().then(response => {
-      setInitialValues({ ...initialValues, ...response.data.payment_details });
-      setDisabled(true);
-    });
+  const loadPaymentDetails = async () => {
+    let response = await getPaymentDetails();
+    setInitialValues({ ...initialValues, ...response.data.payment_details });
+    response.data.payment_details && setDisabled(true);
     setLoading(false);
   };
 
