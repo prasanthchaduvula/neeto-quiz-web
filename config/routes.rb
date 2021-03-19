@@ -21,7 +21,12 @@ Rails.application.routes.draw do
 
       resources :organizations, only: [], param: :subdomain do
         resources :instructors, except: [:new, :edit]
-        resources :students, except: [:new, :edit]
+        resources :students, except: [:new, :edit] do
+          member do
+            get :unjoined_courses
+            get :unjoined_mocktests
+          end
+        end
         resource :payment_details, only: [:create, :show]
       end
       

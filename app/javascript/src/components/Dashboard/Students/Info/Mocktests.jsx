@@ -1,7 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { Button } from "neetoui";
 
-function Mocktests({ mocktests, history }) {
+function Mocktests({ mocktests, setPaneMode, setPaneTitle, history }) {
   const MocktestBlock = ({ name, id }) => {
     return (
       <p
@@ -28,6 +29,18 @@ function Mocktests({ mocktests, history }) {
           No mocktests for this student
         </p>
       )}
+      <div className="absolute bottom-0 left-0 w-full bg-white nui-pane--footer">
+        <Button
+          label="Access To Unjoined Mocktests"
+          icon="ri-file-list-3-line"
+          size="large"
+          style="secondary"
+          onClick={() => {
+            setPaneMode("unjoined mocktests");
+            setPaneTitle("Access To Unjoined Mocktests");
+          }}
+        />
+      </div>
     </div>
   );
 }

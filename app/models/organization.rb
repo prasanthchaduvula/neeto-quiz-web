@@ -39,4 +39,12 @@ class Organization < ApplicationRecord
   def marketplace_mocktests
     self.mocktests.where(is_published: true, is_explored: true)
   end
+
+  def published_courses
+    self.courses.where(published: true)
+  end
+
+  def published_mocktests
+    self.mocktests.where(is_published: true)
+  end
 end

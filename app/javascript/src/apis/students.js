@@ -20,3 +20,15 @@ export const updateStudent = (id, payload) => {
     payload
   );
 };
+
+export const getUnjoinedCourses = id => {
+  return axios.get(
+    `/api/v1/organizations/${subdomain}/students/${id}/unjoined_courses`
+  );
+};
+
+export const getUnjoinedMocktests = id => {
+  return axios.get(
+    `/api/v1/organizations/${subdomain}/students/${id}/unjoined_mocktests`
+  );
+};

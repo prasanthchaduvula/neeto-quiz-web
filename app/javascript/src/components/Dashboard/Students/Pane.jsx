@@ -2,6 +2,8 @@ import React from "react";
 import { Pane } from "neetoui";
 import StudentsForm from "./Form";
 import Info from "./Info";
+import UnjoinedCourses from "./Info/UnjoinedCourses";
+import UnjoinedMocktests from "./Info/UnjoinedMocktests";
 
 export default function StudentsPane({
   setPaneMode,
@@ -29,6 +31,22 @@ export default function StudentsPane({
         return (
           <Info
             id={student.id}
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+          />
+        );
+      case "unjoined courses":
+        return (
+          <UnjoinedCourses
+            student={student}
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+          />
+        );
+      case "unjoined mocktests":
+        return (
+          <UnjoinedMocktests
+            student={student}
             setPaneMode={setPaneMode}
             setPaneTitle={setPaneTitle}
           />

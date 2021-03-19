@@ -6,7 +6,10 @@ class Api::V1::StudentsController  < Api::V1::BaseController
   before_action :ensure_admin
   before_action :load_student, only: [:create]
   before_action :ensure_not_organization_student, only: [:create]
-  before_action :ensure_student, only: [:update, :show]
+  before_action :ensure_student, except: [:index, :create]
+  before_action :load_courses, only: [:unjoined_courses]
+  before_action :load_mocktests, only: [:unjoined_mocktests]
+
 
   def index
     respond_to do |format|
@@ -33,6 +36,18 @@ class Api::V1::StudentsController  < Api::V1::BaseController
     end
   end
 
+  def unjoined_courses
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def unjoined_mocktests
+    respond_to do |format|
+      format.json
+    end
+  end
+
   private
 
     def student_params
@@ -48,7 +63,6 @@ class Api::V1::StudentsController  < Api::V1::BaseController
         render json: { error: "No organization exist with this subdomain" }, status: :unprocessable_entity
       end
     end
-
 
     def ensure_admin
       if current_user.organization_id != @organization.id || !current_user.admin?
@@ -79,5 +93,13 @@ class Api::V1::StudentsController  < Api::V1::BaseController
       else
         render json: { errors: @student.errors.full_messages }, status: :unprocessable_entity
       end
+    end
+
+    def load_courses
+      @courses = @organization.published_courses
+    end
+
+    def load_mocktests
+      @mocktests = @organization.published_mocktests
     end
 end
