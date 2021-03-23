@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, PageLoader, Switch, Toastr } from "neetoui";
-import { getUnjoinedMocktests } from "apis/students";
-import { addStudent } from "apis/mocktests";
+import { getUnjoinedMocktests, joinMocktest } from "apis/instructors";
 import Search from "shared/Search";
 
-function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
+function UnjoinedMocktests({ instructor, setPaneMode, setPaneTitle }) {
   const [loading, setLoading] = useState(true);
   const [mocktests, setMocktests] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -14,18 +13,13 @@ function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
   }, []);
 
   const loadMocktests = async () => {
-    let response = await getUnjoinedMocktests(student.id);
+    let response = await getUnjoinedMocktests(instructor.id);
     setMocktests(response.data.mocktests);
     setLoading(false);
   };
 
-  const addStudentToMocktest = async mocktestId => {
-    const payload = {
-      phone_number: student.phone_number,
-      is_paid: true,
-    };
-
-    let response = await addStudent(mocktestId, payload);
+  const joinSingleMocktest = async mocktestId => {
+    let response = await joinMocktest(instructor.id, mocktestId);
     Toastr.success(response.data.notice);
     loadMocktests();
   };
@@ -34,7 +28,7 @@ function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
     return (
       <div className="flex justify-between mt-6 bg-white rounded-lg shadow px-5 py-4 hover:shadow-md">
         <p className="text-base font-normal text-black truncate">{name}</p>
-        <Switch onChange={() => addStudentToMocktest(id)} />
+        <Switch onChange={() => joinSingleMocktest(id)} />
       </div>
     );
   };
@@ -74,7 +68,7 @@ function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
           </>
         ) : (
           <p className="text-center mt-20 text-base font-normal text-gray-900 truncate ">
-            Student already joined all the published mocktests of this
+            Instructor already joined all the published mocktests of this
             organization
           </p>
         )}

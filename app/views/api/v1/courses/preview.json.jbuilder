@@ -10,7 +10,7 @@ json.creator do
   json.name @course.user.name
 end
 
-if @course.user == current_user
+if current_user.can_manage_course?(@course)
   json.chapters @course.chapters_with_lessons.map do |chapter|
     json.chapter chapter
     json.lessons chapter.lessons

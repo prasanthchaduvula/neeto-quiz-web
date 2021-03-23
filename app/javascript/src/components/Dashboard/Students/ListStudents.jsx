@@ -1,6 +1,8 @@
 import React from "react";
-import moment from "moment";
-import { Checkbox, Switch } from "neetoui";
+import { Checkbox, Switch, Toastr } from "neetoui";
+import { activateStudent, inactivateStudent } from "apis/students";
+import FormatJoinedTime from "shared/FormatJoinedTime";
+import NoData from "shared/NoData";
 
 function ListStudents({
   students,
@@ -8,24 +10,19 @@ function ListStudents({
   setStudent,
   setPaneTitle,
   setPaneMode,
+  loadStudents,
 }) {
-  const formatJoinedTime = joinedOn => {
-    if (joinedOn) {
-      return moment(joinedOn).format("MMM D, YYYY");
-    }
+  const handleStatus = async (id, status) => {
+    const sendRequest = () => {
+      return status == "active" ? inactivateStudent(id) : activateStudent(id);
+    };
+
+    let response = await sendRequest();
+    Toastr.success(response.data.notice);
+    loadStudents();
   };
 
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have students show here. Please add
-        </h4>
-      </div>
-    );
-  };
-
-  const Rows = ({ student, name, phoneNumber, joinedOn }) => {
+  const Rows = ({ student }) => {
     return (
       <tr role="row" className={"cursor-pointer bg-white hover:bg-gray-50"}>
         <td>
@@ -39,12 +36,15 @@ function ListStudents({
             setPaneMode("info");
           }}
         >
-          {name}
+          {student.name}
         </td>
-        <td>{phoneNumber}</td>
-        <td>{formatJoinedTime(joinedOn)}</td>
+        <td>{student.phone_number}</td>
+        <td>{FormatJoinedTime(student.joined_on)}</td>
         <td>
-          <Switch />
+          <Switch
+            checked={student.status == "active"}
+            onChange={() => handleStatus(student.id, student.status)}
+          />
         </td>
       </tr>
     );
@@ -67,18 +67,12 @@ function ListStudents({
           </thead>
           <tbody>
             {students.map(student => (
-              <Rows
-                key={student.id}
-                student={student}
-                name={student.name}
-                phoneNumber={student.phone_number}
-                joinedOn={student.joined_on}
-              />
+              <Rows key={student.id} student={student} />
             ))}
           </tbody>
         </table>
       ) : (
-        <NoData />
+        <NoData message="We do not have students show here. Please add" />
       )}
     </div>
   );

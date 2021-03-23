@@ -7,4 +7,5 @@ json.students @organization.students do |student|
   json.phone_number student.phone_number
   json.id student.id
   json.joined_on student.created_at
+  json.status student.status
 end

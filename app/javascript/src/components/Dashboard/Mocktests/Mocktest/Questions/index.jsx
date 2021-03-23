@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Toastr, Alert } from "neetoui";
 import TextareaAutosize from "react-textarea-autosize";
 import { deleteQuestion } from "apis/questions";
+import NoData from "shared/NoData";
 import QuestionPane from "./Pane";
 
 function Questions({ questions, mocktestId, fetchSingleMocktest }) {
@@ -144,14 +145,6 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
     );
   };
 
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">Please add questions to show here</h4>
-      </div>
-    );
-  };
-
   return (
     <div>
       {questions.length ? (
@@ -160,7 +153,7 @@ function Questions({ questions, mocktestId, fetchSingleMocktest }) {
           <NumberPanel />
         </div>
       ) : (
-        <NoData />
+        <NoData message="Please add questions to show here" />
       )}
       <QuestionPane
         showPane={questionPane}

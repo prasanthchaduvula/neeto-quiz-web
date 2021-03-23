@@ -5,6 +5,7 @@ import { Button, Radio, Toastr } from "neetoui";
 import TextareaAutosize from "react-textarea-autosize";
 import { createAttempt } from "apis/mocktests";
 import { withRouter } from "react-router-dom";
+import NoData from "shared/NoData";
 
 function MocktestTemplate({ mocktest, questions, history }) {
   const [question, setQuestion] = useState({});
@@ -243,14 +244,6 @@ function MocktestTemplate({ mocktest, questions, history }) {
     );
   };
 
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">Please add questions to show here</h4>
-      </div>
-    );
-  };
-
   return (
     <div>
       <PageHeading title={mocktest.name} />
@@ -260,7 +253,7 @@ function MocktestTemplate({ mocktest, questions, history }) {
           <NumberPanel />
         </div>
       ) : (
-        <NoData />
+        <NoData message="Please add questions to show here" />
       )}
     </div>
   );

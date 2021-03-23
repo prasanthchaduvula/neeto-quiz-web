@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, PageLoader, Switch, Toastr } from "neetoui";
 import { getUnjoinedCourses } from "apis/students";
 import { addStudent } from "apis/courses";
-import Search from "./Search";
+import Search from "shared/Search";
 
 function UnjoinedCourses({ student, setPaneMode, setPaneTitle }) {
   const [loading, setLoading] = useState(true);

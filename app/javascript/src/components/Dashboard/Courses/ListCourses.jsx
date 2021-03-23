@@ -1,15 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import NoData from "shared/NoData";
 
 function ListCourses({ courses, history }) {
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">We do not have any courses to show here.</h4>
-      </div>
-    );
-  };
-
   return (
     <>
       {courses && courses.length ? (
@@ -38,7 +31,7 @@ function ListCourses({ courses, history }) {
           ))}
         </ul>
       ) : (
-        <NoData />
+        <NoData message="We do not have any courses to show here." />
       )}
     </>
   );

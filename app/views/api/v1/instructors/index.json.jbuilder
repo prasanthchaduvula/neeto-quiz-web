@@ -7,4 +7,5 @@ json.instructors @organization.instructors do |instructor|
   json.phone_number instructor.phone_number
   json.id instructor.id
   json.joined_on instructor.created_at
+  json.status instructor.status
 end

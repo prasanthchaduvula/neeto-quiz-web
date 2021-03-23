@@ -20,13 +20,26 @@ Rails.application.routes.draw do
       end
 
       resources :organizations, only: [], param: :subdomain do
-        resources :instructors, except: [:new, :edit]
+        resources :instructors, except: [:new, :edit]  do
+          member do
+            put :activate
+            put :inactivate
+            get :unjoined_courses
+            get :unjoined_mocktests
+            put '/courses/:course_id', to: 'instructors#join_course', as: 'join_course'
+            put '/mocktests/:mocktest_id', to: 'instructors#join_mocktest', as: 'join_mocktest'
+          end
+        end
+        
         resources :students, except: [:new, :edit] do
           member do
             get :unjoined_courses
             get :unjoined_mocktests
+            put :activate
+            put :inactivate
           end
         end
+
         resource :payment_details, only: [:create, :show]
       end
       

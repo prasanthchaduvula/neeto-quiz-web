@@ -1,24 +1,12 @@
 import React, { useState } from "react";
 import { Badge } from "neetoui";
 import { withRouter } from "react-router-dom";
+import NoData from "shared/NoData";
 import ExplorMocktestPane from "./Pane";
 
 function ListMocktests({ mocktests, history }) {
   const [exploreMocktestPane, setExploreMocktestPane] = useState(false);
   const [mocktest, setMocktest] = useState({});
-
-  const NoData = () => {
-    return (
-      <div
-        className="flex items-center justify-center"
-        style={{ height: "60vh" }}
-      >
-        <h4 className="text-xl ">
-          We do not have any published mocktests to show here.
-        </h4>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -59,7 +47,7 @@ function ListMocktests({ mocktests, history }) {
           ))}
         </ul>
       ) : (
-        <NoData />
+        <NoData message="We do not have any published mocktests to show here." />
       )}
       <ExplorMocktestPane
         showPane={exploreMocktestPane}

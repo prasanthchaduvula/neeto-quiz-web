@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "neetoui";
 import StudentPane from "./Pane";
+import NoData from "shared/NoData";
 
 export default function ListStudents({
   onClose,
@@ -13,7 +14,10 @@ export default function ListStudents({
       {students.length ? (
         <Students students={students} />
       ) : (
-        <NoResourceMessage />
+        <NoData
+          message="We do not have students to show here. Please add students to this
+        course."
+        />
       )}
       <Pane
         onClose={onClose}
@@ -45,17 +49,6 @@ const Students = ({ students }) => {
           );
         })}
       </ul>
-    </div>
-  );
-};
-
-const NoResourceMessage = () => {
-  return (
-    <div className="text-center mt-5 mb-5">
-      <h4>
-        We do not have students to show here. Please add students to this
-        course.
-      </h4>
     </div>
   );
 };

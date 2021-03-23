@@ -52,6 +52,7 @@ function Instructors() {
             setInstructor={setInstructor}
             setPaneTitle={setPaneTitle}
             setPaneMode={setPaneMode}
+            loadInstructors={loadInstructors}
           />
           <InstructorsPane
             setPaneMode={setPaneMode}

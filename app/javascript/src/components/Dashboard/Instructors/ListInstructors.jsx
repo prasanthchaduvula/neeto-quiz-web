@@ -1,6 +1,8 @@
 import React from "react";
-import moment from "moment";
-import { Checkbox, Switch } from "neetoui";
+import { Checkbox, Switch, Toastr } from "neetoui";
+import { activateInstructor, inactivateInstructor } from "apis/instructors";
+import FormatJoinedTime from "shared/FormatJoinedTime";
+import NoData from "shared/NoData";
 
 function ListInstructors({
   instructors,
@@ -8,23 +10,21 @@ function ListInstructors({
   setInstructor,
   setPaneTitle,
   setPaneMode,
+  loadInstructors,
 }) {
-  function formatJoinedTime(joinedOn) {
-    if (joinedOn) {
-      return moment(joinedOn).format("MMM D, YYYY");
-    }
-  }
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have instructors show here. Please add
-        </h4>
-      </div>
-    );
+  const handleStatus = async (id, status) => {
+    const sendRequest = () => {
+      return status == "active"
+        ? inactivateInstructor(id)
+        : activateInstructor(id);
+    };
+
+    let response = await sendRequest();
+    Toastr.success(response.data.notice);
+    loadInstructors();
   };
 
-  const Rows = ({ instructor, name, phoneNumber, joinedOn }) => {
+  const Rows = ({ instructor }) => {
     return (
       <tr role="row" className={"cursor-pointer bg-white hover:bg-gray-50"}>
         <td>
@@ -38,12 +38,15 @@ function ListInstructors({
             setPaneMode("info");
           }}
         >
-          {name}
+          {instructor.name}
         </td>
-        <td>{phoneNumber}</td>
-        <td>{formatJoinedTime(joinedOn)}</td>
+        <td>{instructor.phone_number}</td>
+        <td>{FormatJoinedTime(instructor.joined_on)}</td>
         <td>
-          <Switch />
+          <Switch
+            checked={instructor.status == "active"}
+            onChange={() => handleStatus(instructor.id, instructor.status)}
+          />
         </td>
       </tr>
     );
@@ -66,18 +69,12 @@ function ListInstructors({
           </thead>
           <tbody>
             {instructors.map(instructor => (
-              <Rows
-                key={instructor.id}
-                instructor={instructor}
-                name={instructor.name}
-                phoneNumber={instructor.phone_number}
-                joinedOn={instructor.joined_on}
-              />
+              <Rows key={instructor.id} instructor={instructor} />
             ))}
           </tbody>
         </table>
       ) : (
-        <NoData />
+        <NoData message="We do not have instructors show here. Please add" />
       )}
     </div>
   );

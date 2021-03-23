@@ -1,15 +1,36 @@
 import React, { useState } from "react";
-import { Tab } from "neetoui";
+import { Tab, Button } from "neetoui";
 import { PageHeading } from "neetoui/layouts";
+import { useAuthDispatch } from "contexts/auth";
 import { TABS } from "./constants";
 import Profile from "./Profile";
 import Orders from "./Orders";
 
 function Account() {
+  const authDispatch = useAuthDispatch();
+
   const [activeTab, setActiveTab] = useState("profile");
+
+  const handleLogout = () => {
+    authDispatch({
+      type: "LOGOUT",
+    });
+    window.location.href = "/signin";
+  };
+
   return (
     <>
-      <PageHeading title="Account Settings" />
+      <PageHeading
+        title="Account Settings"
+        rightButton={() => (
+          <Button
+            style="secondary"
+            label="Logout"
+            icon="ri-logout-box-r-line"
+            onClick={handleLogout}
+          />
+        )}
+      />
       <Tab className="px-6 -mx-4 border-b border-gray-200">
         <Tab.Item
           icon="ri-user-line"

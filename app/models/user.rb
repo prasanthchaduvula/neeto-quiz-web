@@ -6,6 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, authentication_keys: [:phone_number]
 
   enum role: { regular_user: 0, admin: 1, instructor: 2, student: 3 }
+  enum status: { active: 0, inactive: 1 }
 
   has_many :courses, dependent: :destroy
   has_many :course_students, dependent: :destroy

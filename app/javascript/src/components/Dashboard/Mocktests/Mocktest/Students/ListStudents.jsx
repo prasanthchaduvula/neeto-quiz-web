@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "neetoui";
+import NoData from "shared/NoData";
 import StudentPane from "./Pane";
 
 export default function ListStudents({
@@ -10,7 +11,14 @@ export default function ListStudents({
 }) {
   return (
     <>
-      {students.length ? <Students students={students} /> : <NoData />}
+      {students.length ? (
+        <Students students={students} />
+      ) : (
+        <NoData
+          message="We do not have students to show here. Please add students to this
+        mocktest."
+        />
+      )}
       <Pane
         onClose={onClose}
         mocktest={mocktest}
@@ -41,17 +49,6 @@ const Students = ({ students }) => {
           );
         })}
       </ul>
-    </div>
-  );
-};
-
-const NoData = () => {
-  return (
-    <div className="text-center mt-5 mb-5">
-      <h4>
-        We do not have students to show here. Please add students to this
-        mocktest.
-      </h4>
     </div>
   );
 };

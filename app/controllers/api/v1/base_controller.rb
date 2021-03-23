@@ -27,7 +27,11 @@ class Api::V1::BaseController < ApplicationController
       if organization
         user = user_phone_number && User.find_for_database_authentication(phone_number: user_phone_number, organization_id: organization.id)
         if user && Devise.secure_compare(user.authentication_token, auth_token)
-          sign_in user, store: false
+          if user.status == "active"
+            sign_in user, store: false
+          else
+            respond_with_error("You are not the active member of this organization", 401)
+          end
         else
           respond_with_error("Could not authenticate with the provided credentials", 401)
         end

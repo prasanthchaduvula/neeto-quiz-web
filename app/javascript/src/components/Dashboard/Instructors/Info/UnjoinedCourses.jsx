@@ -1,40 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Button, PageLoader, Switch, Toastr } from "neetoui";
-import { getUnjoinedMocktests } from "apis/students";
-import { addStudent } from "apis/mocktests";
+import { getUnjoinedCourses, joinCourse } from "apis/instructors";
 import Search from "shared/Search";
 
-function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
+function UnjoinedCourses({ instructor, setPaneMode, setPaneTitle }) {
   const [loading, setLoading] = useState(true);
-  const [mocktests, setMocktests] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    loadMocktests();
+    loadCourses();
   }, []);
 
-  const loadMocktests = async () => {
-    let response = await getUnjoinedMocktests(student.id);
-    setMocktests(response.data.mocktests);
+  const loadCourses = async () => {
+    let response = await getUnjoinedCourses(instructor.id);
+    setCourses(response.data.courses);
     setLoading(false);
   };
 
-  const addStudentToMocktest = async mocktestId => {
-    const payload = {
-      phone_number: student.phone_number,
-      is_paid: true,
-    };
-
-    let response = await addStudent(mocktestId, payload);
+  const joinSingleCourse = async courseId => {
+    let response = await joinCourse(instructor.id, courseId);
     Toastr.success(response.data.notice);
-    loadMocktests();
+    loadCourses();
   };
 
-  const MocktestBlock = ({ name, id }) => {
+  const CourseBlock = ({ name, id }) => {
     return (
       <div className="flex justify-between mt-6 bg-white rounded-lg shadow px-5 py-4 hover:shadow-md">
         <p className="text-base font-normal text-black truncate">{name}</p>
-        <Switch onChange={() => addStudentToMocktest(id)} />
+        <Switch onChange={() => joinSingleCourse(id)} />
       </div>
     );
   };
@@ -50,31 +44,31 @@ function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
   return (
     <div>
       <div className="mt-4 pb-20">
-        {mocktests && mocktests.length ? (
+        {courses && courses.length ? (
           <>
             <Search searchValue={searchValue} setSearchValue={setSearchValue} />
             {searchValue
-              ? mocktests.map(
-                  ({ mocktest }) =>
-                    mocktest.name.toLowerCase().includes(searchValue) && (
-                      <MocktestBlock
-                        key={mocktest.id}
-                        name={mocktest.name}
-                        id={mocktest.id}
+              ? courses.map(
+                  ({ course }) =>
+                    course.name.toLowerCase().includes(searchValue) && (
+                      <CourseBlock
+                        key={course.id}
+                        name={course.name}
+                        id={course.id}
                       />
                     )
                 )
-              : mocktests.map(({ mocktest }) => (
-                  <MocktestBlock
-                    key={mocktest.id}
-                    name={mocktest.name}
-                    id={mocktest.id}
+              : courses.map(({ course }) => (
+                  <CourseBlock
+                    key={course.id}
+                    name={course.name}
+                    id={course.id}
                   />
                 ))}
           </>
         ) : (
           <p className="text-center mt-20 text-base font-normal text-gray-900 truncate ">
-            Student already joined all the published mocktests of this
+            Instructor already joined all the published courses of this
             organization
           </p>
         )}
@@ -95,4 +89,4 @@ function UnjoinedMocktests({ student, setPaneMode, setPaneTitle }) {
   );
 }
 
-export default UnjoinedMocktests;
+export default UnjoinedCourses;

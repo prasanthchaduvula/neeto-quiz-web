@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_17_141148) do
+ActiveRecord::Schema.define(version: 2021_03_19_094547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(version: 2021_03_17_141148) do
     t.string "encrypted_password", default: "", null: false
     t.uuid "organization_id"
     t.integer "role", default: 0, null: false
+    t.integer "status", default: 0, null: false
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 

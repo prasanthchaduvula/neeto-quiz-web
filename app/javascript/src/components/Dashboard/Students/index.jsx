@@ -52,6 +52,7 @@ function Students() {
             setStudent={setStudent}
             setPaneTitle={setPaneTitle}
             setPaneMode={setPaneMode}
+            loadStudents={loadStudents}
           />
           <StudentsPane
             setPaneMode={setPaneMode}

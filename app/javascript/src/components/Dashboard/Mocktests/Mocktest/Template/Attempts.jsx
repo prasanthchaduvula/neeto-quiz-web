@@ -5,6 +5,7 @@ import { PageHeading } from "neetoui/layouts";
 import { PageLoader } from "neetoui";
 import { getAttempts } from "apis/mocktests";
 import PageNotFound from "shared/PageNotFound";
+import NoData from "shared/NoData";
 
 function Attempts({ match, history }) {
   const [mocktest, setMocktest] = useState({});
@@ -76,18 +77,8 @@ function Attempts({ match, history }) {
             </div>
           </>
         ) : (
-          <NoData />
+          <NoData message="We do not have any attempts by students to show here" />
         )}
-      </div>
-    );
-  };
-
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have any attempts by students to show here
-        </h4>
       </div>
     );
   };

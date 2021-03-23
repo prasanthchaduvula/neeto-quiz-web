@@ -7,6 +7,7 @@ class Api::V1::LoginController  < Api::V1::BaseController
   before_action :load_organization
   before_action :ensure_organization
   before_action :ensure_organization_member
+  before_action :ensure_organization_member_active
   before_action :verify_otp, only: [:verifyotp]
 
   def sendotp
@@ -52,6 +53,12 @@ class Api::V1::LoginController  < Api::V1::BaseController
       @user = User.find_by(organization_id: @organization.id, phone_number: params[:phone_number])
       unless @user
         render json: { error: "You are not the member of this organization" }, status: :unprocessable_entity
+      end
+    end
+
+    def ensure_organization_member_active
+      if @user.inactive?
+        render json: { error: "You are not the active member of this organization" }, status: :unprocessable_entity
       end
     end
 end

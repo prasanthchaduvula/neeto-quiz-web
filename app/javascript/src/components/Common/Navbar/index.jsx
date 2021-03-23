@@ -11,7 +11,7 @@ function NavBar() {
       <div className="flex flex-col items-center justify-between w-full h-full py-4">
         <div className="flex flex-col items-center justify-start w-full ">
           <NavItem
-            title="Explore Courses"
+            title="Explore Marketplace"
             link="/explore"
             icon="ri-flashlight-fill"
             className="mb-6"

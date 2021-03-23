@@ -10,7 +10,6 @@ class Api::V1::StudentsController  < Api::V1::BaseController
   before_action :load_courses, only: [:unjoined_courses]
   before_action :load_mocktests, only: [:unjoined_mocktests]
 
-
   def index
     respond_to do |format|
       format.json
@@ -46,6 +45,16 @@ class Api::V1::StudentsController  < Api::V1::BaseController
     respond_to do |format|
       format.json
     end
+  end
+
+  def activate
+    @student.update!(status: "active")
+    render json: { notice: "Activated successfully" }, status: :ok
+  end
+
+  def inactivate
+    @student.update!(status: "inactive")
+    render json: { notice: "Inactivated successfully" }, status: :ok
   end
 
   private

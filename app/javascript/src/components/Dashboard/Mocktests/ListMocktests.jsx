@@ -1,18 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import NoData from "shared/NoData";
 
 function ListMocktests({ mocktests, history }) {
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have any created mocktests by you to show here. Please add
-          mocktests
-        </h4>
-      </div>
-    );
-  };
-
   return (
     <>
       {mocktests && mocktests.length ? (
@@ -41,7 +31,10 @@ function ListMocktests({ mocktests, history }) {
           ))}
         </ul>
       ) : (
-        <NoData />
+        <NoData
+          message="We do not have any created mocktests by you to show here. Please add
+        mocktests"
+        />
       )}
     </>
   );

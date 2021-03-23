@@ -4,6 +4,7 @@ import { deleteChapter } from "apis/chapters";
 import Lessons from "../Lessons";
 import LessonPane from "../Lessons/Pane";
 import ChapterPane from "./Pane";
+import NoData from "shared/NoData";
 
 export default function Chapters({ chapters, fetchSingleCourse, course }) {
   const [lessonPane, setLessonPane] = useState(false);
@@ -80,16 +81,6 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
     ));
   };
 
-  const NoChapters = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have anything to show here. Please add chapters.
-        </h4>
-      </div>
-    );
-  };
-
   return chapters.length ? (
     <>
       <ChaptersList />
@@ -111,6 +102,6 @@ export default function Chapters({ chapters, fetchSingleCourse, course }) {
       />
     </>
   ) : (
-    <NoChapters />
+    <NoData message="We do not have anything to show here. Please add chapters." />
   );
 }

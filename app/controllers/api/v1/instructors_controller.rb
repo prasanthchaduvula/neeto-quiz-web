@@ -6,7 +6,11 @@ class Api::V1::InstructorsController < Api::V1::BaseController
   before_action :ensure_admin
   before_action :load_instructor, only: [:create]
   before_action :ensure_not_organization_instrcutor, only: [:create]
-  before_action :ensure_instructor, only: [:update, :show]
+  before_action :ensure_instructor, except: [:index, :create]
+  before_action :load_course, only: [:join_course]
+  before_action :load_mocktest, only: [:join_mocktest]
+  before_action :load_courses, only: [:unjoined_courses]
+  before_action :load_mocktests, only: [:unjoined_mocktests]
 
   def index
     respond_to do |format|
@@ -31,6 +35,38 @@ class Api::V1::InstructorsController < Api::V1::BaseController
   def update
     @instructor.update!(instructor_params)
     render json: { notice: "Updated instructor successfully", organization: @organization, instructor: @instructor }, status: :ok
+  end
+
+  def activate
+    @instructor.update!(status: "active")
+    render json: { notice: "Activated successfully" }, status: :ok
+  end
+
+  def inactivate
+    @instructor.update!(status: "inactive")
+    render json: { notice: "Inactivated successfully" }, status: :ok
+  end
+
+  def join_course
+    @course.update!(user_id: @instructor.id)
+    render json: { notice: "Updated course instructor successfully" }, status: :ok
+  end
+
+  def join_mocktest
+    @mocktest.update!(user_id: @instructor.id)
+    render json: { notice: "Updated mocktest instructor successfully" }, status: :ok
+  end
+
+  def unjoined_courses
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def unjoined_mocktests
+    respond_to do |format|
+      format.json
+    end
   end
 
   private
@@ -78,5 +114,21 @@ class Api::V1::InstructorsController < Api::V1::BaseController
       else
         render json: { errors: @instructor.errors.full_messages }, status: :unprocessable_entity
       end
+    end
+
+    def load_course
+      @course = Course.find_by!(id: params[:course_id])
+    end
+
+    def load_mocktest
+      @mocktest = Exam::Mocktest.find_by!(id: params[:mocktest_id])
+    end
+
+    def load_courses
+      @courses = @organization.published_courses
+    end
+
+    def load_mocktests
+      @mocktests = @organization.published_mocktests
     end
 end

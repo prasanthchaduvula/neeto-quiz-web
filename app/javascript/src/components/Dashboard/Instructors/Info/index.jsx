@@ -73,8 +73,20 @@ function Info({ id, setPaneMode, setPaneTitle }) {
             setPaneTitle={setPaneTitle}
           />
         )}
-        {activeTab === TABS.COURSES && <Courses courses={courses} />}
-        {activeTab === TABS.MOCKTESTS && <Mocktests mocktests={mocktests} />}
+        {activeTab === TABS.COURSES && (
+          <Courses
+            courses={courses}
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+          />
+        )}
+        {activeTab === TABS.MOCKTESTS && (
+          <Mocktests
+            mocktests={mocktests}
+            setPaneMode={setPaneMode}
+            setPaneTitle={setPaneTitle}
+          />
+        )}
       </div>
     </>
   );

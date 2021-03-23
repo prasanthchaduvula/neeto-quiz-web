@@ -27,7 +27,7 @@ function Mocktests() {
   return (
     <>
       <PageHeading
-        title="Mock Tests"
+        title="My Mocktests"
         rightButton={() => (
           <>
             {authState.authRole == "admin" ||

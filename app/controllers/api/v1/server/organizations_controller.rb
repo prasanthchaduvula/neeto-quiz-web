@@ -39,7 +39,7 @@ class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
       @user.role = "admin"
       @user.organization =  @organization
       if @user.save
-        render json: { notice: "Created organization successfully", organization: @organization, user: @user }, status: :ok
+        render json: { notice: "Created organization successfully", organization: @organization, user: @user, redirect_url: "http://#{@organization.subdomain}.lvh.me:3000" }, status: :ok
       else
         render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end

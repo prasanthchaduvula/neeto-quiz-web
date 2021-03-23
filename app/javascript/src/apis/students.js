@@ -32,3 +32,15 @@ export const getUnjoinedMocktests = id => {
     `/api/v1/organizations/${subdomain}/students/${id}/unjoined_mocktests`
   );
 };
+
+export const activateStudent = id => {
+  return axios.put(
+    `/api/v1/organizations/${subdomain}/students/${id}/activate`
+  );
+};
+
+export const inactivateStudent = id => {
+  return axios.put(
+    `/api/v1/organizations/${subdomain}/students/${id}/inactivate`
+  );
+};

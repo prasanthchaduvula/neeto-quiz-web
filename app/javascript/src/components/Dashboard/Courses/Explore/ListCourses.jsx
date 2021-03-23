@@ -1,22 +1,13 @@
 import React, { useState } from "react";
 import { Badge } from "neetoui";
 import { withRouter } from "react-router-dom";
+import NoData from "shared/NoData";
 import ExplorCoursePane from "./Pane";
 
 function ListCourses({ courses, history }) {
   const [exploreCoursePane, setExploreCoursePane] = useState(false);
   const [course, setCourse] = useState({});
   const [chapters, setChapters] = useState([]);
-
-  const NoData = () => {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h4 className="text-xl ">
-          We do not have any published courses to show here.
-        </h4>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -58,7 +49,7 @@ function ListCourses({ courses, history }) {
           ))}
         </ul>
       ) : (
-        <NoData />
+        <NoData message="We do not have any published courses to show here." />
       )}
       <ExplorCoursePane
         showPane={exploreCoursePane}
