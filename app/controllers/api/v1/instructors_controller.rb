@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::InstructorsController < Api::V1::BaseController
-  before_action :load_organization
   before_action :ensure_organization
   before_action :ensure_admin
   before_action :load_instructor, only: [:create]
@@ -73,10 +72,6 @@ class Api::V1::InstructorsController < Api::V1::BaseController
 
     def instructor_params
       params.require(:instructor).permit(:first_name, :last_name, :phone_number)
-    end
-
-    def load_organization
-      @organization = Organization.find_by(subdomain: params[:organization_subdomain])
     end
 
     def ensure_organization

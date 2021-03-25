@@ -4,7 +4,6 @@ class Api::V1::LoginController  < Api::V1::BaseController
   skip_before_action :authenticate_user!
   skip_before_action :authenticate_user_using_x_auth_token
 
-  before_action :load_organization
   before_action :ensure_organization
   before_action :ensure_organization_member
   before_action :ensure_organization_member_active
@@ -37,10 +36,6 @@ class Api::V1::LoginController  < Api::V1::BaseController
       else
         @response = { "type" => "failed", message: "Invalid OTP" }
       end
-    end
-
-    def load_organization
-      @organization = Organization.find_by(subdomain: params[:subdomain])
     end
 
     def ensure_organization

@@ -3,7 +3,6 @@
 class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: [:create]
   skip_before_action :authenticate_user_using_x_auth_token, only: [:create]
-  before_action :load_organization, except: [:create]
   before_action :ensure_admin, except: [:create]
 
   def create
@@ -39,14 +38,10 @@ class Api::V1::Server::OrganizationsController  < Api::V1::BaseController
       @user.role = "admin"
       @user.organization =  @organization
       if @user.save
-        render json: { notice: "Created organization successfully", organization: @organization, user: @user, redirect_url: "http://#{@organization.subdomain}.lvh.me:3000" }, status: :ok
+        render json: { notice: "Created organization successfully", organization: @organization, user: @user, redirect_url: "/" }, status: :ok
       else
         render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end
-    end
-
-    def load_organization
-      @organization = Organization.find_by!(subdomain: params[:subdomain])
     end
 
     def ensure_admin

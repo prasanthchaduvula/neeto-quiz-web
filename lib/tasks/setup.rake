@@ -40,6 +40,8 @@ end
 def create_sample_data!
   create_organization!
   create_admin_user!
+
+  create_spinkart!
 end
 
 def create_organization!
@@ -48,6 +50,17 @@ end
 
 def create_admin_user!
   User.create!(first_name: "Oliver", last_name: "Smith", phone_number: "+917680918423", role: "admin")
+end
+
+def create_spinkart!
+  org = Organization.create!(name: "Spinkart", subdomain: "spinkart")
+  User.create!(
+    first_name: "Oliver",
+    last_name: "Smith",
+    phone_number: "+919999999999",
+    organization: org,
+    role: "admin"
+  )
 end
 
 

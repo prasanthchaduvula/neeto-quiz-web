@@ -3,7 +3,6 @@
 class Api::V1::PaymentDetailsController < Api::V1::BaseController
   attr_accessor :payment_details
 
-  before_action :load_organization
   before_action :ensure_organization
   before_action :ensure_admin
   before_action :load_payment_details, only: :show
@@ -36,10 +35,6 @@ class Api::V1::PaymentDetailsController < Api::V1::BaseController
         :business_name,
         :email_id
       )
-    end
-
-    def load_organization
-      @organization = Organization.find_by(subdomain: params[:organization_subdomain])
     end
 
     def ensure_organization
