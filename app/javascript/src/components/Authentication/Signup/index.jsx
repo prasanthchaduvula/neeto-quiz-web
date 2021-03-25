@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Toastr } from "neetoui";
-import { createOtp } from "apis/authentication";
+import { sendOtp } from "apis/authentication";
 import { createOrganization } from "apis/organizations";
 import Otp from "./Otp";
 import PhoneNumber from "./PhoneNumber";
@@ -17,25 +17,29 @@ function Signup() {
   const [lastName, setLastName] = useState("");
   const [orgName, setOrgName] = useState("");
   const [subdomain, setSubdomain] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitBtnLoading, setSubmitBtnLoading] = useState(false);
 
-  const sendOtp = phonePayload => {
-    createOtp(phonePayload).then(() => {
+  const sendOtpForSignup = async payload => {
+    setSubmitBtnLoading(true);
+    try {
+      await sendOtp(payload);
       Toastr.success("OTP sent successfully");
-      setLoading(false);
+      setSubmitBtnLoading(false);
       setPhonePage(false);
       setOtpPage(true);
-    });
+    } catch {
+      setSubmitBtnLoading(false);
+    }
   };
 
   const handlePhoneSubmit = number => {
-    setPhoneNumber(`+91${number}`);
-    const phonePayload = {
+    setPhoneNumber(number);
+    const payload = {
       user: {
         phone_number: `+91${number}`,
       },
     };
-    sendOtp(phonePayload);
+    sendOtpForSignup(payload);
   };
 
   const handleOrganization = async (name, subdomain) => {
@@ -47,7 +51,7 @@ function Signup() {
         subdomain: subdomain,
       },
       user: {
-        phone_number: phoneNumber,
+        phone_number: `+91${phoneNumber}`,
         first_name: firstName,
         last_name: lastName,
       },
@@ -79,12 +83,9 @@ function Signup() {
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             {phonePage && (
               <PhoneNumber
-                setPhonePage={setPhonePage}
                 handlePhoneSubmit={handlePhoneSubmit}
-                setPhoneNumber={setPhoneNumber}
                 phoneNumber={phoneNumber}
-                loading={loading}
-                setLoading={setLoading}
+                submitBtnLoading={submitBtnLoading}
               />
             )}
             {otpPage && (

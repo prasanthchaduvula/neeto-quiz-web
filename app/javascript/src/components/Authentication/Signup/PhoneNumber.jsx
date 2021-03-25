@@ -4,9 +4,9 @@ import { Input } from "neetoui/formik";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-function PhoneNumber(props) {
+function PhoneNumber({ handlePhoneSubmit, phoneNumber, submitBtnLoading }) {
   const initialValues = {
-    phone_number: props.phoneNumber,
+    phone_number: phoneNumber,
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -20,8 +20,7 @@ function PhoneNumber(props) {
   });
 
   const handleSubmit = values => {
-    props.setLoading(true);
-    props.handlePhoneSubmit(values.phone_number);
+    handlePhoneSubmit(values.phone_number);
   };
 
   return (
@@ -49,7 +48,7 @@ function PhoneNumber(props) {
               fullWidth
               className="mt-6 text-center text-base font-medium"
               onClick={handleSubmit}
-              loading={props.loading}
+              loading={submitBtnLoading}
             />
           </Form>
         );

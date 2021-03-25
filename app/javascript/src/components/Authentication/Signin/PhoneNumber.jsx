@@ -50,12 +50,6 @@ function PhoneNumber({ handlePhoneSubmit, phoneNumber, submitBtnLoading }) {
               onClick={handleSubmit}
               loading={submitBtnLoading}
             />
-            <div
-              className="text-sm mt-6 font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
-              onClick={() => window.location.replace("http://app.lvh.me:3000/")}
-            >
-              Want to create an organization? please <strong>Signup</strong>
-            </div>
           </Form>
         );
       }}
