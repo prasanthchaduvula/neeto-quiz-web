@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_094547) do
+ActiveRecord::Schema.define(version: 2021_03_01_083718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,146 +37,6 @@ ActiveRecord::Schema.define(version: 2021_03_19_094547) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "chapters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "course_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["course_id"], name: "index_chapters_on_course_id"
-    t.index ["name", "course_id"], name: "index_chapters_on_name_and_course_id", unique: true
-  end
-
-  create_table "course_students", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "course_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["course_id"], name: "index_course_students_on_course_id"
-    t.index ["user_id"], name: "index_course_students_on_user_id"
-  end
-
-  create_table "courses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.boolean "published", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.decimal "price", precision: 7, scale: 2, default: "0.0"
-    t.uuid "user_id"
-    t.string "invitation_code"
-    t.boolean "is_explored", default: false, null: false
-  end
-
-  create_table "exam_attempt_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "option_id"
-    t.uuid "question_id"
-    t.uuid "attempt_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["attempt_id"], name: "index_exam_attempt_answers_on_attempt_id"
-    t.index ["option_id"], name: "index_exam_attempt_answers_on_option_id"
-    t.index ["question_id"], name: "index_exam_attempt_answers_on_question_id"
-  end
-
-  create_table "exam_attempts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "mocktest_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["mocktest_id"], name: "index_exam_attempts_on_mocktest_id"
-    t.index ["user_id"], name: "index_exam_attempts_on_user_id"
-  end
-
-  create_table "exam_mocktests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.boolean "is_published", default: false
-    t.decimal "price", precision: 7, scale: 2, default: "0.0"
-    t.string "invitation_code"
-    t.uuid "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.boolean "allow_reattempts", default: true, null: false
-    t.boolean "is_explored", default: false, null: false
-    t.index ["user_id"], name: "index_exam_mocktests_on_user_id"
-  end
-
-  create_table "exam_question_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.boolean "is_correct", default: false
-    t.uuid "question_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["name", "question_id"], name: "index_exam_question_options_on_name_and_question_id", unique: true
-    t.index ["question_id"], name: "index_exam_question_options_on_question_id"
-  end
-
-  create_table "exam_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "description"
-    t.uuid "mocktest_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["mocktest_id"], name: "index_exam_questions_on_mocktest_id"
-  end
-
-  create_table "exam_students", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "mocktest_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["mocktest_id"], name: "index_exam_students_on_mocktest_id"
-    t.index ["user_id"], name: "index_exam_students_on_user_id"
-  end
-
-  create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "content"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "chapter_id"
-    t.integer "lesson_type"
-    t.boolean "is_published", default: false, null: false
-    t.index ["name", "chapter_id"], name: "index_lessons_on_name_and_chapter_id", unique: true
-  end
-
-  create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "razorpay_order_id", null: false
-    t.integer "status", default: 0, null: false
-    t.integer "amount", null: false
-    t.string "currency", default: "INR", null: false
-    t.string "business_name", null: false
-    t.uuid "course_id"
-    t.uuid "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "course_name", null: false
-    t.index ["course_id"], name: "index_orders_on_course_id"
-    t.index ["razorpay_order_id"], name: "index_orders_on_razorpay_order_id", unique: true
-    t.index ["user_id"], name: "index_orders_on_user_id"
-  end
-
-  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "subdomain", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["subdomain"], name: "index_organizations_on_subdomain", unique: true
-  end
-
-  create_table "payment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "razorpay_account_id", null: false
-    t.string "ifsc", limit: 11, null: false
-    t.bigint "account_number", null: false
-    t.integer "account_type", default: 0, null: false
-    t.string "business_name", null: false
-    t.string "email_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "organization_id"
-    t.index ["organization_id"], name: "index_payment_details_on_organization_id"
-    t.index ["razorpay_account_id"], name: "index_payment_details_on_razorpay_account_id", unique: true
-  end
-
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -190,30 +50,8 @@ ActiveRecord::Schema.define(version: 2021_03_19_094547) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "encrypted_password", default: "", null: false
-    t.uuid "organization_id"
     t.integer "role", default: 0, null: false
-    t.integer "status", default: 0, null: false
-    t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "chapters", "courses"
-  add_foreign_key "course_students", "courses"
-  add_foreign_key "course_students", "users"
-  add_foreign_key "courses", "users", on_delete: :cascade
-  add_foreign_key "exam_attempt_answers", "exam_attempts", column: "attempt_id"
-  add_foreign_key "exam_attempt_answers", "exam_question_options", column: "option_id"
-  add_foreign_key "exam_attempt_answers", "exam_questions", column: "question_id"
-  add_foreign_key "exam_attempts", "exam_mocktests", column: "mocktest_id"
-  add_foreign_key "exam_attempts", "users"
-  add_foreign_key "exam_mocktests", "users", on_delete: :cascade
-  add_foreign_key "exam_question_options", "exam_questions", column: "question_id", on_delete: :cascade
-  add_foreign_key "exam_questions", "exam_mocktests", column: "mocktest_id", on_delete: :cascade
-  add_foreign_key "exam_students", "exam_mocktests", column: "mocktest_id"
-  add_foreign_key "exam_students", "users"
-  add_foreign_key "lessons", "chapters", on_delete: :cascade
-  add_foreign_key "orders", "courses"
-  add_foreign_key "orders", "users", on_delete: :cascade
-  add_foreign_key "payment_details", "organizations", on_delete: :cascade
-  add_foreign_key "users", "organizations"
 end

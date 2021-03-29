@@ -8,89 +8,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
 
-      namespace :server do
-        resources :organizations, only: [:create, :show, :update], param: :subdomain
-      end
-
-      resources :login, only: [], param: :subdomain do
-        member do
-          post :sendotp
-          post :verifyotp
-        end
-      end
-
-      resources :organizations, only: [], param: :subdomain do
-        resources :instructors, except: [:new, :edit]  do
-          member do
-            put :activate
-            put :inactivate
-            get :unjoined_courses
-            get :unjoined_mocktests
-            put '/courses/:course_id', to: 'instructors#join_course', as: 'join_course'
-            put '/mocktests/:mocktest_id', to: 'instructors#join_mocktest', as: 'join_mocktest'
-          end
-        end
-        
-        resources :students, except: [:new, :edit] do
-          member do
-            get :unjoined_courses
-            get :unjoined_mocktests
-            put :activate
-            put :inactivate
-          end
-        end
-
-        resource :payment_details, only: [:create, :show]
-      end
-      
       resource :registrations, only: [:create, :update]
 
       resources :users, only: [:show, :update, :destroy], constraints: { id: /.*/ } 
-
-      resources :courses, only: [:create, :update, :show, :destroy, :index] do
-        member do
-          get :preview
-          put :publish
-          put :unpublish
-        end
-        resources :chapters, only: [:create, :update, :show, :destroy]
-        resources :add_students, only: [:create]
-        resources :join_courses, only: [:create]
-      end
-
-      resources :chapters, except: [:new, :edit] do
-        resources :lessons, except: [:new, :edit]
-      end
-      
-      resources :orders, only: [:index, :create, :show, :update]
-
-      resources :join_courses, only: [:show], param: :invitation_code
-
-      resources :explore_courses, only: [:index, :update]
-
-      namespace :exam do
-        resources :mocktests, except: [:new, :edit] do
-          member do
-            put :publish
-            put :unpublish
-            put :allow_reattempts
-            put :dont_allow_reattempts
-          end
-          resources :join, only: [:create]
-          resources :questions, except: [:new, :edit]
-          resources :add_students, only: [:create]
-          resources :attempts, only: [:create, :index, :show]
-        end
-
-        resources :join, only: [:show], param: :invitation_code
-        resources :explore, only: [:index, :update]
-      end
-    end
-  end
-
-  namespace :webhooks, defaults: { format: :json } do
-    namespace :razorpay do
-      post '/verify', to: 'payment#verify'
     end
   end
 

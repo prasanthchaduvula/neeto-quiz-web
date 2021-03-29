@@ -1,7 +1,0 @@
-one:
-  razorpay_account_id: "acc_FwdxHdXat4w44KUk"
-  ifsc: "AXIN0012001"
-  account_number: 111116789012
-  business_name: "Oliver Smith"
-  email_id: "valid_email@example.com"
-  organization: app

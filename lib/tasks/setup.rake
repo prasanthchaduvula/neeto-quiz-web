@@ -38,29 +38,9 @@ def delete_all_records_from_all_tables
 end
 
 def create_sample_data!
-  create_organization!
-  create_admin_user!
-
-  create_spinkart!
+  create_instructor_user!
 end
 
-def create_organization!
-  Organization.create!(name: "App", subdomain: Rails.application.secrets.app_subdomain)
+def create_instructor_user!
+  User.create!(first_name: "Oliver", last_name: "Smith", phone_number: "+917680918423", role: "instructor")
 end
-
-def create_admin_user!
-  User.create!(first_name: "Oliver", last_name: "Smith", phone_number: "+917680918423", role: "admin")
-end
-
-def create_spinkart!
-  org = Organization.create!(name: "Spinkart", subdomain: "spinkart")
-  User.create!(
-    first_name: "Oliver",
-    last_name: "Smith",
-    phone_number: "+919999999999",
-    organization: org,
-    role: "admin"
-  )
-end
-
-

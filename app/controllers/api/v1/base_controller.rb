@@ -20,27 +20,13 @@ class Api::V1::BaseController < ApplicationController
 
     def authenticate_user_using_x_auth_token
       user_phone_number = request.headers["X-Auth-Phone"]
-      subdomain = request.headers["X-Auth-Subdomain"]
       auth_token = request.headers["X-Auth-Token"].presence
-      organization = subdomain && Organization.find_by(subdomain: subdomain)
 
-      if organization
-        user = user_phone_number && User.find_for_database_authentication(phone_number: user_phone_number, organization_id: organization.id)
-        if user && Devise.secure_compare(user.authentication_token, auth_token)
-          if user.status == "active"
-            sign_in user, store: false
-          else
-            respond_with_error("You are not the active member of this organization", 401)
-          end
-        else
-          respond_with_error("Could not authenticate with the provided credentials", 401)
-        end
+      user = user_phone_number && User.find_for_database_authentication(phone_number: user_phone_number)
+      if user && Devise.secure_compare(user.authentication_token, auth_token)
+        sign_in user, store: false
       else
-        respond_with_error("No organization exist with this subdomain", 401)
+        respond_with_error("Could not authenticate with the provided credentials", 401)
       end
-    end
-
-    def find_course
-      @course = Course.find(id: params[:course_id] || params[:id])
     end
 end
